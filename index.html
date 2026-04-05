@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إتمام الشراء — مدخل إلى الذكاء الاصطناعي الإبداعي | MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Moyasar -->
+  <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
+  <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+  <style>
+    @font-face { font-family: 'Gumela'; src: url('brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; }
+    @font-face { font-family: 'Gumela'; src: url('brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; }
+    @font-face { font-family: 'Gumela'; src: url('brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight: 300; }
+
+    :root {
+      --bg: #080808; --card-bg: #0E0E0E; --gold: #C9A84C;
+      --gold-lum: #E8D08A; --ivory: #F5F0E8; --silver: #BBBBBB; --grey: #888888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg); color: var(--ivory);
+      min-height: 100vh; direction: rtl;
+    }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; z-index: 0;
+      animation: orb-pulse 7s ease-in-out infinite;
+    }
+    @keyframes orb-pulse { 0%,100%{opacity:.18;transform:scale(1)} 50%{opacity:.3;transform:scale(1.08)} }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 16px;
+    }
+    .divider { height: 1px; background: linear-gradient(to left, transparent, rgba(201,168,76,0.2), transparent); }
+
+    /* Override Moyasar styles to match dark theme */
+    .mysr-form { direction: ltr; }
+    .mysr-form .mysr-payment-form { background: transparent !important; border: none !important; padding: 0 !important; box-shadow: none !important; }
+    .mysr-form input, .mysr-form select {
+      background: rgba(255,255,255,0.06) !important;
+      border: 1px solid rgba(201,168,76,0.25) !important;
+      border-radius: 8px !important;
+      color: var(--ivory) !important;
+      font-family: 'Cairo', sans-serif !important;
+    }
+    .mysr-form input:focus { border-color: rgba(201,168,76,0.6) !important; outline: none !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.12) !important; }
+    .mysr-form label { color: var(--silver) !important; font-family: 'Cairo', sans-serif !important; font-size: 0.85rem !important; }
+    .mysr-form button[type=submit] {
+      background: var(--gold) !important;
+      color: #000 !important;
+      font-family: 'Gumela', 'Cairo', sans-serif !important;
+      font-weight: 700 !important;
+      border-radius: 0 !important;
+      font-size: 1rem !important;
+      padding: 14px !important;
+      border: none !important;
+      cursor: pointer !important;
+      transition: background 0.25s !important;
+      width: 100% !important;
+    }
+    .mysr-form button[type=submit]:hover { background: var(--gold-lum) !important; }
+    .mysr-form .mysr-tabs { border-bottom: 1px solid rgba(201,168,76,0.2) !important; }
+    .mysr-form .mysr-tab { color: var(--grey) !important; }
+    .mysr-form .mysr-tab.active { color: var(--gold) !important; border-bottom-color: var(--gold) !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Orbs -->
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,0.18) 0%,transparent 70%);top:-100px;right:-100px;"></div>
+  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);bottom:-80px;left:-80px;animation-delay:3.5s;"></div>
+
+  <!-- Nav -->
+  <nav style="padding:20px 32px;border-bottom:1px solid rgba(201,168,76,0.08);position:relative;z-index:10;">
+    <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+      <a href="https://courses.malearnsa.com" style="font-size:0.85rem;color:var(--grey);text-decoration:none;" class="hover:text-[var(--ivory)]">← رجوع للدورة</a>
+      <img src="brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:32px;width:auto;"
+           onerror="this.style.display='none'">
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main style="max-width:960px;margin:0 auto;padding:48px 24px;position:relative;z-index:1;">
+    <div style="display:grid;grid-template-columns:1fr;gap:32px;" class="lg:grid-cols-[1fr,400px]">
+
+      <!-- Left: Order summary -->
+      <div>
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">ملخص الطلب</p>
+        <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;line-height:1.2;margin-bottom:32px;">
+          مدخل إلى<br><span style="color:var(--gold);">الذكاء الاصطناعي الإبداعي</span>
+        </h1>
+
+        <div class="card" style="padding:24px;margin-bottom:24px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font-size:0.85rem;color:var(--silver);font-weight:300;">الدورة</span>
+            <span style="font-size:0.85rem;font-weight:400;">مدخل إلى الذكاء الاصطناعي الإبداعي</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font-size:0.85rem;color:var(--silver);font-weight:300;">المحتوى</span>
+            <span style="font-size:0.85rem;font-weight:400;">6 وحدات · 19 درس مسجل</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font-size:0.85rem;color:var(--silver);font-weight:300;">الوصول</span>
+            <span style="font-size:0.85rem;font-weight:400;">مدى الحياة</span>
+          </div>
+          <div class="divider" style="margin:16px 0;"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.85rem;color:var(--silver);font-weight:300;">السعر (Early Bird)</span>
+            <span style="font-size:1.5rem;font-weight:700;color:var(--gold);">499 SAR</span>
+          </div>
+          <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:6px;text-align:left;">السعر بعد Early Bird: 649 SAR</p>
+        </div>
+
+        <!-- What's included -->
+        <div style="space-y:8px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);">✓</span> وصول فوري بعد إتمام الدفع عبر الإيميل
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);">✓</span> دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);">✓</span> شاهد من أي جهاز في أي وقت
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Payment form -->
+      <div>
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">بيانات الدفع</p>
+        <div class="card" style="padding:28px;">
+          <div id="moyasar-form" class="mysr-form"></div>
+        </div>
+
+        <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:16px;text-align:center;line-height:1.8;">
+          🔒 جميع بيانات الدفع محمية ومشفرة<br>
+          لن يتم حفظ بيانات بطاقتك
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="padding:24px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);position:relative;z-index:1;">
+    <p style="font-size:0.75rem;color:var(--grey);font-weight:300;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar</p>
+  </footer>
+
+  <script>
+    Moyasar.init({
+      element: '#moyasar-form',
+      amount: 49900, // 499 SAR in halalas
+      currency: 'SAR',
+      description: 'مدخل إلى الذكاء الاصطناعي الإبداعي — MA Learn',
+      publishable_api_key: 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H',
+      callback_url: 'https://checkout.malearnsa.com/success.html',
+      supported_networks: ['mada', 'visa', 'mastercard', 'amex'],
+      methods: ['creditcard', 'applepay'],
+      apple_pay: {
+        country: 'SA',
+        label: 'MA Learn — مدخل إلى الذكاء الاصطناعي',
+        validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate'
+      }
+    });
+  </script>
+</body>
+</html>
