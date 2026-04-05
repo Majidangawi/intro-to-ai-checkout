@@ -159,6 +159,7 @@
   </footer>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
     Moyasar.init({
       element: '#moyasar-form',
       amount: 49900, // 499 SAR in halalas
@@ -174,6 +175,7 @@
         validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate'
       }
     });
+    }); // DOMContentLoaded
   </script>
 </body>
 </html>
