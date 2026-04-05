@@ -159,9 +159,9 @@
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('load', function() {
     Moyasar.init({
-      element: '#moyasar-form',
+      element: document.getElementById('moyasar-form'),
       amount: 49900, // 499 SAR in halalas
       currency: 'SAR',
       description: 'مدخل إلى الذكاء الاصطناعي الإبداعي — MA Learn',
@@ -175,7 +175,7 @@
         validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate'
       }
     });
-    }); // DOMContentLoaded
+    }); // window load
   </script>
 </body>
 </html>
