@@ -49,14 +49,24 @@
     .mysr-form { direction: ltr; }
     .mysr-form .mysr-payment-form { background: transparent !important; border: none !important; padding: 0 !important; box-shadow: none !important; }
     .mysr-form input, .mysr-form select {
-      background: rgba(255,255,255,0.06) !important;
-      border: 1px solid rgba(201,168,76,0.25) !important;
+      background: rgba(255,255,255,0.10) !important;
+      border: 1px solid rgba(201,168,76,0.35) !important;
       border-radius: 8px !important;
-      color: var(--ivory) !important;
+      color: #ffffff !important;
       font-family: 'Cairo', sans-serif !important;
     }
-    .mysr-form input:focus { border-color: rgba(201,168,76,0.6) !important; outline: none !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.12) !important; }
-    .mysr-form label { color: var(--silver) !important; font-family: 'Cairo', sans-serif !important; font-size: 0.85rem !important; }
+    .mysr-form input::placeholder { color: rgba(255,255,255,0.45) !important; }
+    .mysr-form input:focus { border-color: rgba(201,168,76,0.7) !important; outline: none !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.15) !important; }
+    .mysr-form label, .mysr-form p, .mysr-form span:not(.mysr-tab) { color: #D0C8B8 !important; font-family: 'Cairo', sans-serif !important; font-size: 0.85rem !important; }
+    .mysr-form .mysr-field-label { color: #D0C8B8 !important; font-weight: 500 !important; margin-bottom: 6px !important; }
+    /* Card iframe wrapper — give a visible background so inner text is readable */
+    .mysr-form .mysr-creditcard-field,
+    .mysr-form [class*="field"],
+    .mysr-form [class*="input"] {
+      background: rgba(255,255,255,0.10) !important;
+      border: 1px solid rgba(201,168,76,0.35) !important;
+      border-radius: 8px !important;
+    }
     .mysr-form button[type=submit] {
       background: var(--gold) !important;
       color: #000 !important;
@@ -72,8 +82,11 @@
     }
     .mysr-form button[type=submit]:hover { background: var(--gold-lum) !important; }
     .mysr-form .mysr-tabs { border-bottom: 1px solid rgba(201,168,76,0.2) !important; }
-    .mysr-form .mysr-tab { color: var(--grey) !important; }
+    .mysr-form .mysr-tab { color: rgba(255,255,255,0.5) !important; }
     .mysr-form .mysr-tab.active { color: var(--gold) !important; border-bottom-color: var(--gold) !important; }
+    /* Separator line "or pay with card" text */
+    .mysr-form .mysr-separator, .mysr-form [class*="separator"] { color: rgba(255,255,255,0.4) !important; }
+    .mysr-form .mysr-separator::before, .mysr-form .mysr-separator::after { background: rgba(255,255,255,0.15) !important; }
   </style>
 </head>
 <body>
