@@ -158,6 +158,12 @@
           <!-- Step 1: Contact info + coupon -->
           <div id="step-contact">
             <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الاسم *</label>
+              <input id="customer-name" type="text" placeholder="الاسم الكامل"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:rtl;"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+            </div>
+            <div style="margin-bottom:16px;">
               <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الإيميل *</label>
               <input id="customer-email" type="email" placeholder="example@email.com"
                 style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
@@ -204,7 +210,7 @@
               </div>
             </div>
 
-            <p id="contact-error" style="display:none;font-size:0.8rem;color:#e05252;margin-bottom:12px;">يرجى إدخال إيميل ورقم جوال صحيحين</p>
+            <p id="contact-error" style="display:none;font-size:0.8rem;color:#e05252;margin-bottom:12px;">يرجى إدخال الاسم والإيميل ورقم الجوال بشكل صحيح</p>
             <button onclick="showPaymentForm()"
               style="width:100%;background:var(--gold);color:#000;font-family:'Gumela','Cairo',sans-serif;font-weight:700;padding:14px;border:none;cursor:pointer;font-size:1rem;transition:background 0.25s;"
               onmouseover="this.style.background='var(--gold-lum)'" onmouseout="this.style.background='var(--gold)'">
@@ -215,6 +221,7 @@
           <!-- Step 2: Moyasar form -->
           <div id="step-payment" style="display:none;">
             <div style="margin-bottom:20px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+              <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="summary-name"></p>
               <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-email"></p>
               <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-phone"></p>
               <p style="font-size:0.8rem;color:#4caf82;" id="summary-coupon" style="display:none;"></p>
@@ -298,12 +305,14 @@
 
     // ── Checkout flow ────────────────────────────
     function showPaymentForm() {
+      const name  = document.getElementById('customer-name').value.trim();
       const email = document.getElementById('customer-email').value.trim();
       const phone = document.getElementById('customer-phone').value.trim();
+      const nameValid  = name.length >= 2;
       const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       const phoneValid = phone.length >= 9;
 
-      if (!emailValid || !phoneValid) {
+      if (!nameValid || !emailValid || !phoneValid) {
         document.getElementById('contact-error').style.display = 'block';
         return;
       }
@@ -311,6 +320,7 @@
       document.getElementById('contact-error').style.display = 'none';
       document.getElementById('step-contact').style.display = 'none';
       document.getElementById('step-payment').style.display = 'block';
+      document.getElementById('summary-name').textContent = name;
       document.getElementById('summary-email').textContent = email;
       document.getElementById('summary-phone').textContent = phone;
 
@@ -326,6 +336,7 @@
 
       // Save to localStorage so success.html can log the purchase
       localStorage.setItem('ma_customer', JSON.stringify({
+        name:   name,
         email:  email,
         phone:  phone,
         coupon: appliedCoupon ? appliedCoupon.code : '',
