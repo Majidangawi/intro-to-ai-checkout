@@ -345,12 +345,13 @@
           phone: phone,
           coupon: appliedCoupon ? appliedCoupon.code : ''
         },
-        supported_networks: ['mada', 'visa', 'mastercard', 'amex'],
+        supported_networks: ['mada', 'visa', 'mastercard'],
         methods: ['creditcard', 'applepay'],
         apple_pay: {
           country: 'SA',
-          label: 'MA Learn — مدخل إلى الذكاء الاصطناعي',
-          validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate'
+          label: 'MA Learn',
+          validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate',
+          supported_networks: ['mada', 'visa', 'mastercard']
         }
       });
     }
