@@ -80,9 +80,10 @@
   </div>
 
   <script>
-    // Verify payment status from Moyasar callback
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+
     const params = new URLSearchParams(window.location.search);
-    const paymentId = params.get('id');
+    const paymentId     = params.get('id');
     const paymentStatus = params.get('status');
 
     // If payment failed, redirect back to checkout
@@ -90,6 +91,23 @@
       setTimeout(() => {
         window.location.href = 'https://checkout.malearnsa.com?error=payment_failed';
       }, 2000);
+    }
+
+    // Record purchase in Customers sheet
+    if (paymentStatus === 'paid' && paymentId) {
+      try {
+        const customer = JSON.parse(localStorage.getItem('ma_customer') || '{}');
+        const url = new URL(APPS_SCRIPT_URL);
+        url.searchParams.set('action',     'record_purchase');
+        url.searchParams.set('email',      customer.email      || '');
+        url.searchParams.set('phone',      customer.phone      || '');
+        url.searchParams.set('product',    customer.product    || 'intro-to-creative-ai');
+        url.searchParams.set('amount',     customer.amount     || '');
+        url.searchParams.set('coupon',     customer.coupon     || '');
+        url.searchParams.set('payment_id', paymentId);
+        fetch(url.toString()).catch(() => {}); // fire and forget
+        localStorage.removeItem('ma_customer'); // clean up
+      } catch(e) {}
     }
   </script>
 </body>

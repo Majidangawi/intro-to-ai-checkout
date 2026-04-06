@@ -311,6 +311,15 @@
 
       const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
 
+      // Save to localStorage so success.html can log the purchase
+      localStorage.setItem('ma_customer', JSON.stringify({
+        email:  email,
+        phone:  phone,
+        coupon: appliedCoupon ? appliedCoupon.code : '',
+        amount: (finalAmount / 100).toFixed(2),
+        product: 'intro-to-creative-ai'
+      }));
+
       Moyasar.init({
         element: document.getElementById('moyasar-form'),
         amount: finalAmount,
