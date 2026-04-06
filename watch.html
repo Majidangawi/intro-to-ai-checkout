@@ -117,13 +117,23 @@
     .nav-btn.primary:hover { background:#E8D08A; }
     .nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
 
-    /* Access denied */
-    .access-denied {
+    /* Loading / Access denied overlay */
+    .overlay {
       position:fixed; inset:0; background:var(--bg);
       display:flex; flex-direction:column; align-items:center; justify-content:center;
       z-index:1000; text-align:center; padding:32px;
     }
-    .access-denied.hidden { display:none; }
+    .overlay.hidden { display:none; }
+
+    /* Spinner */
+    .spinner {
+      width:40px; height:40px; border-radius:50%;
+      border:2px solid rgba(201,168,76,0.2);
+      border-top-color:var(--gold);
+      animation:spin 0.8s linear infinite;
+      margin-bottom:20px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
     /* Mobile */
     @media (max-width:768px) {
@@ -136,9 +146,15 @@
 </head>
 <body>
 
-  <!-- Access check overlay -->
-  <div id="access-denied" class="access-denied">
-    <div style="font-size:3rem;margin-bottom:24px;">🔒</div>
+  <!-- Loading overlay (shown while validating) -->
+  <div id="loading-overlay" class="overlay">
+    <div class="spinner"></div>
+    <p style="font-size:0.85rem;color:var(--grey);font-weight:300;">جاري التحقق...</p>
+  </div>
+
+  <!-- Access denied overlay (hidden by default, shown only if token invalid) -->
+  <div id="access-denied" class="overlay hidden">
+    <div style="font-size:3rem;margin-bottom:24px;">&#x1F512;</div>
     <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:12px;">رابط الوصول غير صحيح</h2>
     <p style="font-size:0.9rem;color:var(--silver);font-weight:300;line-height:1.8;max-width:400px;margin-bottom:32px;">
       هذا الرابط غير صالح أو منتهي الصلاحية.<br>
@@ -367,11 +383,14 @@
       const token = params.get('token');
 
       if (!token) {
+        document.getElementById('loading-overlay').classList.add('hidden');
         document.getElementById('access-denied').classList.remove('hidden');
         return;
       }
 
       const valid = await validateToken(token);
+
+      document.getElementById('loading-overlay').classList.add('hidden');
 
       if (!valid) {
         document.getElementById('access-denied').classList.remove('hidden');
@@ -379,7 +398,6 @@
       }
 
       // Token valid — show course
-      document.getElementById('access-denied').classList.add('hidden');
       document.getElementById('course-layout').style.display = 'grid';
 
       buildSidebar();
