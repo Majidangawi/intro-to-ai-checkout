@@ -93,20 +93,20 @@
       }, 2000);
     }
 
-    // Record purchase in Customers sheet
+    // Complete purchase: log customer + assign token + send email
     if (paymentStatus === 'paid' && paymentId) {
       try {
         const customer = JSON.parse(localStorage.getItem('ma_customer') || '{}');
         const url = new URL(APPS_SCRIPT_URL);
-        url.searchParams.set('action',     'record_purchase');
-        url.searchParams.set('email',      customer.email      || '');
-        url.searchParams.set('phone',      customer.phone      || '');
-        url.searchParams.set('product',    customer.product    || 'intro-to-creative-ai');
-        url.searchParams.set('amount',     customer.amount     || '');
-        url.searchParams.set('coupon',     customer.coupon     || '');
+        url.searchParams.set('action',     'complete_purchase');
+        url.searchParams.set('email',      customer.email   || '');
+        url.searchParams.set('phone',      customer.phone   || '');
+        url.searchParams.set('product',    customer.product || 'intro-to-creative-ai');
+        url.searchParams.set('amount',     customer.amount  || '');
+        url.searchParams.set('coupon',     customer.coupon  || '');
         url.searchParams.set('payment_id', paymentId);
-        fetch(url.toString()).catch(() => {}); // fire and forget
-        localStorage.removeItem('ma_customer'); // clean up
+        fetch(url.toString()).catch(() => {});
+        localStorage.removeItem('ma_customer');
       } catch(e) {}
     }
   </script>
