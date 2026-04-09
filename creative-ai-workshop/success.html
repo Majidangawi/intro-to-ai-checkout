@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تم التسجيل بنجاح | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'Gumela'; src: url('../../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; }
+    @font-face { font-family: 'Gumela'; src: url('../../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; }
+    :root { --bg:#080808; --gold:#C9A84C; --gold-lum:#E8D08A; --ivory:#F5F0E8; --silver:#BBBBBB; --grey:#888; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body {
+      font-family:'Gumela','Cairo',sans-serif;
+      background:var(--bg); color:var(--ivory);
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:32px 24px; direction:rtl; text-align:center;
+    }
+    body::after {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.04;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .orb { position:fixed; border-radius:50%; filter:blur(120px); pointer-events:none; animation:orb-pulse 7s ease-in-out infinite; }
+    @keyframes orb-pulse{0%,100%{opacity:.2}50%{opacity:.35}}
+    .check-ring {
+      width:100px; height:100px; border-radius:50%;
+      border:2px solid rgba(201,168,76,0.4);
+      background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 32px;
+      animation:ring-in 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes ring-in{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+    .card { background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.18); border-radius:16px; padding:32px; max-width:480px; width:100%; margin:0 auto; }
+    .step { display:flex; align-items:flex-start; gap:14px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05); text-align:right; }
+    .step:last-child { border-bottom:none; }
+    .step-num {
+      width:28px; height:28px; border-radius:50%;
+      background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.35);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; font-size:0.8rem; color:var(--gold); font-weight:700;
+    }
+    .session-row {
+      display:flex; align-items:center; gap:10px; padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      text-align:right;
+    }
+    .session-row:last-child { border-bottom:none; }
+    .btn {
+      display:inline-block; background:var(--gold); color:#000;
+      font-family:'Gumela','Cairo',sans-serif; font-weight:700;
+      padding:14px 40px; text-decoration:none; transition:background 0.25s;
+    }
+    .btn:hover { background:var(--gold-lum); }
+    #processing { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:20px; }
+    .spinner {
+      width:18px; height:18px; border:2px solid rgba(201,168,76,0.3);
+      border-top-color:var(--gold); border-radius:50%;
+      animation:spin 0.8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+  <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+  <div style="position:relative;z-index:1;width:100%;max-width:520px;">
+
+    <img src="../../brand_assets/logo-malearn-white.png" alt="MA Learn"
+         style="height:36px;width:auto;margin:0 auto 40px;display:block;"
+         onerror="this.style.display='none'">
+
+    <!-- Processing indicator (shown while Apps Script call is in flight) -->
+    <div id="processing">
+      <div class="spinner"></div>
+      <span style="font-size:0.85rem;color:var(--silver);">جاري معالجة طلبك...</span>
+    </div>
+
+    <!-- Success content (shown after Apps Script responds) -->
+    <div id="success-content" style="display:none;">
+      <div class="check-ring">
+        <span style="font-size:2.5rem;">✓</span>
+      </div>
+
+      <h1 style="font-size:clamp(1.8rem,5vw,2.8rem);font-weight:700;margin-bottom:12px;">
+        تم التسجيل <span style="color:var(--gold);">بنجاح</span>
+      </h1>
+
+      <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:32px;">
+        أهلاً بك في ورشة الذكاء الاصطناعي الإبداعي.<br>
+        راجع إيميلك — وصلك تأكيد التسجيل وهديتك الخاصة.
+      </p>
+
+      <!-- Sessions card -->
+      <div class="card" style="margin-bottom:24px;text-align:right;">
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">تفاصيل جلساتك</p>
+        <div class="session-row">
+          <span style="font-size:1rem;">📅</span>
+          <div>
+            <p style="font-size:0.85rem;font-weight:700;">الجلسة الأولى</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;">الأربعاء ٣٠ أبريل | ٧–١٠ مساءً</p>
+          </div>
+        </div>
+        <div class="session-row">
+          <span style="font-size:1rem;">📅</span>
+          <div>
+            <p style="font-size:0.85rem;font-weight:700;">الجلسة الثانية</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;">الخميس ١ مايو | ٧–١٠ مساءً</p>
+          </div>
+        </div>
+        <div class="session-row">
+          <span style="font-size:1rem;">📅</span>
+          <div>
+            <p style="font-size:0.85rem;font-weight:700;">الجلسة الثالثة</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;">الجمعة ٢ مايو | ٧–١٠ مساءً</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Steps card -->
+      <div class="card" style="margin-bottom:32px;">
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">الخطوات القادمة</p>
+        <div class="step">
+          <div class="step-num">١</div>
+          <div>
+            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">افتح إيميلك الآن</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.7;">
+              وصلك تأكيد التسجيل مع تفاصيل الجلسات — ومعه رابط هديتك المسجلة
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٢</div>
+          <div>
+            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">ابدأ الهدية فوراً</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.7;">
+              رابط دورة "مدخل إلى الذكاء الاصطناعي الإبداعي" جاهز في إيميلك — ابدأ الآن
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٣</div>
+          <div>
+            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">رابط الجلسات قبل أسبوع</p>
+            <p style="font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.7;">
+              رابط Google Meet سيصلك تلقائياً على نفس الإيميل قبل أسبوع من بدء الورشة
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem;color:var(--grey);font-weight:300;margin-bottom:8px;">
+        ما وصلك الإيميل؟ تحقق من Spam أو راسلنا على
+        <a href="mailto:support@malearnsa.com" style="color:var(--gold);text-decoration:none;">support@malearnsa.com</a>
+      </p>
+      <p style="font-size:0.8rem;color:var(--grey);font-weight:300;margin-bottom:24px;">
+        تابعنا على Instagram للمحتوى والتحديثات
+      </p>
+      <a href="https://instagram.com/majidangawi" class="btn">@majidangawi</a>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-content" style="display:none;">
+      <h2 style="font-size:1.5rem;color:#e05252;margin-bottom:12px;">مشكلة في الدفع</h2>
+      <p style="font-size:0.9rem;color:var(--silver);margin-bottom:24px;">لم يتم إتمام الدفع. حاول مجدداً أو راسلنا.</p>
+      <a href="https://checkout.malearnsa.com/creative-ai-workshop/" class="btn">العودة للصفحة</a>
+    </div>
+
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+
+    const params        = new URLSearchParams(window.location.search);
+    const paymentId     = params.get('id');
+    const paymentStatus = params.get('status');
+
+    // Failed payment — show error
+    if (paymentStatus && paymentStatus !== 'paid') {
+      document.getElementById('processing').style.display    = 'none';
+      document.getElementById('error-content').style.display = 'block';
+    } else if (paymentStatus === 'paid' && paymentId) {
+      // Trigger complete_purchase on Apps Script
+      (async function completePurchase() {
+        try {
+          const customer = JSON.parse(localStorage.getItem('ma_customer') || '{}');
+          const url      = new URL(APPS_SCRIPT_URL);
+          url.searchParams.set('action',     'complete_purchase');
+          url.searchParams.set('name',       customer.name    || '');
+          url.searchParams.set('email',      customer.email   || '');
+          url.searchParams.set('phone',      customer.phone   || '');
+          url.searchParams.set('product',    'creative-ai-workshop-t3');
+          url.searchParams.set('amount',     customer.amount  || '');
+          url.searchParams.set('coupon',     customer.coupon  || '');
+          url.searchParams.set('payment_id', paymentId);
+
+          await fetch(url.toString());
+          localStorage.removeItem('ma_customer');
+        } catch (e) {
+          // Fail silently — show success regardless (payment already confirmed by Moyasar)
+        }
+
+        document.getElementById('processing').style.display      = 'none';
+        document.getElementById('success-content').style.display = 'block';
+      })();
+    } else {
+      // No payment params — direct visit, show success UI anyway
+      document.getElementById('processing').style.display      = 'none';
+      document.getElementById('success-content').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
