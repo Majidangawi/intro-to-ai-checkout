@@ -200,9 +200,9 @@
     // ═══════════════════════════════════════════════════
     // TOKEN VALIDATION
     // ═══════════════════════════════════════════════════
-    async function validateToken(token) {
+    async function validateToken(token, courseId) {
       try {
-        const res  = await fetch(`${APPS_SCRIPT_URL}?token=${encodeURIComponent(token)}`);
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=validate_token&token=${encodeURIComponent(token)}&course=${encodeURIComponent(courseId)}`);
         const data = await res.json();
         return data.valid === true;
       } catch (e) {
@@ -345,11 +345,20 @@
     }
 
     // ═══════════════════════════════════════════════════
+    // COURSE NAMES
+    // ═══════════════════════════════════════════════════
+    const COURSE_NAMES = {
+      'intro-to-creative-ai': 'مدخل إلى الذكاء الاصطناعي الإبداعي',
+      'beyond-lighting':      'أبعد من إمكانيات الإضاءة'
+    };
+
+    // ═══════════════════════════════════════════════════
     // INIT
     // ═══════════════════════════════════════════════════
     async function init() {
-      const params = new URLSearchParams(window.location.search);
-      const token  = params.get('token');
+      const params   = new URLSearchParams(window.location.search);
+      const token    = params.get('token');
+      const courseId = params.get('course') || 'intro-to-creative-ai';
 
       if (!token) {
         document.getElementById('loading-overlay').classList.add('hidden');
@@ -357,7 +366,7 @@
         return;
       }
 
-      const valid = await validateToken(token);
+      const valid = await validateToken(token, courseId);
       document.getElementById('loading-overlay').classList.add('hidden');
 
       if (!valid) {
@@ -365,8 +374,13 @@
         return;
       }
 
+      // Set course name in top nav
+      const courseName = COURSE_NAMES[courseId] || 'MA Learn';
+      const navName = document.querySelector('.course-name');
+      if (navName) navName.textContent = courseName;
+
       // Try dynamic curriculum; fall back to hardcoded
-      const dynamic = await loadCurriculumFromApi('intro-to-creative-ai');
+      const dynamic = await loadCurriculumFromApi(courseId);
       if (dynamic) curriculum = dynamic;
 
       allLessons = flattenCurriculum(curriculum);
