@@ -18,18 +18,7 @@
   src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TZ9839RVDJ');
-  </script>
   <meta charset="UTF-8">
-  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تم التسجيل بنجاح | MA Learn</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
@@ -128,7 +117,7 @@
       </h1>
 
       <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:32px;">
-        أهلاً بك في ورشة الذكاء الاصطناعي الإبداعي.<br>
+        أهلاً بك في ورشة صناعة الإلهام.<br>
         راجع إيميلك — وصلك تأكيد التسجيل وهديتك الخاصة.
       </p>
 
@@ -173,9 +162,9 @@
         <div class="step">
           <div class="step-num">٢</div>
           <div>
-            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">ابدأ الهدية فوراً</p>
+            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">هديتك — دورة مدخل إلى الذكاء الاصطناعي الإبداعي</p>
             <p style="font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.7;">
-              رابط دورة "مدخل إلى الذكاء الاصطناعي الإبداعي" جاهز في إيميلك — ابدأ الآن
+              ٦ محاور — المحور ١ + ٢ جاهز لك الآن في إيميلك. باقي المحاور تنفتح تباعاً قبل الورشة المباشرة، والمحور السادس (التطبيق العملي) بعد انتهاء الورشة كهدية التخرّج.
             </p>
           </div>
         </div>
@@ -198,13 +187,6 @@
         تابعنا على Instagram للمحتوى والتحديثات
       </p>
       <a href="https://instagram.com/majidangawi" class="btn">@majidangawi</a>
-      <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:32px;">
-        <span style="font-size:0.65rem;color:#555;margin-left:4px;">الدفع عبر:</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
-      </div>
     </div>
 
     <!-- Error state -->
@@ -243,7 +225,7 @@
           url.searchParams.set('payment_id', paymentId);
 
           await fetch(url.toString());
-          if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(customer.amount) || 0, currency: 'SAR', content_name: 'ورشة الذكاء الاصطناعي الإبداعي' });
+          if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(customer.amount) || 0, currency: 'SAR', content_name: 'ورشة صناعة الإلهام' });
           localStorage.removeItem('ma_customer');
         } catch (e) {
           // Fail silently — show success regardless (payment already confirmed by Moyasar)
@@ -276,13 +258,22 @@
     <a href="https://instagram.com/majidangawi" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'" target="_blank">Instagram</a>
   </div>
   <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
-  <div style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;margin-top:8px;">
-    <img src="/brand_assets/freelance-doc.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+  <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+  <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
     </div>
-  </div>
+  </a>
+  <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
+    </div>
+  </a>
+</div>
 </footer>
 </body>
 </html>
