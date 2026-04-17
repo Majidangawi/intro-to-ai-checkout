@@ -682,6 +682,16 @@
         product: PRODUCT_ID
       }));
 
+      // Free-purchase branch — Moyasar rejects 0 SAR amounts, so we skip the
+      // payment gateway entirely and redirect straight to the success page
+      // with a synthetic payment_id. The success page fires complete_purchase,
+      // which logs the customer, assigns a token, sends the email, and notifies.
+      if (finalAmount === 0) {
+        const freeId = 'free_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        window.location.href = 'https://checkout.malearnsa.com/creative-ai-workshop/success.html?id=' + freeId + '&status=paid';
+        return;
+      }
+
       Moyasar.init({
         element:              document.getElementById('moyasar-form'),
         amount:               finalAmount,
