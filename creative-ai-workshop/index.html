@@ -342,29 +342,16 @@
             </div>
           </div>
 
-          <!-- Early bird countdown + price -->
+          <!-- Workshop price -->
           <div style="margin-bottom:20px;">
-            <div id="early-bird-block" style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:14px 16px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span style="font-size:0.75rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">⚡ سعر Early Bird</span>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.75rem;color:var(--silver);font-weight:700;letter-spacing:0.05em;">سعر الورشة</span>
                 <div style="display:flex;align-items:baseline;gap:6px;">
                   <span id="current-price-display" style="font-size:1.8rem;font-weight:700;color:var(--gold);"></span>
                   <span style="font-size:0.8rem;color:var(--grey);">ر.س</span>
                 </div>
               </div>
-              <div id="countdown-wrapper" style="display:none;">
-                <p style="font-size:0.7rem;color:var(--grey);margin-bottom:8px;">ينتهي العرض خلال:</p>
-                <div style="display:flex;align-items:center;gap:4px;" id="countdown-display">
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-days">0</span><span class="countdown-label">يوم</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">ساعة</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-label">دقيقة</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-label">ثانية</span></div>
-                </div>
-              </div>
-              <p id="regular-price-note" style="display:none;font-size:0.75rem;color:var(--grey);"></p>
             </div>
           </div>
 
@@ -496,14 +483,11 @@
   <script>
     const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
     const MOYASAR_KEY       = 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H';
-    const EARLY_BIRD_END    = new Date('2026-04-19T23:59:59+03:00'); // KSA time
-    const PRICE_EARLY       = 79900;  // halalas
-    const PRICE_REGULAR     = 99900;
+    const PRICE_REGULAR     = 99900;  // halalas
     const PRODUCT_ID        = 'creative-ai-workshop-t3';
 
-    let currentBaseAmount   = PRICE_EARLY;
+    let currentBaseAmount   = PRICE_REGULAR;
     let appliedCoupon       = null;
-    let countdownInterval   = null;
 
     // ── On load: check seats + init pricing ──────────────
     (async function init() {
@@ -512,50 +496,13 @@
     })();
 
     function initPricing() {
-      const now      = new Date();
-      const isEarly  = now < EARLY_BIRD_END;
-      currentBaseAmount = isEarly ? PRICE_EARLY : PRICE_REGULAR;
-
       const priceDisplay = document.getElementById('current-price-display');
       const origLabel    = document.getElementById('price-original-label');
       const finalLabel   = document.getElementById('price-final-label');
-      const eb           = document.getElementById('early-bird-block');
 
       priceDisplay.textContent = (currentBaseAmount / 100).toFixed(0);
       origLabel.textContent    = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
       finalLabel.textContent   = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
-
-      if (isEarly) {
-        document.getElementById('countdown-wrapper').style.display = 'block';
-        startCountdown();
-      } else {
-        eb.style.borderColor = 'rgba(255,255,255,0.08)';
-        eb.style.background  = 'rgba(255,255,255,0.02)';
-        document.getElementById('regular-price-note').style.display = 'block';
-        document.getElementById('regular-price-note').textContent   = 'السعر الأصلي للورشة';
-      }
-    }
-
-    function startCountdown() {
-      function update() {
-        const diff = EARLY_BIRD_END - new Date();
-        if (diff <= 0) {
-          clearInterval(countdownInterval);
-          // Price expired — reload to show regular price
-          location.reload();
-          return;
-        }
-        const days  = Math.floor(diff / 86400000);
-        const hours = Math.floor((diff % 86400000) / 3600000);
-        const mins  = Math.floor((diff % 3600000) / 60000);
-        const secs  = Math.floor((diff % 60000) / 1000);
-        document.getElementById('cd-days').textContent  = days;
-        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
-        document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0');
-      }
-      update();
-      countdownInterval = setInterval(update, 1000);
     }
 
     async function checkSeats() {
