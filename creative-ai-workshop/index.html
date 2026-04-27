@@ -157,25 +157,86 @@
       border: 1px solid rgba(201,168,76,0.35) !important;
       border-radius: 8px !important;
     }
-    .mysr-form button[type=submit] {
+    /* Aggressive selectors — Moyasar SDK uses several class patterns
+       across versions. Targeting all known submit-button variants. */
+    .mysr-form button[type=submit],
+    .mysr-form button.mysr-button,
+    .mysr-form .mysr-pay-button,
+    .mysr-form button[class*="pay"],
+    .mysr-form button[class*="submit"],
+    #moyasar-form button[type=submit],
+    #moyasar-form button {
       background: var(--gold) !important;
-      color: #000 !important;
+      background-color: var(--gold) !important;
+      background-image: none !important;
+      color: #080808 !important;
       font-family: 'Gumela', 'Cairo', sans-serif !important;
       font-weight: 700 !important;
-      border-radius: 0 !important;
+      border-radius: 8px !important;
       font-size: 1rem !important;
       padding: 14px !important;
       border: none !important;
       cursor: pointer !important;
-      transition: background 0.25s !important;
+      transition: filter 0.2s, background-color 0.2s !important;
       width: 100% !important;
+      box-shadow: 0 6px 20px rgba(201, 168, 76, 0.18) !important;
     }
-    .mysr-form button[type=submit]:hover { background: var(--gold-lum) !important; }
+    .mysr-form button[type=submit]:hover,
+    .mysr-form button.mysr-button:hover,
+    .mysr-form .mysr-pay-button:hover,
+    #moyasar-form button:hover {
+      background: var(--gold-lum) !important;
+      background-color: var(--gold-lum) !important;
+      filter: brightness(1.05) !important;
+    }
     .mysr-form .mysr-tabs { border-bottom: 1px solid rgba(201,168,76,0.2) !important; }
     .mysr-form .mysr-tab { color: rgba(255,255,255,0.5) !important; }
     .mysr-form .mysr-tab.active { color: var(--gold) !important; border-bottom-color: var(--gold) !important; }
     .mysr-form .mysr-separator, .mysr-form [class*="separator"] { color: rgba(255,255,255,0.4) !important; }
     .mysr-form .mysr-separator::before, .mysr-form .mysr-separator::after { background: rgba(255,255,255,0.15) !important; }
+
+    /* Kill Chrome's cream autofill background on dark inputs */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px rgba(20, 20, 20, 1) inset !important;
+      -webkit-text-fill-color: var(--ivory) !important;
+      caret-color: var(--ivory) !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+    }
+
+    /* Glass-up the buyer-info wrapper card — premium feel */
+    #checkout-form-wrapper .card {
+      background: rgba(255, 255, 255, 0.025) !important;
+      border: 1px solid rgba(201, 168, 76, 0.20) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      position: relative;
+      overflow: hidden;
+    }
+    #checkout-form-wrapper .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to left, transparent, rgba(201,168,76,0.55), transparent);
+      pointer-events: none;
+    }
+    /* Slightly more polish on the buyer-info inputs */
+    #checkout-form-wrapper input[type=text],
+    #checkout-form-wrapper input[type=email],
+    #checkout-form-wrapper input[type=tel] {
+      background: rgba(0, 0, 0, 0.32) !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
+      transition: border-color 0.18s, background 0.18s !important;
+    }
+    #checkout-form-wrapper input[type=text]:focus,
+    #checkout-form-wrapper input[type=email]:focus,
+    #checkout-form-wrapper input[type=tel]:focus {
+      border-color: var(--gold) !important;
+      background: rgba(0, 0, 0, 0.45) !important;
+    }
 
     /* Sold-out state */
     .sold-out-block {
