@@ -570,8 +570,19 @@
 
     async function checkSeats() {
       try {
-        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left`);
-        const data = await res.json();
+        // C2 launch: token-validator's get_seats_left counter still reflects C1 sellout.
+        // Until that endpoint is C2-cohort-aware, force-skip the sold-out gate so
+        // C2 buyers can reach checkout. TODO: pass ?cohort=c2 once token-validator
+        // supports per-cohort counts (MAL-192).
+        const C2_LAUNCH_MODE = true;
+
+        let data;
+        if (C2_LAUNCH_MODE) {
+          data = { sold_out: false, seats_left: 30, total_seats: 30 };
+        } else {
+          const res = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left`);
+          data = await res.json();
+        }
 
         document.getElementById('loading-seats').style.display = 'none';
 
