@@ -68,8 +68,73 @@
     .gift-box {
       background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.04) 100%);
       border: 1px solid rgba(201,168,76,0.35);
-      border-radius: 12px;
-      padding: 20px;
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .gift-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to left, transparent, rgba(201,168,76,0.55), transparent);
+    }
+    .gift-box .gift-eyebrow {
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .gift-box .gift-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ivory);
+      line-height: 1.45;
+      margin: 0 0 12px;
+    }
+    .gift-box .gift-desc {
+      font-size: 0.85rem;
+      color: var(--silver);
+      font-weight: 300;
+      line-height: 1.85;
+      margin: 0 0 20px;
+    }
+    .gift-box .gift-rule {
+      border-top: 1px dashed rgba(201,168,76,0.28);
+      padding-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .gift-box .gift-value {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .gift-box .gift-value-label {
+      font-size: 0.7rem;
+      color: var(--grey);
+      font-weight: 300;
+    }
+    .gift-box .gift-value-strike {
+      font-size: 0.95rem;
+      color: var(--silver);
+      text-decoration: line-through;
+      text-decoration-color: rgba(201,168,76,0.5);
+    }
+    .gift-box .gift-pill {
+      background: var(--gold);
+      color: #080808;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
     }
     /* Moyasar dark theme overrides */
     .mysr-form { direction: ltr; }
@@ -204,7 +269,7 @@
         <!-- Badge -->
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:24px;padding:6px 14px;margin-bottom:20px;">
           <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:orb-pulse 2s ease-in-out infinite;"></span>
-          <span style="font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;">الدفعة الأولى — ٣٠ مقعداً فقط</span>
+          <span style="font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;">الدفعة الثانية — ٣٠ مقعداً فقط</span>
         </div>
 
         <h1 style="font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:16px;">
@@ -219,7 +284,7 @@
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin:24px 0;">
           <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;">
             <span style="color:var(--gold);font-size:1rem;">📅</span>
-            <span style="font-size:0.85rem;color:var(--silver);">٣٠ أبريل — ٢ مايو</span>
+            <span style="font-size:0.85rem;color:var(--silver);">٣١ مايو — ٢ يونيو</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;">
             <span style="color:var(--gold);font-size:1rem;">🕖</span>
@@ -265,22 +330,20 @@
           </div>
         </div>
 
-        <!-- Cohort 1 gift -->
+        <!-- Bundled gift -->
         <div class="gift-box" style="margin-bottom:32px;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-            <span style="font-size:1.3rem;">🎁</span>
-            <div>
-              <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;">هدية خاصة — الدفعة الأولى فقط</p>
-              <p style="font-size:1rem;font-weight:700;margin-top:2px;">دورة مدخل إلى الذكاء الاصطناعي الإبداعي</p>
-            </div>
-          </div>
-          <p style="font-size:0.85rem;color:var(--silver);font-weight:300;line-height:1.8;">
+          <p class="gift-eyebrow">هدية مدمجة في الورشة</p>
+          <p class="gift-title">دورة مدخل إلى الذكاء الاصطناعي الإبداعي</p>
+          <p class="gift-desc">
             مع التسجيل في الورشة، تحصل على الدورة المسجلة الكاملة — ٦ محاور، وصول مدى الحياة.
             <br>المحاور تفتحلك تباعاً قبل ورشتك عشان تجي جاهز.
           </p>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:14px;">
-            <span style="text-decoration:line-through;font-size:0.85rem;color:var(--grey);">٤٩٩ ر.س</span>
-            <span style="background:rgba(201,168,76,0.15);color:var(--gold);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;">مجاناً مع الورشة</span>
+          <div class="gift-rule">
+            <div class="gift-value">
+              <span class="gift-value-label">قيمتها</span>
+              <span class="gift-value-strike">٤٩٩ ر.س</span>
+            </div>
+            <span class="gift-pill">مجاناً مع الورشة</span>
           </div>
         </div>
 
@@ -483,7 +546,7 @@
   <script>
     const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
     const MOYASAR_KEY       = 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H';
-    const PRICE_REGULAR     = 99900;  // halalas
+    const PRICE_REGULAR     = 129900;  // halalas — C2 price (1,299 SAR)
     const PRODUCT_ID        = 'creative-ai-workshop-t3';
 
     let currentBaseAmount   = PRICE_REGULAR;
