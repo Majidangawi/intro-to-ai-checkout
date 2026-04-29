@@ -486,19 +486,19 @@
             <div id="step-contact">
               <div style="margin-bottom:16px;">
                 <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الاسم *</label>
-                <input id="customer-name" type="text" placeholder="الاسم الكامل"
+                <input id="name" type="text" placeholder="الاسم الكامل"
                   style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:rtl;"
                   onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
               </div>
               <div style="margin-bottom:16px;">
                 <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الإيميل *</label>
-                <input id="customer-email" type="email" placeholder="example@email.com"
+                <input id="email" type="email" placeholder="example@email.com"
                   style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
                   onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
               </div>
               <div style="margin-bottom:20px;">
                 <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">رقم الجوال *</label>
-                <input id="customer-phone" type="tel" placeholder="05xxxxxxxx"
+                <input id="phone" type="tel" placeholder="05xxxxxxxx"
                   style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
                   onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
               </div>
@@ -509,9 +509,8 @@
                 <div style="display:flex;gap:8px;">
                   <input id="coupon-input" type="text" placeholder="MALEARN20"
                     style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;text-transform:uppercase;"
-                    onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'"
-                    oninput="this.value=this.value.toUpperCase();resetCoupon()">
-                  <button onclick="applyCoupon()"
+                    onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+                  <button id="coupon-btn"
                     style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:8px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:0.85rem;padding:0 16px;cursor:pointer;white-space:nowrap;transition:background 0.2s;"
                     onmouseover="this.style.background='rgba(201,168,76,0.22)'" onmouseout="this.style.background='rgba(201,168,76,0.12)'">
                     تطبيق
@@ -524,35 +523,38 @@
               <div style="margin-bottom:20px;padding:14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
                 <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
                   <span style="font-size:0.8rem;color:var(--silver);">سعر الورشة</span>
-                  <span style="font-size:0.8rem;" id="price-original-label"></span>
+                  <span style="font-size:0.8rem;" id="original-price"></span>
                 </div>
                 <div id="discount-row" style="display:none;justify-content:space-between;margin-bottom:6px;">
-                  <span style="font-size:0.8rem;color:#4caf82;" id="discount-label">خصم</span>
+                  <span style="font-size:0.8rem;color:#4caf82;">الخصم</span>
                   <span style="font-size:0.8rem;color:#4caf82;" id="discount-amount">-0 ر.س</span>
                 </div>
                 <div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>
                 <div style="display:flex;justify-content:space-between;">
                   <span style="font-size:0.9rem;font-weight:700;">الإجمالي</span>
-                  <span style="font-size:0.9rem;font-weight:700;color:var(--gold);" id="price-final-label"></span>
+                  <span style="font-size:0.9rem;font-weight:700;color:var(--gold);" id="total-price"></span>
                 </div>
+                <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
               </div>
 
-              <p id="contact-error" style="display:none;font-size:0.8rem;color:#e05252;margin-bottom:12px;">يرجى إدخال الاسم والإيميل ورقم الجوال بشكل صحيح</p>
-              <button onclick="showPaymentForm()"
-                style="width:100%;background:var(--gold);color:#000;font-family:'Gumela','Cairo',sans-serif;font-weight:700;padding:14px;border:none;cursor:pointer;font-size:1rem;transition:background 0.25s;"
-                onmouseover="this.style.background='var(--gold-lum)'" onmouseout="this.style.background='var(--gold)'">
-                متابعة للدفع ←
-              </button>
+              <!-- Module renders all 4 payment methods (Moyasar + Bank + Tamara + PayPal) here -->
+              <div id="ma-payment-methods"></div>
             </div>
 
-            <!-- Step 2: Moyasar -->
+            <!-- Step 2: Moyasar form (module shows this after user clicks "الدفع بالبطاقة") -->
             <div id="step-payment" style="display:none;">
-              <div style="margin-bottom:20px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
-                <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="summary-name"></p>
-                <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-email"></p>
-                <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-phone"></p>
-                <p style="font-size:0.8rem;color:#4caf82;display:none;" id="summary-coupon"></p>
-                <button onclick="editContact()" style="background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-top:6px;">تعديل</button>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <p style="font-size:0.78rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">الدفع بالبطاقة</p>
+                <button id="edit-contact-btn" type="button" style="background:none;border:none;color:var(--gold);font-size:0.78rem;cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:4px;">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  تعديل
+                </button>
+              </div>
+              <div style="margin-bottom:18px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+                <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="sum-name"></p>
+                <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;direction:ltr;text-align:right;" id="sum-email"></p>
+                <p style="font-size:0.8rem;color:var(--silver);direction:ltr;text-align:right;" id="sum-phone"></p>
+                <p id="sum-coupon-row" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:6px;"><span id="sum-coupon"></span></p>
               </div>
               <div id="moyasar-form" class="mysr-form"></div>
             </div>
@@ -604,200 +606,80 @@
 </div>
 </footer>
 
+  <!-- MA Learn shared checkout module v1 -->
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+
   <script>
-    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
-    const MOYASAR_KEY       = 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H';
-    const PRICE_REGULAR     = 129900;  // halalas — C2 price (1,299 SAR)
-    const PRODUCT_ID        = 'creative-ai-workshop-t3';
+    // ── Seats logic (CIW-specific). Module init runs only after seats check passes. ──
+    const CIW_BASE_PRICE_SAR = 1299;
+    const CIW_PRODUCT_ID     = 'creative-ai-workshop-t3';
+    const CIW_NAME_AR        = 'ورشة صناعة الإلهام';
+    const CIW_SUCCESS_URL    = 'https://checkout.malearnsa.com/creative-ai-workshop/success.html';
+    const APPS_SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
-    let currentBaseAmount   = PRICE_REGULAR;
-    let appliedCoupon       = null;
-
-    // ── On load: check seats + init pricing ──────────────
-    (async function init() {
-      initPricing();
-      await checkSeats();
-    })();
-
-    function initPricing() {
-      const priceDisplay = document.getElementById('current-price-display');
-      const origLabel    = document.getElementById('price-original-label');
-      const finalLabel   = document.getElementById('price-final-label');
-
-      priceDisplay.textContent = (currentBaseAmount / 100).toFixed(0);
-      origLabel.textContent    = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
-      finalLabel.textContent   = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
+    function setBasePriceLabel_() {
+      const big = document.getElementById('current-price-display');
+      if (big)  big.textContent  = String(CIW_BASE_PRICE_SAR);
+      const orig = document.getElementById('original-price');
+      if (orig) orig.textContent = CIW_BASE_PRICE_SAR + ' ر.س';
+      const total = document.getElementById('total-price');
+      if (total) total.textContent = CIW_BASE_PRICE_SAR + ' ر.س';
     }
 
-    async function checkSeats() {
+    async function checkSeatsAndInit() {
+      setBasePriceLabel_();
       try {
-        // C2 launch: token-validator's get_seats_left counter still reflects C1 sellout.
-        // Until that endpoint is C2-cohort-aware, force-skip the sold-out gate so
-        // C2 buyers can reach checkout. TODO: pass ?cohort=c2 once token-validator
-        // supports per-cohort counts (MAL-192).
+        // C2 launch override: get_seats_left still reflects C1 sellout. Force-open
+        // until the endpoint is per-cohort aware (MAL-192).
         const C2_LAUNCH_MODE = true;
-
         let data;
         if (C2_LAUNCH_MODE) {
-          data = { sold_out: false, seats_left: 30, total_seats: 30 };
+          data = { sold_out: false, seats_left: 30, seats_total: 30, seats_taken: 0 };
         } else {
           const res = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left`);
           data = await res.json();
         }
 
         document.getElementById('loading-seats').style.display = 'none';
-
         if (data.sold_out) {
           document.getElementById('sold-out-block').style.display = 'block';
           return;
         }
-
-        // Show checkout form
         document.getElementById('checkout-form-wrapper').style.display = 'block';
 
-        // Seats bar
         const left  = data.seats_left;
         const total = data.seats_total;
         const pct   = Math.round((data.seats_taken / total) * 100);
         document.getElementById('seats-text').textContent = `${left} من أصل ${total}`;
         document.getElementById('seats-bar').style.width  = `${pct}%`;
+        if      (left <= 5)  document.getElementById('seats-text').style.color = '#e05252';
+        else if (left <= 10) document.getElementById('seats-text').style.color = '#e0a052';
 
-        // Urgency color
-        if (left <= 5) {
-          document.getElementById('seats-text').style.color = '#e05252';
-        } else if (left <= 10) {
-          document.getElementById('seats-text').style.color = '#e0a052';
-        }
-
+        // Init the shared module — renders all 4 payment methods + wires handlers
+        MaCheckout.init({
+          productId:     CIW_PRODUCT_ID,
+          productNameAr: CIW_NAME_AR,
+          basePrice:     CIW_BASE_PRICE_SAR,
+          successUrl:    CIW_SUCCESS_URL,
+          methods:       ['moyasar', 'bank', 'tamara', 'paypal']
+        });
       } catch (err) {
-        // On error, show the form (fail open)
+        // Fail open — show the form even if seats check errors
         document.getElementById('loading-seats').style.display = 'none';
         document.getElementById('checkout-form-wrapper').style.display = 'block';
+        MaCheckout.init({
+          productId:     CIW_PRODUCT_ID,
+          productNameAr: CIW_NAME_AR,
+          basePrice:     CIW_BASE_PRICE_SAR,
+          successUrl:    CIW_SUCCESS_URL,
+          methods:       ['moyasar', 'bank', 'tamara', 'paypal']
+        });
       }
     }
-
-    // ── Coupon ────────────────────────────────────────────
-    async function applyCoupon() {
-      const code = document.getElementById('coupon-input').value.trim();
-      if (!code) return;
-
-      const msg = document.getElementById('coupon-msg');
-      msg.style.display = 'block';
-      msg.style.color   = 'var(--silver)';
-      msg.textContent   = 'جاري التحقق...';
-
-      try {
-        const url  = `${APPS_SCRIPT_URL}?action=validate_coupon&code=${encodeURIComponent(code)}&amount=${currentBaseAmount}`;
-        const res  = await fetch(url);
-        const data = await res.json();
-
-        if (data.valid) {
-          appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, message: data.message };
-          msg.style.color = '#4caf82';
-          msg.textContent = `✓ ${data.message} — تم تطبيق الكود`;
-          updatePriceSummary(data.discountSAR, data.finalSAR, data.message);
-        } else {
-          appliedCoupon = null;
-          msg.style.color = '#e05252';
-          msg.textContent = data.message || 'كود غير صحيح';
-          resetPriceSummary();
-        }
-      } catch (err) {
-        msg.style.color = '#e05252';
-        msg.textContent = 'تعذر التحقق — حاول مجدداً';
-      }
-    }
-
-    function resetCoupon() {
-      appliedCoupon = null;
-      const msg = document.getElementById('coupon-msg');
-      msg.style.display = 'none';
-      resetPriceSummary();
-    }
-
-    function updatePriceSummary(discountSAR, finalSAR, label) {
-      document.getElementById('discount-row').style.display  = 'flex';
-      document.getElementById('discount-label').textContent  = label;
-      document.getElementById('discount-amount').textContent = `-${discountSAR} ر.س`;
-      document.getElementById('price-final-label').textContent = `${finalSAR} ر.س`;
-    }
-
-    function resetPriceSummary() {
-      document.getElementById('discount-row').style.display    = 'none';
-      document.getElementById('price-final-label').textContent = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
-    }
-
-    // ── Checkout flow ─────────────────────────────────────
-    function showPaymentForm() {
-      const name  = document.getElementById('customer-name').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-
-      if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 9) {
-        document.getElementById('contact-error').style.display = 'block';
-        return;
-      }
-
-      document.getElementById('contact-error').style.display = 'none';
-      document.getElementById('step-contact').style.display  = 'none';
-      document.getElementById('step-payment').style.display  = 'block';
-
-      document.getElementById('summary-name').textContent  = name;
-      document.getElementById('summary-email').textContent = email;
-      document.getElementById('summary-phone').textContent = phone;
-
-      const couponEl = document.getElementById('summary-coupon');
-      if (appliedCoupon) {
-        couponEl.textContent   = `كود الخصم: ${appliedCoupon.code} — ${appliedCoupon.message}`;
-        couponEl.style.display = 'block';
-      } else {
-        couponEl.style.display = 'none';
-      }
-
-      const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : currentBaseAmount;
-      const priceSAR    = (currentBaseAmount / 100).toFixed(0);
-
-      localStorage.setItem('ma_customer', JSON.stringify({
-        name, email, phone,
-        coupon:  appliedCoupon ? appliedCoupon.code : '',
-        amount:  (finalAmount / 100).toFixed(2),
-        product: PRODUCT_ID
-      }));
-
-      // Free-purchase branch — Moyasar rejects 0 SAR amounts, so we skip the
-      // payment gateway entirely and redirect straight to the success page
-      // with a synthetic payment_id. The success page fires complete_purchase,
-      // which logs the customer, assigns a token, sends the email, and notifies.
-      if (finalAmount === 0) {
-        const freeId = 'free_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-        window.location.href = 'https://checkout.malearnsa.com/creative-ai-workshop/success.html?id=' + freeId + '&status=paid';
-        return;
-      }
-
-      Moyasar.init({
-        element:              document.getElementById('moyasar-form'),
-        amount:               finalAmount,
-        currency:             'SAR',
-        description:          `ورشة صناعة الإلهام — MA Learn (${priceSAR} ر.س)`,
-        publishable_api_key:  MOYASAR_KEY,
-        callback_url:         'https://checkout.malearnsa.com/creative-ai-workshop/success.html',
-        metadata:             { email, phone, coupon: appliedCoupon ? appliedCoupon.code : '' },
-        supported_networks:   ['mada', 'visa', 'mastercard'],
-        methods:              ['creditcard', 'applepay'],
-        apple_pay: {
-          country:                'SA',
-          label:                  'MA Learn',
-          validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
-          supported_networks:     ['mada', 'visa', 'mastercard']
-        }
-      });
-    }
-
-    function editContact() {
-      document.getElementById('step-payment').style.display  = 'none';
-      document.getElementById('step-contact').style.display  = 'block';
-      document.getElementById('moyasar-form').innerHTML      = '';
-    }
+  </script>
+  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', checkSeatsAndInit);
   </script>
 
 <!-- Freelance Work Document Badge -->
