@@ -331,7 +331,7 @@
         <!-- Badge -->
         <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:24px;padding:6px 14px;margin-bottom:20px;">
           <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:orb-pulse 2s ease-in-out infinite;"></span>
-          <span style="font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;">الدفعة الثانية — ٣٠ مقعداً فقط</span>
+          <span style="font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;">الدفعة الثالثة — ٣٠ مقعداً فقط</span>
         </div>
 
         <h1 style="font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:16px;">
@@ -346,7 +346,7 @@
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin:24px 0;">
           <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;">
             <span style="color:var(--gold);font-size:1rem;">📅</span>
-            <span style="font-size:0.85rem;color:var(--silver);">٣١ مايو — ٢ يونيو</span>
+            <span style="font-size:0.85rem;color:var(--silver);">٥ — ٧ يوليو</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;">
             <span style="color:var(--gold);font-size:1rem;">🕖</span>
@@ -600,11 +600,11 @@
     async function checkSeatsAndInit() {
       setBasePriceLabel_();
       try {
-        // C2 launch override: get_seats_left still reflects C1 sellout. Force-open
-        // until the endpoint is per-cohort aware (MAL-192).
-        const C2_LAUNCH_MODE = true;
+        // C3 launch override: get_seats_left is not per-cohort aware yet (MAL-192),
+        // so it still reflects prior-cohort tallies. Force-open for C3.
+        const C3_LAUNCH_MODE = true;
         let data;
-        if (C2_LAUNCH_MODE) {
+        if (C3_LAUNCH_MODE) {
           data = { sold_out: false, seats_left: 30, seats_total: 30, seats_taken: 0 };
         } else {
           const res = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left`);
