@@ -337,6 +337,35 @@
   MaCheckout.init(window.MaCheckoutConfig);
 </script>
 
+<!-- Doors-close guard (page-specific — payments.js never carries product logic, M2 rule).
+     getSeatsLeft (token-validator v44) returns sold_out=true at seats==0 OR
+     Sun Jul 5 18:30 KSA, whichever first (B4). On sold_out: hide the checkout
+     steps and show the waitlist CTA. Fails open on network error. -->
+<script>
+  (async () => {
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+    try {
+      const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C3');
+      const data = await res.json();
+      if (!data || !data.sold_out) return;
+      ['step-contact', 'step-payment'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      const host = document.getElementById('step-contact');
+      const notice = document.createElement('div');
+      notice.className = 'card';
+      notice.style.cssText = 'padding:32px 24px;text-align:center;';
+      notice.innerHTML =
+        '<p style="color:var(--gold);font-size:0.78rem;letter-spacing:0.12em;margin-bottom:12px;">اكتملت الدفعة</p>' +
+        '<h2 style="font-size:1.25rem;font-weight:700;margin-bottom:10px;">اكتملت مقاعد هذه الدفعة</h2>' +
+        '<p style="color:var(--silver,#bbb);font-size:0.88rem;line-height:1.8;margin-bottom:24px;">سجل في قائمة الانتظار ونعلمك أول ما يفتح التسجيل للدفعة الجاية.</p>' +
+        '<a href="https://malearnsa.com/waitlist/" style="display:inline-block;background:var(--gold,#C9A84C);color:#000;font-weight:700;padding:13px 32px;text-decoration:none;">قائمة الانتظار</a>';
+      if (host && host.parentNode) host.parentNode.insertBefore(notice, host);
+    } catch (_) { /* fail open */ }
+  })();
+</script>
+
 <!-- Auto-discount intentionally disabled 2026-05-04. Snippet archived at
      archives/snippets/auto-discount-itcaipre-20260504.html. Revive only
      after fixing the uses_left leak (see archive comment for details). -->
