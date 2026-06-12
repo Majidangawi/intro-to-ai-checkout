@@ -99,7 +99,7 @@
 (function(){
   var EXEC = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
   var qs = new URLSearchParams(location.search);
-  var SID = qs.get('sid') || '';
+  var SID = qs.get('k') || qs.get('sid') || ''; // wire param is k (Apps Script /exec rejects 'sid' - reserved); accept legacy sid on page URLs
   var SIG = qs.get('sig') || '';
   var DUR_DEFAULT = { 'FB': 60, '4': 120 };
   var DURATIONS = [30,60,90,120,150,180];
@@ -206,7 +206,7 @@
 
   function load(){
     if (!SID || !SIG){ el('loading').style.display='none'; el('invalid').style.display='block'; return; }
-    fetch(EXEC+'?action=1on1_sched_data&sid='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
+    fetch(EXEC+'?action=1on1_sched_data&k='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (!j.ok || j.mode!=='engagement'){ el('loading').style.display='none'; el('invalid').style.display='block'; return; }
@@ -232,7 +232,7 @@
     if (missing){ el('stateErr').textContent='Every open session needs a date and a start time.'; show('stateErr'); return; }
     if (!slots.length){ el('stateErr').textContent='Nothing to schedule.'; show('stateErr'); return; }
     var btn = el('submitBtn'); btn.disabled=true; btn.textContent='Submitting…';
-    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_schedule', sid: SID, sig: SIG, slots: JSON.stringify(slots) }) })
+    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_schedule', k: SID, sig: SIG, slots: JSON.stringify(slots) }) })
       .then(function(r){ return r.json(); })
       .then(function(j){
         btn.disabled=false; btn.textContent='Create Schedule';

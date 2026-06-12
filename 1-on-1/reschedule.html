@@ -98,7 +98,7 @@
 (function(){
   var EXEC = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
   var qs = new URLSearchParams(location.search);
-  var SID = qs.get('sid') || '';
+  var SID = qs.get('k') || qs.get('sid') || ''; // wire param is k (Apps Script /exec rejects 'sid' - reserved); accept legacy sid on page URLs
   var SIG = qs.get('sig') || '';
   var AR_DAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
   var AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -151,7 +151,7 @@
 
   function load(){
     if (!SID || !SIG){ blockedScreen(null, null); return; }
-    fetch(EXEC+'?action=1on1_sched_data&sid='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
+    fetch(EXEC+'?action=1on1_sched_data&k='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (!j.ok || j.mode!=='session'){ blockedScreen(null, null); return; }
@@ -179,7 +179,7 @@
     var date = el('fDate').value, time = el('fTime').value;
     if (!date || !time){ el('stateErr').textContent='اختر اليوم والوقت أولًا.'; show('stateErr'); return; }
     var btn = el('submitBtn'); btn.disabled=true; btn.textContent='لحظة…';
-    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_reschedule', sid: SID, sig: SIG, slot: JSON.stringify({ date: date, time: time }) }) })
+    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_reschedule', k: SID, sig: SIG, slot: JSON.stringify({ date: date, time: time }) }) })
       .then(function(r){ return r.json(); })
       .then(function(j){
         btn.disabled=false; btn.textContent='تأكيد الموعد الجديد';
