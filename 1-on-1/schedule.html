@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Schedule Sessions — 1-on-1 | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#080808;--bg-2:#0E0E0E;--gold:#C9A84C;--gold-lum:#E8D08A;--gold-soft:rgba(201,168,76,0.18);--gold-faint:rgba(201,168,76,0.08);--ivory:#F5F0E8;--silver:#BBBBBB;--grey:#8A8A8A;--ok:#7da97d;--warn:#c98c4c;--risk:#b05c5c;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Cairo',Arial,sans-serif;background:var(--bg);color:var(--ivory);line-height:1.7;min-height:100vh}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:680px;margin:0 auto;padding:0 20px 80px}
+    header{position:sticky;top:0;z-index:50;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--gold-faint);padding:14px 20px}
+    header .inner{max-width:680px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    header img{height:26px}
+    header .tag{color:var(--gold);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase}
+    .hero{padding:44px 0 8px;text-align:center}
+    .hero .eyebrow{color:var(--gold);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px}
+    .hero h1{font-size:clamp(1.4rem,4.5vw,2rem);font-weight:700;line-height:1.35;margin-bottom:8px}
+    .hero p{color:var(--silver);font-size:0.92rem;font-weight:300;max-width:520px;margin:0 auto}
+    .client-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0 4px}
+    .chip{border:1px solid var(--gold-soft);border-radius:30px;padding:5px 16px;font-size:0.78rem;color:var(--gold-lum)}
+    .note-line{text-align:center;color:var(--grey);font-size:0.78rem;margin-top:10px}
+    .card{background:var(--bg-2);border:1px solid var(--gold-faint);border-radius:14px;padding:20px;margin-top:18px}
+    .card.locked{opacity:0.55}
+    .card .c-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+    .card .c-title{font-weight:700;font-size:1.02rem}
+    .card .c-title small{display:block;color:var(--grey);font-weight:300;font-size:0.76rem}
+    .status-pill{font-size:0.68rem;letter-spacing:0.08em;border:1px solid var(--gold-soft);border-radius:20px;padding:2px 12px;color:var(--gold-lum);white-space:nowrap}
+    .status-pill.ok{border-color:var(--ok);color:var(--ok)}
+    .status-pill.warn{border-color:var(--warn);color:var(--warn)}
+    .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media(max-width:560px){.grid{grid-template-columns:1fr}}
+    label{display:block;font-size:0.72rem;color:var(--grey);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
+    select{width:100%;background:#141414;border:1px solid var(--gold-soft);border-radius:8px;color:var(--ivory);padding:10px 12px;font-family:'Cairo',Arial,sans-serif;font-size:0.9rem;appearance:auto}
+    select:focus{outline:none;border-color:var(--gold)}
+    select option:disabled{color:#555}
+    .soft-warn{display:none;margin-top:8px;font-size:0.76rem;color:var(--warn)}
+    .soft-warn.show{display:block}
+    .submit-zone{margin-top:28px;text-align:center}
+    .btn{display:inline-block;background:var(--gold);color:#000;border:none;border-radius:10px;font-family:'Cairo',Arial,sans-serif;font-weight:700;font-size:1rem;padding:14px 46px;cursor:pointer;transition:opacity .2s}
+    .btn:hover{opacity:0.9}
+    .btn:disabled{opacity:0.45;cursor:not-allowed}
+    .state{display:none;margin-top:24px;border-radius:12px;padding:18px 20px;font-size:0.92rem;line-height:1.8}
+    .state.show{display:block}
+    .state.ok{background:rgba(125,169,125,0.08);border:1px solid rgba(125,169,125,0.4);color:#cfe3cf}
+    .state.pending{background:rgba(201,140,76,0.08);border:1px solid rgba(201,140,76,0.45);color:#ecd9c6}
+    .state.err{background:rgba(176,92,92,0.08);border:1px solid rgba(176,92,92,0.45);color:#ecc9c9}
+    .loading{text-align:center;padding:70px 0;color:var(--silver);font-size:0.95rem}
+    .invalid{display:none;text-align:center;padding:70px 0}
+    .invalid h2{color:var(--gold);margin-bottom:8px}
+    .invalid p{color:var(--silver);font-size:0.9rem}
+    footer{border-top:1px solid var(--gold-faint);padding:22px 20px;text-align:center;color:#555;font-size:0.74rem}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <a href="https://malearnsa.com"><img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'"></a>
+    <span class="tag">1-on-1 · Scheduling</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <p class="eyebrow">Operator — Private Link</p>
+    <h1>Schedule the Sessions</h1>
+    <p>Pick date, start time and duration for every session. One submit creates the calendar events, Meet links, client invites and the itinerary email.</p>
+    <div class="client-strip" id="clientStrip" style="display:none"></div>
+    <p class="note-line">Fridays blocked · 10:00–22:30 KSA · 30-min steps · max 3h per session · all sessions within 30 days of purchase (soft limit)</p>
+  </div>
+
+  <div class="loading" id="loading">Loading client schedule…</div>
+
+  <div class="invalid" id="invalid">
+    <h2>Invalid Link</h2>
+    <p>This scheduling link is not valid. Open the latest "New 1-on-1 client" email and use its button.</p>
+  </div>
+
+  <form id="schedForm" style="display:none">
+    <div id="cards"></div>
+    <div class="soft-warn" id="softWarn">⚠ One or more sessions fall outside the 30-day window — allowed, but double-check before submitting.</div>
+    <div class="submit-zone">
+      <button type="submit" class="btn" id="submitBtn">Create Schedule</button>
+    </div>
+  </form>
+
+  <div class="state ok" id="stateOk"><b>Done.</b> Calendar events created with Google Meet links, the client received the native calendar invites, and the branded itinerary email is on its way. Re-submitting this page before Session 1 edits the same events (no duplicates).</div>
+  <div class="state pending" id="statePending"><b>Slots saved.</b> Calendar authorization is still pending — Noor will complete it with you (2 minutes). Events, Meet links and the client itinerary fire automatically right after, with these exact slots. Nothing is lost.</div>
+  <div class="state err" id="stateErr"></div>
+</div>
+
+<footer>MA Learn · التدريب الفردي مع ماجد عنقاوي · private operator page</footer>
+
+<script>
+(function(){
+  var EXEC = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+  var qs = new URLSearchParams(location.search);
+  var SID = qs.get('sid') || '';
+  var SIG = qs.get('sig') || '';
+  var DUR_DEFAULT = { 'FB': 60, '4': 120 };
+  var DURATIONS = [30,60,90,120,150,180];
+  var DUR_LABEL = {30:'30 min',60:'1 hour',90:'1.5 hours',120:'2 hours',150:'2.5 hours',180:'3 hours'};
+  var DAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var data = null;
+
+  function show(id){ document.getElementById(id).classList.add('show'); }
+  function hide(id){ document.getElementById(id).classList.remove('show'); }
+  function el(id){ return document.getElementById(id); }
+
+  function pad(n){ return (n<10?'0':'')+n; }
+  function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+
+  function dateOptions(windowEnd, selected){
+    var out = '<option value="">— pick a date —</option>';
+    var today = new Date(); today.setHours(0,0,0,0);
+    for (var i=0;i<45;i++){
+      var d = new Date(today.getTime()); d.setDate(d.getDate()+i);
+      var v = ymd(d);
+      var label = DAYS_EN[d.getDay()]+' '+MONTHS_EN[d.getMonth()]+' '+d.getDate();
+      var dis = '', suffix = '';
+      if (d.getDay() === 5){ dis = ' disabled'; suffix = ' — Friday (off)'; }
+      else if (windowEnd && v > windowEnd){ suffix = ' ⚠ outside 30-day window'; }
+      out += '<option value="'+v+'"'+dis+(selected===v?' selected':'')+'>'+label+suffix+'</option>';
+    }
+    return out;
+  }
+
+  function timeOptions(selected){
+    var out = '<option value="">— pick a time —</option>';
+    for (var h=10; h<=22; h++){
+      [0,30].forEach(function(m){
+        if (h===22 && m>30) return;
+        var v = pad(h)+':'+pad(m);
+        var h12 = h%12===0?12:h%12;
+        var label = v+' ('+h12+':'+pad(m)+' '+(h>=12?'PM':'AM')+')';
+        out += '<option value="'+v+'"'+(selected===v?' selected':'')+'>'+label+'</option>';
+      });
+    }
+    return out;
+  }
+
+  function durOptions(selected){
+    var out='';
+    DURATIONS.forEach(function(d){
+      out += '<option value="'+d+'"'+(selected===d?' selected':'')+'>'+DUR_LABEL[d]+'</option>';
+    });
+    return out;
+  }
+
+  function statusPill(s){
+    if (s.status==='scheduled') return '<span class="status-pill ok">scheduled</span>';
+    if (s.status==='pending_calendar') return '<span class="status-pill warn">saved — calendar pending</span>';
+    if (s.status==='attended') return '<span class="status-pill ok">attended ✓</span>';
+    if (s.status==='missed') return '<span class="status-pill warn">missed</span>';
+    if (s.status==='awaiting_attendance') return '<span class="status-pill warn">awaiting attendance</span>';
+    return '<span class="status-pill">to schedule</span>';
+  }
+
+  function editable(s){
+    return ['pending_schedule','pending_calendar','scheduled'].indexOf(s.status) !== -1;
+  }
+
+  function render(){
+    el('clientStrip').style.display='flex';
+    el('clientStrip').innerHTML =
+      '<span class="chip">'+data.client.name+'</span>' +
+      '<span class="chip">'+data.package_label+'</span>' +
+      '<span class="chip">window ends '+data.window_end+'</span>' +
+      (data.calendar_available ? '' : '<span class="chip" style="border-color:var(--warn);color:var(--warn)">calendar auth pending</span>');
+    var html='';
+    data.sessions.forEach(function(s, i){
+      var selDate=null, selTime=null;
+      if (s.start){ selDate = s.start.slice(0,10); selTime = s.start.slice(11,16); }
+      var selDur = s.duration || DUR_DEFAULT[s.label] || 60;
+      if (!editable(s)){
+        html += '<div class="card locked"><div class="c-head"><div class="c-title">'+s.label_ar+'<small>'+s.label_en+'</small></div>'+statusPill(s)+'</div>'+
+          '<p style="font-size:0.84rem;color:var(--grey)">'+(s.start ? s.start+' KSA · '+(s.duration||'—')+' min' : '—')+' — locked (use the attendance/reschedule flow).</p></div>';
+        return;
+      }
+      html += '<div class="card" data-key="'+s.key+'">'+
+        '<div class="c-head"><div class="c-title">'+s.label_ar+'<small>'+s.label_en+'</small></div>'+statusPill(s)+'</div>'+
+        '<div class="grid">'+
+        '<div><label>Date</label><select class="f-date" data-i="'+i+'">'+dateOptions(data.window_end, selDate)+'</select></div>'+
+        '<div><label>Start (KSA)</label><select class="f-time">'+timeOptions(selTime)+'</select></div>'+
+        '<div><label>Duration</label><select class="f-dur">'+durOptions(selDur)+'</select></div>'+
+        '</div></div>';
+    });
+    el('cards').innerHTML = html;
+    el('loading').style.display='none';
+    el('schedForm').style.display='block';
+    el('cards').addEventListener('change', checkSoftWarn);
+  }
+
+  function checkSoftWarn(){
+    var warn=false;
+    document.querySelectorAll('.f-date').forEach(function(sel){
+      if (sel.value && data.window_end && sel.value > data.window_end) warn=true;
+    });
+    el('softWarn').classList.toggle('show', warn);
+  }
+
+  function load(){
+    if (!SID || !SIG){ el('loading').style.display='none'; el('invalid').style.display='block'; return; }
+    fetch(EXEC+'?action=1on1_sched_data&sid='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (!j.ok || j.mode!=='engagement'){ el('loading').style.display='none'; el('invalid').style.display='block'; return; }
+        data = j; render();
+      })
+      .catch(function(){
+        el('loading').textContent='Network error — refresh to retry.';
+      });
+  }
+
+  el('schedForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    hide('stateOk'); hide('statePending'); hide('stateErr');
+    var slots=[], missing=false;
+    document.querySelectorAll('#cards .card[data-key]').forEach(function(card){
+      var date = card.querySelector('.f-date').value;
+      var time = card.querySelector('.f-time').value;
+      var dur  = parseInt(card.querySelector('.f-dur').value, 10);
+      if (!date || !time){ missing=true; card.style.borderColor='var(--risk)'; return; }
+      card.style.borderColor='';
+      slots.push({ key: card.getAttribute('data-key'), date: date, time: time, duration: dur });
+    });
+    if (missing){ el('stateErr').textContent='Every open session needs a date and a start time.'; show('stateErr'); return; }
+    if (!slots.length){ el('stateErr').textContent='Nothing to schedule.'; show('stateErr'); return; }
+    var btn = el('submitBtn'); btn.disabled=true; btn.textContent='Submitting…';
+    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_schedule', sid: SID, sig: SIG, slots: JSON.stringify(slots) }) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        btn.disabled=false; btn.textContent='Create Schedule';
+        if (j.ok && j.calendar_pending){ show('statePending'); return; }
+        if (j.ok){ show('stateOk'); return; }
+        var msgs = {
+          invalid_signature:'Invalid link — open the latest operator email.',
+          friday_blocked:'One slot lands on a Friday — Fridays are off.',
+          time_out_of_window:'Start times must be between 10:00 and 22:30 KSA.',
+          in_the_past:'One slot is in the past.',
+          bad_duration:'Durations must be 30–180 min in 30-min steps.',
+          session_locked:'A session is locked (already awaiting attendance or done) — reload the page.',
+          busy_retry:'System busy — try again in a few seconds.'
+        };
+        el('stateErr').textContent = (msgs[j.error] || ('Error: '+(j.error||'unknown'))) + (j.key ? ' ['+j.key+']' : '');
+        show('stateErr');
+      })
+      .catch(function(){
+        btn.disabled=false; btn.textContent='Create Schedule';
+        el('stateErr').textContent='Network error — your picks are still on screen, submit again.';
+        show('stateErr');
+      });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

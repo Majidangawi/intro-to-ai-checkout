@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>إعادة جدولة جلستك — التدريب الفردي | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    :root{--bg:#080808;--bg-2:#0E0E0E;--gold:#C9A84C;--gold-lum:#E8D08A;--gold-soft:rgba(201,168,76,0.18);--gold-faint:rgba(201,168,76,0.08);--ivory:#F5F0E8;--silver:#BBBBBB;--grey:#8A8A8A;--ok:#7da97d;--warn:#c98c4c;--risk:#b05c5c;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Gumela','Cairo',sans-serif;background:var(--bg);color:var(--ivory);direction:rtl;line-height:1.8;min-height:100vh}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:560px;margin:0 auto;padding:0 20px 80px}
+    header{position:sticky;top:0;z-index:50;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--gold-faint);padding:14px 20px}
+    header .inner{max-width:560px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    header img{height:26px}
+    header .tag{color:var(--gold);font-size:0.7rem;letter-spacing:0.14em}
+    .hero{padding:44px 0 10px;text-align:center}
+    .hero .eyebrow{color:var(--gold);font-size:0.74rem;letter-spacing:0.16em;margin-bottom:10px}
+    .hero h1{font-size:clamp(1.4rem,5vw,1.9rem);font-weight:700;line-height:1.4;margin-bottom:10px}
+    .hero p{color:var(--silver);font-size:0.94rem;font-weight:300;max-width:440px;margin:0 auto}
+    .sess-box{background:var(--bg-2);border:1px solid var(--gold-soft);border-radius:14px;padding:18px 20px;margin-top:22px;text-align:center}
+    .sess-box .s-name{font-size:1.1rem;font-weight:700;color:var(--gold-lum)}
+    .sess-box .s-dur{font-size:0.84rem;color:var(--grey);margin-top:4px}
+    .card{background:var(--bg-2);border:1px solid var(--gold-faint);border-radius:14px;padding:20px;margin-top:16px}
+    label{display:block;font-size:0.78rem;color:var(--grey);margin-bottom:6px}
+    select{width:100%;background:#141414;border:1px solid var(--gold-soft);border-radius:8px;color:var(--ivory);padding:11px 12px;font-family:'Cairo',sans-serif;font-size:0.95rem}
+    select:focus{outline:none;border-color:var(--gold)}
+    select option:disabled{color:#555}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:480px){.grid{grid-template-columns:1fr}}
+    .micro{text-align:center;color:var(--grey);font-size:0.78rem;margin-top:14px;line-height:1.8}
+    .submit-zone{margin-top:24px;text-align:center}
+    .btn{display:inline-block;background:var(--gold);color:#000;border:none;border-radius:10px;font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:1.02rem;padding:14px 50px;cursor:pointer;transition:opacity .2s}
+    .btn:hover{opacity:0.9}
+    .btn:disabled{opacity:0.45;cursor:not-allowed}
+    .state{display:none;margin-top:22px;border-radius:12px;padding:18px 20px;font-size:0.94rem;line-height:1.9}
+    .state.show{display:block}
+    .state.ok{background:rgba(125,169,125,0.08);border:1px solid rgba(125,169,125,0.4);color:#cfe3cf}
+    .state.err{background:rgba(176,92,92,0.08);border:1px solid rgba(176,92,92,0.45);color:#ecc9c9}
+    .loading{text-align:center;padding:70px 0;color:var(--silver)}
+    .blocked{display:none;text-align:center;padding:60px 0}
+    .blocked h2{color:var(--gold);margin-bottom:10px;font-size:1.3rem}
+    .blocked p{color:var(--silver);font-size:0.92rem;max-width:420px;margin:0 auto;line-height:2}
+    footer{border-top:1px solid var(--gold-faint);padding:22px 20px;text-align:center;color:#555;font-size:0.74rem}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <a href="https://malearnsa.com"><img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'"></a>
+    <span class="tag">التدريب الفردي ١:١</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <p class="eyebrow">إعادة جدولة جلستك</p>
+    <h1>اختر الوقت اللي يناسبك</h1>
+    <p>جلستك محفوظة لك. اختر اليوم والوقت الجديد، وراح تتحدث دعوة التقويم تلقائيًا ويوصلك تأكيد على بريدك.</p>
+  </div>
+
+  <div class="loading" id="loading">لحظة… نجهّز لك التفاصيل</div>
+
+  <div class="blocked" id="blocked">
+    <h2 id="blockedTitle">الرابط غير صالح</h2>
+    <p id="blockedMsg">افتح آخر رسالة وصلتك من MA Learn واستخدم الزر الموجود فيها، أو رد على الرسالة وبنساعدك.</p>
+  </div>
+
+  <form id="reschedForm" style="display:none">
+    <div class="sess-box">
+      <div class="s-name" id="sessName">—</div>
+      <div class="s-dur" id="sessDur"></div>
+    </div>
+    <div class="card">
+      <div class="grid">
+        <div><label>اليوم</label><select id="fDate"><option value="">— اختر اليوم —</option></select></div>
+        <div><label>الوقت (بتوقيت السعودية)</label><select id="fTime"><option value="">— اختر الوقت —</option></select></div>
+      </div>
+      <p class="micro">أيام الجمعة إجازة · الأوقات المتاحة من ١٠ صباحًا حتى ١٠:٣٠ مساءً · مدة الجلسة كما هي محجوزة لك<br>هذه محاولتك الوحيدة لإعادة جدولة هذه الجلسة — اختر موعدك بعناية.</p>
+    </div>
+    <div class="submit-zone">
+      <button type="submit" class="btn" id="submitBtn">تأكيد الموعد الجديد</button>
+    </div>
+  </form>
+
+  <div class="state ok" id="stateOk"><b>تم تأكيد موعدك الجديد.</b> دعوة التقويم عندك تتحدث تلقائيًا، وبتوصلك رسالة تأكيد على بريدك خلال لحظات. أشوفك في الموعد.</div>
+  <div class="state err" id="stateErr"></div>
+</div>
+
+<footer>MA Learn · التدريب الفردي مع ماجد عنقاوي</footer>
+
+<script>
+(function(){
+  var EXEC = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+  var qs = new URLSearchParams(location.search);
+  var SID = qs.get('sid') || '';
+  var SIG = qs.get('sig') || '';
+  var AR_DAYS = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  var AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  var AR_DIGITS = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+  var DUR_AR = {30:'٣٠ دقيقة',60:'ساعة',90:'ساعة ونص',120:'ساعتان',150:'ساعتان ونص',180:'٣ ساعات'};
+
+  function ar(n){ return String(n).replace(/[0-9]/g, function(d){ return AR_DIGITS[d]; }); }
+  function el(id){ return document.getElementById(id); }
+  function show(id){ el(id).classList.add('show'); }
+  function hide(id){ el(id).classList.remove('show'); }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+
+  function blockedScreen(title, msg){
+    el('loading').style.display='none';
+    el('reschedForm').style.display='none';
+    el('blocked').style.display='block';
+    if (title) el('blockedTitle').textContent = title;
+    if (msg) el('blockedMsg').textContent = msg;
+  }
+
+  function buildDates(windowEnd){
+    var sel = el('fDate');
+    var today = new Date(); today.setHours(0,0,0,0);
+    var maxDate = windowEnd ? new Date(windowEnd+'T23:59:00') : null;
+    for (var i=0;i<45;i++){
+      var d = new Date(today.getTime()); d.setDate(d.getDate()+i);
+      if (maxDate && d > maxDate) break;
+      var opt = document.createElement('option');
+      opt.value = ymd(d);
+      opt.textContent = AR_DAYS[d.getDay()]+' '+ar(d.getDate())+' '+AR_MONTHS[d.getMonth()];
+      if (d.getDay() === 5){ opt.disabled = true; opt.textContent += ' — إجازة'; }
+      sel.appendChild(opt);
+    }
+  }
+
+  function buildTimes(){
+    var sel = el('fTime');
+    for (var h=10; h<=22; h++){
+      [0,30].forEach(function(m){
+        if (h===22 && m>30) return;
+        var opt = document.createElement('option');
+        opt.value = pad(h)+':'+pad(m);
+        var h12 = h%12===0?12:h%12;
+        opt.textContent = ar(h12+':'+pad(m)) + ' ' + (h>=12?'م':'ص');
+        sel.appendChild(opt);
+      });
+    }
+  }
+
+  function load(){
+    if (!SID || !SIG){ blockedScreen(null, null); return; }
+    fetch(EXEC+'?action=1on1_sched_data&sid='+encodeURIComponent(SID)+'&sig='+encodeURIComponent(SIG))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (!j.ok || j.mode!=='session'){ blockedScreen(null, null); return; }
+        if (!j.can_reschedule){
+          if (j.session && j.session.status === 'scheduled'){
+            blockedScreen('موعدك الجديد مؤكد من قبل', 'هذه الجلسة تم تأكيد موعدها الجديد. تفاصيلها في رسالة التأكيد ودعوة التقويم عندك.');
+          } else {
+            blockedScreen('خلنا نرتبها سوا', 'محاولة إعادة الجدولة لهذه الجلسة استُخدمت من قبل. رد على آخر رسالة وصلتك أو راسلنا على support@malearnsa.com وبنرتب لك الحل المناسب.');
+          }
+          return;
+        }
+        el('sessName').textContent = j.session.label_ar;
+        el('sessDur').textContent = 'المدة: ' + (DUR_AR[j.session.duration] || ar(j.session.duration||60)+' دقيقة');
+        buildDates(j.window_end);
+        buildTimes();
+        el('loading').style.display='none';
+        el('reschedForm').style.display='block';
+      })
+      .catch(function(){ el('loading').textContent='خطأ في الاتصال — حدّث الصفحة وحاول مرة ثانية.'; });
+  }
+
+  el('reschedForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    hide('stateOk'); hide('stateErr');
+    var date = el('fDate').value, time = el('fTime').value;
+    if (!date || !time){ el('stateErr').textContent='اختر اليوم والوقت أولًا.'; show('stateErr'); return; }
+    var btn = el('submitBtn'); btn.disabled=true; btn.textContent='لحظة…';
+    fetch(EXEC, { method:'POST', body: JSON.stringify({ action:'1on1_reschedule', sid: SID, sig: SIG, slot: JSON.stringify({ date: date, time: time }) }) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        btn.disabled=false; btn.textContent='تأكيد الموعد الجديد';
+        if (j.ok){ el('reschedForm').style.display='none'; show('stateOk'); return; }
+        var msgs = {
+          invalid_signature:'الرابط غير صالح — افتح آخر رسالة وصلتك واستخدم الزر فيها.',
+          no_attempt:'محاولة إعادة الجدولة استُخدمت من قبل — رد على الرسالة وبنساعدك.',
+          not_missed:'هذه الجلسة ليست بحاجة لإعادة جدولة الآن.',
+          friday_blocked:'أيام الجمعة إجازة — اختر يوم آخر.',
+          time_out_of_window:'الأوقات المتاحة من ١٠:٠٠ صباحًا حتى ١٠:٣٠ مساءً.',
+          in_the_past:'هذا الموعد في الماضي — اختر وقت قادم.',
+          busy_retry:'النظام مشغول — حاول بعد ثواني.'
+        };
+        el('stateErr').textContent = msgs[j.error] || 'حدث خطأ — حاول مرة ثانية أو رد على رسالتنا.';
+        show('stateErr');
+      })
+      .catch(function(){
+        btn.disabled=false; btn.textContent='تأكيد الموعد الجديد';
+        el('stateErr').textContent='خطأ في الاتصال — حاول مرة ثانية.';
+        show('stateErr');
+      });
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
