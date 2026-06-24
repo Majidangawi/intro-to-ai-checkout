@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Your Team | The Making Inspiration Workshop — MA Learn</title>
+  <meta name="description" content="Register your creative team for the 3-day live AI production workshop with Majid Angawi. Team rate: 1,040 SAR per person for two or more. July 5-7, 2026.">
+  <meta name="robots" content="noindex">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    :root{
+      --bg:#080808;--bg-2:#0E0E0E;--gold:#C9A84C;--gold-lum:#E8D08A;
+      --gold-soft:rgba(201,168,76,0.18);--gold-faint:rgba(201,168,76,0.08);
+      --ivory:#F5F0E8;--silver:#BBBBBB;--grey:#8A8A8A;--err:#E0795F;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ivory);line-height:1.7;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+
+    header{position:sticky;top:0;z-index:50;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--gold-faint);padding:14px 20px}
+    header .inner{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    header img{height:26px}
+    header .tag{color:var(--gold);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase}
+
+    .hero{padding:48px 0 12px;text-align:center}
+    .hero .eyebrow{color:var(--gold);font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:14px}
+    .hero h1{font-size:clamp(1.6rem,5vw,2.3rem);font-weight:700;line-height:1.25;margin-bottom:12px}
+    .hero .ar{font-family:'Gumela','Cairo',sans-serif;color:var(--gold-lum);font-size:1.05rem;margin-bottom:14px;direction:rtl}
+    .hero p{color:var(--silver);font-size:0.98rem;font-weight:300;max-width:520px;margin:0 auto}
+
+    /* seats counter */
+    .seats{display:inline-flex;align-items:center;gap:9px;margin-top:22px;border:1px solid var(--gold-soft);border-radius:40px;padding:9px 20px;font-size:0.86rem;color:var(--gold-lum);background:var(--gold-faint)}
+    .seats .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .seats b{font-weight:700;color:var(--ivory)}
+    .seats.soldout{border-color:var(--err);color:var(--err)}
+    .seats.soldout .dot{background:var(--err);box-shadow:0 0 8px var(--err);animation:none}
+
+    .card{background:var(--bg-2);border:1px solid var(--gold-faint);border-radius:16px;padding:30px 26px;margin:34px 0}
+    .card h2{font-size:1.15rem;font-weight:700;margin-bottom:6px}
+    .card .sub{color:var(--silver);font-size:0.88rem;font-weight:300;margin-bottom:24px}
+
+    .field{margin-bottom:18px}
+    .field label{display:block;font-size:0.8rem;font-weight:500;color:var(--gold-lum);margin-bottom:7px;letter-spacing:.02em}
+    .field label .req{color:var(--gold)}
+    .field input{width:100%;background:#060606;border:1px solid var(--gold-faint);border-radius:9px;padding:13px 15px;color:var(--ivory);font-family:'Inter',sans-serif;font-size:0.96rem;transition:border-color .2s}
+    .field input::placeholder{color:#555}
+    .field input:focus{outline:none;border-color:var(--gold-soft);box-shadow:0 0 0 2px var(--gold-faint)}
+    .field input.invalid{border-color:var(--err)}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+    /* price calculator */
+    .calc{margin-top:8px;border:1px solid var(--gold-soft);border-radius:14px;overflow:hidden;background:linear-gradient(165deg,rgba(201,168,76,0.08),rgba(14,14,14,0.5))}
+    .calc .top{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--gold-faint)}
+    .calc .top .lbl{font-size:0.82rem;color:var(--silver)}
+    .calc .top .rate{font-size:1.05rem;font-weight:700;color:var(--gold-lum)}
+    .calc .top .rate small{font-size:0.72rem;color:var(--grey);font-weight:400}
+    .calc .total-row{display:flex;justify-content:space-between;align-items:baseline;padding:18px 20px}
+    .calc .total-row .lbl{font-size:0.9rem;color:var(--ivory)}
+    .calc .total-row .amt{font-size:1.9rem;font-weight:700;color:var(--ivory)}
+    .calc .total-row .amt small{font-size:0.9rem;color:var(--grey);font-weight:400}
+    .calc .savings{padding:11px 20px;background:var(--gold-faint);font-size:0.84rem;color:var(--gold-lum);text-align:center;font-weight:500}
+    .calc .savings.hidden{display:none}
+
+    .btn{display:block;width:100%;text-align:center;cursor:pointer;border:none;font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;padding:16px;border-radius:10px;transition:transform .15s,box-shadow .2s;margin-top:8px}
+    .btn-gold{background:var(--gold);color:#0a0a0a}
+    .btn-gold:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(201,168,76,0.25)}
+    .btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-ghost{background:transparent;color:var(--gold-lum);border:1px solid var(--gold-soft);font-size:0.92rem;padding:14px;margin-top:14px}
+    .btn-ghost:hover{background:var(--gold-faint)}
+
+    /* bank details */
+    .bank{margin-top:16px;border:1px solid var(--gold-faint);border-radius:12px;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+    .bank.open{max-height:600px;padding:20px;margin-top:16px}
+    .bank h3{font-size:0.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+    .bank .brow{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--gold-faint);font-size:0.9rem}
+    .bank .brow:last-of-type{border-bottom:none}
+    .bank .brow .k{color:var(--grey);flex-shrink:0}
+    .bank .brow .v{color:var(--ivory);font-weight:500;text-align:right;word-break:break-all}
+    .bank .note{margin-top:14px;font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.6}
+    .copy{cursor:pointer;color:var(--gold-lum);font-size:0.74rem;margin-left:8px;border:1px solid var(--gold-soft);border-radius:5px;padding:1px 7px;white-space:nowrap}
+    .copy:hover{background:var(--gold-faint)}
+
+    .msg{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:0.9rem;display:none}
+    .msg.ok{display:block;background:rgba(201,168,76,0.12);border:1px solid var(--gold-soft);color:var(--gold-lum)}
+    .msg.bad{display:block;background:rgba(224,121,95,0.1);border:1px solid var(--err);color:var(--err)}
+
+    footer{border-top:1px solid var(--gold-faint);padding:30px 20px;text-align:center;color:var(--grey);font-size:0.78rem;line-height:1.8}
+    footer a{color:var(--gold-lum)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'">
+      <span class="tag">Corporate Bundle</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="hero">
+      <p class="eyebrow">The Making Inspiration Workshop</p>
+      <h1>Register Your Team</h1>
+      <p class="ar">صناعة الإلهام</p>
+      <p>A 3-day live workshop that trains creative teams to produce client-grade visuals with AI. July 5-7, 2026.</p>
+      <div id="seats" class="seats"><span class="dot"></span><span><b id="seatsNum">--</b> seats remaining in this cohort</span></div>
+    </section>
+
+    <form id="form" class="card" novalidate>
+      <h2>Team registration</h2>
+      <p class="sub">Tell us who is coming. The team rate applies automatically for two or more.</p>
+
+      <div class="row2">
+        <div class="field">
+          <label>Point of contact — name <span class="req">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Full name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label>Position</label>
+          <input type="text" id="position" name="position" placeholder="e.g. Creative Director" autocomplete="organization-title">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Work email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label>Registered company name <span class="req">*</span></label>
+        <input type="text" id="company" name="company" placeholder="Company / agency name" autocomplete="organization" required>
+      </div>
+
+      <div class="field">
+        <label>How many employees would join the training? <span class="req">*</span></label>
+        <input type="number" id="employees" name="employees" min="1" step="1" value="2" inputmode="numeric" required>
+      </div>
+
+      <!-- live price calculator -->
+      <div class="calc">
+        <div class="top">
+          <span class="lbl">Per-person rate</span>
+          <span class="rate"><span id="rate">1,040</span> SAR <small>/ person</small></span>
+        </div>
+        <div class="total-row">
+          <span class="lbl">Total for your team</span>
+          <span class="amt"><span id="total">2,080</span> <small>SAR</small></span>
+        </div>
+        <div id="savings" class="savings">You save <span id="savingsAmt">518</span> SAR vs the individual rate of 1,299 / person.</div>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-gold">Register Your Team</button>
+      <button type="button" id="bankBtn" class="btn btn-ghost">Show bank transfer details (SAR)</button>
+
+      <!-- bank details -->
+      <div id="bank" class="bank">
+        <h3>Bank transfer — Bank Al-Inmaa (مصرف الإنماء)</h3>
+        <div class="brow"><span class="k">Account name</span><span class="v">Majid Zaki Angawi Photography</span></div>
+        <div class="brow"><span class="k">IBAN</span><span class="v">SA3805000068207281538000 <span class="copy" data-copy="SA3805000068207281538000">copy</span></span></div>
+        <div class="brow"><span class="k">SWIFT / BIC</span><span class="v">INMASARI</span></div>
+        <div class="brow"><span class="k">Currency</span><span class="v">SAR only</span></div>
+        <p class="note">Transfer the total shown above, then reply to your confirmation email with the receipt. We confirm within 2 working days and onboard your team. International transfers are accepted in SAR and may take longer to clear.</p>
+      </div>
+
+      <div id="msg" class="msg"></div>
+    </form>
+  </div>
+
+  <footer>
+    MA Learn · صناعة الإلهام<br>
+    Questions? <a href="mailto:support@malearnsa.com">support@malearnsa.com</a> · <a href="https://wa.me/966560440113">+966 560 440 113</a>
+  </footer>
+
+  <script>
+  (function(){
+    "use strict";
+
+    // ── CONFIG ──────────────────────────────────────────────
+    // Lead-capture endpoint (standalone Apps Script: "MA Learn - CIW C3 Corporate Leads").
+    var CAPTURE_URL = "https://script.google.com/macros/s/AKfycbyLwSieqaR6HZ1k5N_kiwPt1PItaeLU6Flj_8fANATD-d0zwUpK42jjKvZliZXc4-Ohvg/exec";
+
+    // Seats remaining. TODO(seats-source): single config value. The C3 cohort
+    // capacity is 30 (Harvest 22 seat cap). Set SEATS_REMAINING by hand from the
+    // Customers sheet head-count, or wire to the dashboard's
+    // admin_list_customers_since count later. Robust by design: one number to edit.
+    var SEATS_REMAINING = 12;
+
+    var STANDARD_RATE = 1299;  // 1 person
+    var TEAM_RATE     = 1040;  // 2 or more (20% off)
+
+    // ── SEATS COUNTER ───────────────────────────────────────
+    var seatsBox = document.getElementById('seats');
+    var seatsNum = document.getElementById('seatsNum');
+    if (SEATS_REMAINING <= 0) {
+      seatsBox.classList.add('soldout');
+      seatsBox.innerHTML = '<span class="dot"></span><span>This cohort is fully booked</span>';
+    } else {
+      seatsNum.textContent = SEATS_REMAINING;
+    }
+
+    // ── LIVE PRICE CALCULATOR ───────────────────────────────
+    var empEl = document.getElementById('employees');
+    var rateEl = document.getElementById('rate');
+    var totalEl = document.getElementById('total');
+    var savingsEl = document.getElementById('savings');
+    var savingsAmtEl = document.getElementById('savingsAmt');
+
+    function fmt(n){ return n.toLocaleString('en-US'); }
+
+    function recalc(){
+      var n = parseInt(empEl.value, 10);
+      if (isNaN(n) || n < 1) n = 1;
+      var rate = (n >= 2) ? TEAM_RATE : STANDARD_RATE;
+      var total = rate * n;
+      rateEl.textContent = fmt(rate);
+      totalEl.textContent = fmt(total);
+      if (n >= 2) {
+        var savings = (STANDARD_RATE - TEAM_RATE) * n;
+        savingsAmtEl.textContent = fmt(savings);
+        savingsEl.classList.remove('hidden');
+        savingsEl.innerHTML = 'You save <span>' + fmt(savings) + '</span> SAR vs the individual rate of 1,299 / person.';
+      } else {
+        savingsEl.classList.add('hidden');
+      }
+    }
+    empEl.addEventListener('input', recalc);
+    empEl.addEventListener('change', recalc);
+    recalc();
+
+    // ── BANK DETAILS TOGGLE ─────────────────────────────────
+    var bankBtn = document.getElementById('bankBtn');
+    var bank = document.getElementById('bank');
+    bankBtn.addEventListener('click', function(){
+      var open = bank.classList.toggle('open');
+      bankBtn.textContent = open ? 'Hide bank transfer details' : 'Show bank transfer details (SAR)';
+    });
+    // copy IBAN
+    document.querySelectorAll('.copy').forEach(function(el){
+      el.addEventListener('click', function(e){
+        e.stopPropagation();
+        var t = el.getAttribute('data-copy');
+        if (navigator.clipboard) navigator.clipboard.writeText(t);
+        var old = el.textContent; el.textContent = 'copied'; setTimeout(function(){ el.textContent = old; }, 1400);
+      });
+    });
+
+    // ── SUBMIT ──────────────────────────────────────────────
+    var form = document.getElementById('form');
+    var btn = document.getElementById('submitBtn');
+    var msg = document.getElementById('msg');
+
+    function show(type, text){ msg.className = 'msg ' + type; msg.textContent = text; }
+    function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      msg.className = 'msg';
+
+      var name = document.getElementById('name').value.trim();
+      var position = document.getElementById('position').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var company = document.getElementById('company').value.trim();
+      var employees = parseInt(empEl.value, 10) || 1;
+
+      var bad = [];
+      [['name',name],['email',email],['company',company]].forEach(function(p){
+        var el = document.getElementById(p[0]);
+        if (!p[1]) { el.classList.add('invalid'); bad.push(p[0]); }
+        else el.classList.remove('invalid');
+      });
+      if (email && !validEmail(email)) { document.getElementById('email').classList.add('invalid'); bad.push('email'); }
+      if (bad.length) { show('bad', 'Please complete the required fields (name, valid email, company).'); return; }
+
+      btn.disabled = true; btn.textContent = 'Submitting...';
+
+      var payload = {
+        name: name, position: position, email: email, company: company,
+        employees: employees, source: 'corporate-bundle-form',
+        user_agent: navigator.userAgent
+      };
+
+      // text/plain avoids CORS preflight against Apps Script.
+      fetch(CAPTURE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.success) {
+          show('ok', 'Received. We will email ' + email + ' to confirm and onboard your team of ' + employees + '. Bank transfer details are below (SAR).');
+          if (!bank.classList.contains('open')) { bank.classList.add('open'); bankBtn.textContent = 'Hide bank transfer details'; }
+          btn.textContent = 'Registered';
+          form.querySelectorAll('input').forEach(function(i){ i.disabled = true; });
+        } else {
+          throw new Error((res && res.error) || 'unknown_error');
+        }
+      })
+      .catch(function(err){
+        // Never silent-fail. Give the customer a real path forward.
+        btn.disabled = false; btn.textContent = 'Register Your Team';
+        show('bad', 'We could not save your registration just now. Please email support@malearnsa.com or WhatsApp +966 560 440 113 and we will reserve your team rate manually.');
+        console.error('corporate capture failed:', err);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
