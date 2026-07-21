@@ -381,6 +381,8 @@
   </script>
 
   <!-- ══ Canonical checkout module — Moyasar (pay in full) + Tamara (split) ══ -->
+  <!-- Load the module FIRST, then init (module defines MaCheckout) -->
+  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
   <script>
     MaCheckout.init({
       productId:     'agentic-os-sara',
@@ -390,7 +392,6 @@
       methods:       ['moyasar', 'tamara']
     });
   </script>
-  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
   <script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
 </body>
 </html>
