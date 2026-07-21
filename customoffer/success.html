@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-active="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Payment confirmed — Build Your Own Agentic OS | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+  <style>
+    :root { --bg:#0a0a0a; --gold:#C9A84C; --gold-lum:#E8D08A; --gold-faint:rgba(201,168,76,0.08); --gold-soft:rgba(201,168,76,0.22); --ivory:#F5F0E8; --silver:#BBBBBB; --grey:#888; }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--ivory); min-height:100vh; }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse 60% 50% at 50% 20%, rgba(201,168,76,0.09) 0%, transparent 70%); }
+    .spinner { width:22px;height:22px;border:2px solid rgba(201,168,76,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    a.cta { display:inline-block;background:var(--gold);color:#0a0a0a;font-weight:700;padding:14px 36px;text-decoration:none;border-radius:8px; }
+    .lang-toggle{display:inline-flex;border:1px solid var(--gold-soft);border-radius:30px;overflow:hidden;background:var(--gold-faint)}
+    .lang-toggle button{border:none;background:transparent;color:var(--silver);font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;padding:6px 14px;cursor:pointer;transition:all .2s}
+    .lang-toggle button.ar{font-family:'Cairo',sans-serif}
+    .lang-toggle button.active{background:var(--gold);color:#0a0a0a}
+    [data-lang]{display:none}
+    html[data-active="en"] [data-lang="en"]{display:block}
+    html[data-active="ar"] [data-lang="ar"]{display:block}
+    html[data-active="ar"] body{font-family:'Cairo',sans-serif}
+    html[dir="rtl"] .card{text-align:right}
+  </style>
+</head>
+<body>
+
+<nav style="padding:14px 22px;border-bottom:1px solid rgba(201,168,76,0.08);position:relative;z-index:10;background:rgba(10,10,10,0.92);backdrop-filter:blur(10px);">
+  <div style="max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:26px;width:auto;" onerror="this.style.display='none'">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-ar" class="ar" onclick="setLang('ar')">عربي</button>
+    </div>
+  </div>
+</nav>
+
+<div style="position:relative;z-index:1;max-width:560px;margin:0 auto;padding:70px 22px;text-align:center;">
+
+  <!-- Processing -->
+  <div id="processing">
+    <div class="spinner"></div>
+    <p style="color:var(--grey);font-size:0.9rem;" data-lang="en">Confirming your payment...</p>
+    <p style="color:var(--grey);font-size:0.9rem;" data-lang="ar">جاري تأكيد دفعتك...</p>
+  </div>
+
+  <!-- Success -->
+  <div id="success-view" style="display:none;">
+    <div style="width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;"><span data-lang="en" style="display:inline;">Payment confirmed</span><span data-lang="ar" style="display:inline;">تم الدفع بنجاح</span></p>
+
+    <div data-lang="en">
+      <h1 style="font-size:clamp(1.6rem,4vw,2rem);font-weight:700;margin-bottom:16px;line-height:1.3;">You're in — Build Your Own Agentic OS</h1>
+      <p style="color:var(--silver);font-size:0.94rem;line-height:1.85;max-width:460px;margin:0 auto 36px;">A confirmation has landed in your inbox. We'll reach out shortly to agree a start date that suits you and set up your first session. Nothing to prepare — we handle the technical side and walk you through everything.</p>
+    </div>
+    <div data-lang="ar">
+      <h1 style="font-size:clamp(1.6rem,4vw,2rem);font-weight:700;margin-bottom:16px;line-height:1.3;">تم تأكيد اشتراكك في بناء نظام الوكلاء الذكي</h1>
+      <p style="color:var(--silver);font-size:0.94rem;line-height:1.85;max-width:460px;margin:0 auto 36px;">وصلك إيميل تأكيد. راح نتواصل معك قريباً نتفق على تاريخ بداية يناسبك ونجهّز أول جلسة. ما يحتاج تجهّزين شي — إحنا نتكفّل بالجانب التقني ونمشّيك خطوة بخطوة.</p>
+    </div>
+
+    <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.18);border-radius:12px;padding:20px;margin:0 auto 32px;max-width:460px;">
+      <p style="font-size:0.82rem;color:var(--silver);line-height:1.8;margin-bottom:10px;"><span data-lang="en" style="display:inline;">Any question in the meantime? Reach us:</span><span data-lang="ar" style="display:inline;">أي سؤال قبل ما نبدأ؟ تواصلي معنا:</span></p>
+      <p style="font-size:0.88rem;margin:0;"><a href="mailto:support@malearnsa.com" style="color:var(--gold);text-decoration:none;">support@malearnsa.com</a></p>
+    </div>
+
+    <a href="https://malearnsa.com" class="cta"><span data-lang="en" style="display:inline;">Back to MA Learn</span><span data-lang="ar" style="display:inline;">العودة إلى MA Learn</span></a>
+  </div>
+
+  <!-- Failed -->
+  <div id="failed-view" style="display:none;">
+    <div style="width:60px;height:60px;border:2px solid #e74c3c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <div data-lang="en"><h1 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;">Payment not completed</h1><p style="color:var(--silver);font-size:0.9rem;line-height:1.8;max-width:420px;margin:0 auto 32px;">The payment was cancelled or something went wrong. You can try again.</p></div>
+    <div data-lang="ar"><h1 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;">لم يتم إتمام الدفع</h1><p style="color:var(--silver);font-size:0.9rem;line-height:1.8;max-width:420px;margin:0 auto 32px;">تم إلغاء العملية أو واجهنا مشكلة في الدفع. تقدرين تحاولين مرة ثانية.</p></div>
+    <a href="https://checkout.malearnsa.com/proposals/sara-agentic-os/" class="cta"><span data-lang="en" style="display:inline;">Try again</span><span data-lang="ar" style="display:inline;">حاول مرة ثانية</span></a>
+  </div>
+
+</div>
+
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    function apply(lang){
+      var isAr=(lang==='ar');
+      root.setAttribute('data-active',lang);
+      root.setAttribute('lang',isAr?'ar':'en');
+      root.setAttribute('dir',isAr?'rtl':'ltr');
+      var be=document.getElementById('btn-en'),ba=document.getElementById('btn-ar');
+      if(be)be.classList.toggle('active',!isAr);
+      if(ba)ba.classList.toggle('active',isAr);
+    }
+    window.setLang=function(lang){ try{localStorage.setItem('sara_agentic_os_lang',lang);}catch(e){} apply(lang); };
+    var saved; try{saved=localStorage.getItem('sara_agentic_os_lang');}catch(e){}
+    apply(saved==='ar'?'ar':'en');
+  })();
+</script>
+
+<script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
+<script>
+  MaSuccess.init({
+    productId:     'agentic-os-sara',
+    productNameAr: 'برنامج بناء نظام الوكلاء الذكي'
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MA Learn — Build Your Own Agentic OS</title>
+  <meta name="description" content="A private one-month program for Sara Alzaben — build your own team of AI assistants that run your business alongside you.">
+  <!-- Private, unlisted proposal. Do not index. -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- NOTE: no X-Frame-Options / X-Content-Type-Options / referrer-policy meta tags — they break the Apple Pay iframe (canonical rule). -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Canonical MA Learn checkout module + Moyasar -->
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css">
+  <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+
+  <!-- Standard footer module -->
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+
+  <style>
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+
+    :root{
+      --bg:#0a0a0a;--bg-2:#0E0E0E;--paper:#f4f1eb;
+      --gold:#C9A84C;--gold-lum:#E8D08A;
+      --gold-soft:rgba(201,168,76,0.20);--gold-faint:rgba(201,168,76,0.08);
+      --ivory:#F5F0E8;--silver:#BBBBBB;--grey:#8A8A8A;--err:#E0795F;
+      --line:rgba(201,168,76,0.10);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ivory);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:720px;margin:0 auto;padding:0 22px}
+
+    /* radial top glow */
+    body::before{content:'';position:fixed;top:-30%;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at center,rgba(201,168,76,0.10),transparent 62%);pointer-events:none;z-index:0}
+
+    /* ── HEADER ── */
+    header{position:sticky;top:0;z-index:50;background:rgba(10,10,10,0.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    header .inner{max-width:720px;margin:0 auto;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+    header .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    header img{height:26px;flex-shrink:0}
+    header .prepared{font-size:0.72rem;color:var(--silver);letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    header .prepared b{color:var(--gold-lum);font-weight:600}
+
+    /* language toggle */
+    .lang-toggle{flex-shrink:0;display:inline-flex;border:1px solid var(--gold-soft);border-radius:30px;overflow:hidden;background:var(--gold-faint)}
+    .lang-toggle button{border:none;background:transparent;color:var(--silver);font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;padding:6px 14px;cursor:pointer;transition:all .2s;letter-spacing:0.03em}
+    .lang-toggle button.ar{font-family:'Cairo',sans-serif}
+    .lang-toggle button.active{background:var(--gold);color:#0a0a0a}
+
+    /* ── HERO ── */
+    .hero{position:relative;z-index:1;padding:60px 0 20px;text-align:center}
+    .hero .eyebrow{color:var(--gold);font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:18px}
+    .hero h1{font-size:clamp(1.9rem,6vw,2.9rem);font-weight:700;line-height:1.2;margin-bottom:16px;letter-spacing:-0.01em}
+    .hero .subtitle{color:var(--gold-lum);font-size:1.05rem;font-weight:400;max-width:520px;margin:0 auto}
+
+    /* ── SECTIONS ── */
+    section.block{position:relative;z-index:1;padding:34px 0;border-top:1px solid var(--line)}
+    section.block:first-of-type{border-top:none}
+    .intro-lead{font-size:1.08rem;line-height:1.85;color:var(--ivory);font-weight:300}
+    .intro-lead strong{color:var(--gold-lum);font-weight:600}
+
+    h2.sec{font-size:1.35rem;font-weight:700;margin-bottom:22px;line-height:1.3}
+    h2.sec .num{color:var(--gold);font-weight:700;margin-inline-end:10px;font-variant-numeric:tabular-nums}
+
+    /* day-in-the-life list */
+    ul.flow{list-style:none;display:flex;flex-direction:column;gap:16px}
+    ul.flow li{position:relative;padding-inline-start:26px;color:var(--silver);font-weight:300;font-size:1rem;line-height:1.7}
+    ul.flow li::before{content:'';position:absolute;inset-inline-start:0;top:11px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold-soft)}
+    ul.flow li strong{color:var(--ivory);font-weight:600}
+    .flow-kicker{margin-top:22px;font-size:1rem;color:var(--gold-lum);font-weight:400;font-style:italic}
+
+    /* numbered offer cards */
+    ol.cards{list-style:none;counter-reset:c;display:flex;flex-direction:column;gap:16px}
+    ol.cards li{counter-increment:c;position:relative;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:22px;padding-inline-start:62px;padding-inline-end:24px;font-size:0.99rem;line-height:1.7;color:var(--silver);font-weight:300}
+    ol.cards li::before{content:counter(c);position:absolute;inset-inline-start:20px;top:22px;width:28px;height:28px;border-radius:50%;background:var(--gold-faint);border:1px solid var(--gold-soft);color:var(--gold-lum);font-weight:700;font-size:0.9rem;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+    ol.cards li strong{color:var(--ivory);font-weight:600}
+
+    /* privacy / running-cost callout */
+    .callout{background:linear-gradient(165deg,rgba(201,168,76,0.09),rgba(14,14,14,0.5));border:1px solid var(--gold-soft);border-radius:16px;padding:26px 26px}
+    .callout p{color:var(--ivory);font-weight:300;font-size:1.01rem;line-height:1.8}
+    .callout p strong{color:var(--gold-lum);font-weight:600}
+
+    /* ── INVESTMENT + CHECKOUT ── */
+    .invest{position:relative;z-index:1;background:var(--bg-2);border:1px solid var(--gold-soft);border-radius:20px;padding:34px 28px;margin:12px 0 40px;text-align:center}
+    .invest .price{font-size:3rem;font-weight:700;color:var(--ivory);line-height:1;margin-bottom:6px;letter-spacing:-0.02em}
+    .invest .price small{font-size:1.1rem;color:var(--grey);font-weight:400}
+    .invest .invest-note{color:var(--silver);font-size:0.96rem;font-weight:300;margin-bottom:8px}
+
+    .pay-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0 22px;text-align:start}
+    @media(max-width:560px){.pay-options{grid-template-columns:1fr}}
+    .pay-opt{background:#060606;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+    .pay-opt .po-title{color:var(--gold-lum);font-weight:600;font-size:0.98rem;margin-bottom:5px}
+    .pay-opt .po-desc{color:var(--grey);font-size:0.85rem;font-weight:300;line-height:1.55}
+
+    /* checkout card wrapping the module */
+    .card{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:28px 24px;margin-top:8px;text-align:start}
+    .card .co-section-title{font-size:1.05rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+
+    .arabic{font-family:'Cairo',sans-serif}
+
+    /* ── RTL flip ── */
+    html[dir="rtl"] body{font-family:'Cairo',sans-serif}
+    html[dir="rtl"] .hero h1,
+    html[dir="rtl"] h2.sec,
+    html[dir="rtl"] .intro-lead,
+    html[dir="rtl"] ul.flow li,
+    html[dir="rtl"] ol.cards li,
+    html[dir="rtl"] .callout p,
+    html[dir="rtl"] .invest .invest-note{font-family:'Cairo',sans-serif}
+    html[dir="rtl"] .hero h1{letter-spacing:0}
+
+    /* language visibility */
+    [data-lang]{display:none}
+    html[data-active="en"] [data-lang="en"]{display:block}
+    html[data-active="ar"] [data-lang="ar"]{display:block}
+    /* inline variants (header) */
+    html[data-active="en"] span[data-lang="en"]{display:inline}
+    html[data-active="ar"] span[data-lang="ar"]{display:inline}
+    li[data-lang]{display:none}
+    html[data-active="en"] li[data-lang="en"],
+    html[data-active="ar"] li[data-lang="ar"]{display:list-item}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <div class="brand">
+        <img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'">
+        <span class="prepared">
+          <span data-lang="en">Prepared for: <b>Sara Alzaben</b></span>
+          <span data-lang="ar">أُعِدّ خصيصاً لـ <b>سارة الزبن</b></span>
+        </span>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+        <button id="btn-ar" class="ar" onclick="setLang('ar')">عربي</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════ EN eyebrow varies; hero is bilingual ══════════ -->
+  <div class="wrap">
+
+    <section class="hero">
+      <p class="eyebrow">MA Learn</p>
+      <div data-lang="en">
+        <h1>Build Your Own Agentic OS</h1>
+        <p class="subtitle">A private one-month program for Sara Alzaben</p>
+      </div>
+      <div data-lang="ar">
+        <h1>ابني الـ <bdi dir="ltr">Agentic OS</bdi> الخاص فيك</h1>
+        <p class="subtitle">برنامج خاص لمدة شهر — لسارة الزبن</p>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="block">
+      <div data-lang="en">
+        <p class="intro-lead">You work across several niches, wearing a different hat in each. This program gives you your own agentic OS — <strong>a team of AI assistants that work together as one system</strong>, running your business alongside you. One handles your PR work, one your events, one your content, one the money side, and so on — each built around how you actually work. You build them over one month with our guidance, and you keep them for good. No technical background needed.</p>
+      </div>
+      <div data-lang="ar">
+        <p class="intro-lead">أنتِ تشتغلين في أكثر من مجال، وكل مجال يطلب منك دور مختلف. هذا البرنامج يعطيك نظام الوكلاء الذكي الخاص فيك — <strong>فريق من المساعدين الذكيين يشتغلون مع بعض كنظام واحد</strong>، يديرون شغلك جنبك. واحد يتكفّل بشغل العلاقات العامة، وواحد بالفعاليات، وواحد بالمحتوى، وواحد بالجانب المالي، وهكذا — كل واحد مبني على طريقتك أنتِ في الشغل فعلاً. تبنينهم خلال شهر بإرشاد منّا، ويبقون ملكك للأبد. ما يحتاج أي خلفية تقنية.</p>
+      </div>
+    </section>
+
+    <!-- WHAT A NORMAL DAY LOOKS LIKE -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">What a normal day looks like once it's built</h2></div>
+      <div data-lang="ar"><h2 class="sec">كيف يصير يومك العادي بعد ما يجهز</h2></div>
+
+      <ul class="flow">
+        <li data-lang="en">You finish a client call. It gets recorded, and your assistant turns it into <strong>clean notes, a to-do list, and a ready-to-send follow-up email</strong> — before you've had your coffee.</li>
+        <li data-lang="ar">تخلّصين مكالمة مع عميل. تنسجّل، ومساعدك يحوّلها إلى <strong>ملاحظات مرتبة، وقائمة مهام، وإيميل متابعة جاهز للإرسال</strong> — قبل ما تشربين قهوتك.</li>
+
+        <li data-lang="en">You need a pitch for a new client. Your PR assistant <strong>writes the first draft in your voice</strong>, so you're editing instead of staring at a blank page.</li>
+        <li data-lang="ar">تحتاجين عرضاً لعميل جديد. مساعد العلاقات العامة <strong>يكتب المسودّة الأولى بأسلوبك أنتِ</strong>، فتصيرين تعدّلين بدل ما تحدّقين في صفحة فاضية.</li>
+
+        <li data-lang="en">You're planning an event. Your events assistant builds the <strong>run-of-show, the checklist, and the supplier list</strong> from a two-line brief.</li>
+        <li data-lang="ar">تجهّزين فعالية. مساعد الفعاليات يبني لك <strong>جدول سير الحدث، والقائمة المرجعية، وقائمة المورّدين</strong> من موجز من سطرين.</li>
+
+        <li data-lang="en">Your newsletter is due. Your content assistant <strong>drafts it from what you did this week</strong>.</li>
+        <li data-lang="ar">نشرتك البريدية موعدها قرّب. مساعد المحتوى <strong>يكتب لك مسودّتها من اللي سويتيه هذا الأسبوع</strong>.</li>
+
+        <li data-lang="en">You ask, "what's on me today?" — and get <strong>your calendar, your inbox, and every client's open items in one clear answer</strong>.</li>
+        <li data-lang="ar">تسألين: «وش عليّ اليوم؟» — ويجيك <strong>تقويمك، وبريدك، وكل المهام المفتوحة لكل عميل في جواب واحد واضح</strong>.</li>
+      </ul>
+
+      <p class="flow-kicker" data-lang="en">That's the point: several things moving at once, without you touching every one by hand.</p>
+      <p class="flow-kicker" data-lang="ar">وهذي هي الفكرة: أكثر من شي يتحرّك في نفس الوقت، من دون ما تباشرين كل واحد بيدك.</p>
+    </section>
+
+    <!-- WHAT WE OFFER -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">What we offer</h2></div>
+      <div data-lang="ar"><h2 class="sec">وش نقدّم لك</h2></div>
+      <ol class="cards">
+        <li data-lang="en"><strong>A one-month guided build.</strong> We start with a session to understand your business in detail, then meet twice a week to build the next piece together. You're never doing it alone.</li>
+        <li data-lang="ar"><strong>بناء مُوجَّه لمدة شهر.</strong> نبدأ بجلسة نفهم فيها شغلك بالتفصيل، وبعدها نجتمع مرتين في الأسبوع نبني الجزء التالي مع بعض. ما راح تكونين لحالك أبداً.</li>
+
+        <li data-lang="en"><strong>An easy path, not a blank page.</strong> We give you ready-made setups and a smart assistant that interviews you and writes up how your business works — so the hardest part is done for you.</li>
+        <li data-lang="ar"><strong>طريق سهل، مو صفحة فاضية.</strong> نعطيك إعدادات جاهزة ومساعداً ذكياً يسألك أسئلة ويكتب لك كيف يشتغل عملك — فالجزء الأصعب يصير جاهزاً لك.</li>
+
+        <li data-lang="en"><strong>One new piece each week</strong>, so it grows steadily instead of overwhelming you.</li>
+        <li data-lang="ar"><strong>جزء جديد كل أسبوع</strong>، فيكبر بثبات بدل ما يضغط عليك.</li>
+      </ol>
+    </section>
+
+    <!-- WHAT YOU GET -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">What you get</h2></div>
+      <div data-lang="ar"><h2 class="sec">وش تاخذين</h2></div>
+      <ol class="cards">
+        <li data-lang="en"><strong>Your own team of AI assistants</strong> — as many as your business needs to start with, usually four or five, each built around one part of your work.</li>
+        <li data-lang="ar"><strong>فريقك الخاص من المساعدين الذكيين</strong> — بالعدد اللي يحتاجه عملك للبداية، عادةً أربعة أو خمسة، كل واحد مبني على جزء من شغلك.</li>
+
+        <li data-lang="en"><strong>Everything connected to the tools you already use</strong> — your email, calendar, call recordings, client list, and newsletter, all feeding into the system so your assistants actually know what's going on.</li>
+        <li data-lang="ar"><strong>كل شي مربوط بالأدوات اللي تستخدمينها أصلاً</strong> — بريدك، وتقويمك، وتسجيلات مكالماتك، وقائمة عملائك، ونشرتك البريدية، كلها تغذّي النظام عشان مساعدينك يعرفون فعلاً وش صاير.</li>
+
+        <li data-lang="en"><strong>A written guide and recordings of every session</strong>, plus a simple playbook for running it day to day — all yours to keep, use, and grow. You'll know how to add new assistants yourself; you won't depend on us to change anything.</li>
+        <li data-lang="ar"><strong>دليل مكتوب وتسجيلات لكل جلسة</strong>، مع دليل عملي بسيط لتشغيله يوماً بيوم — كله ملكك تحتفظين فيه وتستخدمينه وتطوّرينه. راح تعرفين كيف تضيفين مساعدين جدد بنفسك؛ ما راح تعتمدين علينا في تغيير أي شي.</li>
+      </ol>
+    </section>
+
+    <!-- WHAT WE EXPECT FROM YOU -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">What we expect from you</h2></div>
+      <div data-lang="ar"><h2 class="sec">وش نتوقّع منك</h2></div>
+      <ol class="cards">
+        <li data-lang="en"><strong>About 3–5 hours a week</strong> between our calls to do the building. This is guided, step by step — but you do the hands-on part, which is exactly why you end up owning it and knowing how it works.</li>
+        <li data-lang="ar"><strong>حوالي ٣–٥ ساعات في الأسبوع</strong> بين مكالماتنا للبناء. الشغل مُوجَّه، خطوة بخطوة — بس أنتِ تسوّين الجزء العملي، وهذا بالضبط سبب إنك في النهاية تملكينه وتعرفين كيف يشتغل.</li>
+
+        <li data-lang="en"><strong>A few tool accounts</strong>, which we set up with you on the first session — mainly Claude (the AI), Google, and a couple of tools you may already use. No coding, no jargon; we handle the technical bits.</li>
+        <li data-lang="ar"><strong>عدد بسيط من حسابات الأدوات</strong>، نجهّزها معك في الجلسة الأولى — أساساً Claude (الذكاء الاصطناعي)، وGoogle، وأداتين ثلاث ممكن تستخدمينها أصلاً. بدون برمجة، بدون مصطلحات معقّدة؛ إحنا نتكفّل بالجوانب التقنية.</li>
+
+        <li data-lang="en"><strong>Show up to both weekly sessions and do the week's task</strong>, so the system keeps moving.</li>
+        <li data-lang="ar"><strong>تحضرين الجلستين الأسبوعيتين وتسوّين مهمة الأسبوع</strong>، عشان النظام يستمر يتقدّم.</li>
+      </ol>
+    </section>
+
+    <!-- YOUR INFORMATION STAYS YOURS -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">Your information stays yours</h2></div>
+      <div data-lang="ar"><h2 class="sec">معلوماتك تبقى ملكك</h2></div>
+      <div class="callout">
+        <p data-lang="en">Everything runs inside your own private accounts. Your emails, your calls, and your client details <strong>stay in your tools — nothing is posted anywhere, shared, or used to train any AI</strong>. The assistants only ever touch your data to do the task you asked. You stay in full control of what they can see.</p>
+        <p data-lang="ar">كل شي يشتغل داخل حساباتك الخاصة. إيميلاتك، ومكالماتك، وتفاصيل عملائك <strong>تبقى في أدواتك — ما ينُشر أي شي في أي مكان، ولا يتشارك، ولا يُستخدم لتدريب أي ذكاء اصطناعي</strong>. المساعدون ما يلمسون بياناتك إلا عشان ينفّذون المهمة اللي طلبتيها. وأنتِ تبقين متحكّمة بالكامل في وش يقدرون يشوفونه.</p>
+      </div>
+    </section>
+
+    <!-- WHAT IT COSTS TO RUN -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">What it costs to run</h2></div>
+      <div data-lang="ar"><h2 class="sec">التكلفة التشغيلية</h2></div>
+      <div class="callout">
+        <p data-lang="en">Beyond this program, the tools you'll use cost roughly <strong>400–800 SAR per month</strong> depending on the plans you pick — and several have free tiers, so you can start light and upgrade only when you're ready. We'll walk you through exactly what to get and why, so there are no surprises.</p>
+        <p data-lang="ar">خارج نطاق هذا البرنامج، الأدوات اللي راح تستخدمينها تكلّف تقريباً <strong>٤٠٠–٨٠٠ ريال في الشهر</strong> حسب الباقات اللي تختارينها — وكثير منها فيه باقات مجانية، فتقدرين تبدأين بخفّة وترقّين بس لمّا تكونين جاهزة. راح نشرح لك بالضبط وش تاخذين وليش، عشان ما يكون فيه أي مفاجآت.</p>
+      </div>
+    </section>
+
+    <!-- AFTER THE MONTH -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">After the month</h2></div>
+      <div data-lang="ar"><h2 class="sec">بعد الشهر</h2></div>
+      <div data-lang="en">
+        <p class="intro-lead">You keep every recording and the written guide, so you can always retrace any step on your own. For your first two weeks after we finish, you can message us with any question while you settle in. If you ever want us to build more advanced assistants down the line, that's an option — never a requirement.</p>
+      </div>
+      <div data-lang="ar">
+        <p class="intro-lead">تحتفظين بكل تسجيل وبالدليل المكتوب، فتقدرين دائماً تراجعين أي خطوة بنفسك. وخلال أول أسبوعين بعد ما نخلّص، تقدرين تراسلينا بأي سؤال وأنتِ تترتّبين على النظام. ولو حبيتي في وقت لاحق نبني لك مساعدين أكثر تقدّماً، هذا خيار متاح — مو شرط أبداً.</p>
+      </div>
+    </section>
+
+    <!-- BEFORE YOU DECIDE -->
+    <section class="block">
+      <div data-lang="en"><h2 class="sec">Before you decide</h2></div>
+      <div data-lang="ar"><h2 class="sec">قبل ما تقرّرين</h2></div>
+      <div data-lang="en">
+        <p class="intro-lead">We'll get on a short call and <strong>show you a real AI team running actual tasks</strong> — turning a call into follow-ups, drafting content, pulling a day together. Then we'll take two or three things you do every week and map out how your own version would handle them, live. You'll see exactly what you're building before you commit anything.</p>
+      </div>
+      <div data-lang="ar">
+        <p class="intro-lead">نتقابل في مكالمة قصيرة و<strong>نوريك فريق ذكاء اصطناعي حقيقي وهو ينفّذ مهام فعلية</strong> — يحوّل مكالمة إلى متابعات، يكتب محتوى، يجمع يومك كامل. وبعدها ناخذ شيئين أو ثلاثة تسوّينها كل أسبوع ونرسم لك كيف نسختك الخاصة راح تتعامل معها، مباشرةً. راح تشوفين بالضبط وش راح تبنين قبل ما تلتزمين بأي شي.</p>
+      </div>
+    </section>
+
+    <!-- INVESTMENT + CHECKOUT -->
+    <section class="block" style="border-top:1px solid var(--gold-soft)">
+      <div data-lang="en"><h2 class="sec">Investment</h2></div>
+      <div data-lang="ar"><h2 class="sec">الاستثمار</h2></div>
+
+      <div class="invest">
+        <div class="price">12,000 <small>SAR</small></div>
+        <p class="invest-note" data-lang="en">Pay in full, or split it into interest-free installments with Tamara.</p>
+        <p class="invest-note" data-lang="ar">سجّلي بدفع المبلغ كاملاً، أو بالتقسيط على دفعات بدون فوائد مع تمارا.</p>
+
+        <div class="pay-options">
+          <div class="pay-opt">
+            <div class="po-title"><span data-lang="en">Pay in full</span><span data-lang="ar">التسجيل بالدفع كاملاً</span></div>
+            <div class="po-desc"><span data-lang="en">mada · Visa · Mastercard · Apple Pay</span><span data-lang="ar">مدى · Visa · Mastercard · Apple Pay</span></div>
+          </div>
+          <div class="pay-opt">
+            <div class="po-title"><span data-lang="en">Split with Tamara</span><span data-lang="ar">التسجيل بالتقسيط مع تمارا</span></div>
+            <div class="po-desc"><span data-lang="en">Interest-free installments</span><span data-lang="ar">أقساط بدون أي فوائد</span></div>
+          </div>
+        </div>
+
+        <!-- ══ CHECKOUT (canonical MaCheckout module) ══ -->
+        <div class="card" id="step-contact">
+          <div class="co-section-title">
+            <span class="co-step-badge" style="background:var(--gold-faint);border:1px solid var(--gold-soft);color:var(--gold-lum);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;">1</span>
+            <span data-lang="en">Your details</span><span data-lang="ar">للتسجيل — بياناتك</span>
+          </div>
+
+          <div class="co-field">
+            <label class="co-label" for="name"><span data-lang="en">Full name</span><span data-lang="ar">الاسم الكامل</span></label>
+            <input id="name" class="co-input" type="text" autocomplete="name">
+          </div>
+          <div class="co-field">
+            <label class="co-label" for="email"><span data-lang="en">Email</span><span data-lang="ar">البريد الإلكتروني</span></label>
+            <input id="email" class="co-input" type="email" dir="ltr" autocomplete="email">
+          </div>
+          <div class="co-field">
+            <label class="co-label" for="phone"><span data-lang="en">Mobile number</span><span data-lang="ar">رقم الجوال</span></label>
+            <input id="phone" class="co-input" type="tel" dir="ltr" autocomplete="tel">
+          </div>
+
+          <!-- Module fills this with the configured methods (Moyasar + Tamara) -->
+          <div id="ma-payment-methods" style="margin-top:22px;"></div>
+        </div>
+
+        <!-- STEP 2: card payment (hidden until Continue) -->
+        <div class="card" id="step-payment" style="display:none;">
+          <div class="co-section-title" style="justify-content:space-between;">
+            <span style="display:flex;align-items:center;gap:10px;">
+              <span class="co-step-badge" style="background:var(--gold-faint);border:1px solid var(--gold-soft);color:var(--gold-lum);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;">2</span>
+              <span data-lang="en">Card payment</span><span data-lang="ar">الدفع بالبطاقة</span>
+            </span>
+            <button id="edit-contact-btn" type="button" style="background:none;border:none;color:var(--gold-lum);cursor:pointer;font-size:0.85rem;"><span data-lang="en">Edit</span><span data-lang="ar">تعديل</span></button>
+          </div>
+          <div style="margin-bottom:18px;font-size:0.9rem;color:var(--silver);">
+            <div><span id="sum-name"></span></div>
+            <div dir="ltr"><span id="sum-email"></span></div>
+            <div dir="ltr"><span id="sum-phone"></span></div>
+            <div id="sum-coupon-row" style="display:none;"><span id="sum-coupon"></span></div>
+          </div>
+          <div id="moyasar-form" class="mysr-form"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Standard footer module -->
+  <div id="ma-footer"></div>
+
+  <!-- ══ Language toggle logic ══ -->
+  <script>
+    (function(){
+      var root = document.documentElement;
+      function apply(lang){
+        var isAr = (lang === 'ar');
+        root.setAttribute('data-active', lang);
+        root.setAttribute('lang', isAr ? 'ar' : 'en');
+        root.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+        var be = document.getElementById('btn-en'), ba = document.getElementById('btn-ar');
+        if (be) be.classList.toggle('active', !isAr);
+        if (ba) ba.classList.toggle('active', isAr);
+      }
+      window.setLang = function(lang){
+        try { localStorage.setItem('sara_agentic_os_lang', lang); } catch(e){}
+        apply(lang);
+      };
+      var saved;
+      try { saved = localStorage.getItem('sara_agentic_os_lang'); } catch(e){}
+      apply(saved === 'ar' ? 'ar' : 'en');   // EN default
+    })();
+  </script>
+
+  <!-- ══ Canonical checkout module — Moyasar (pay in full) + Tamara (split) ══ -->
+  <script>
+    MaCheckout.init({
+      productId:     'agentic-os-sara',
+      productNameAr: 'برنامج بناء نظام الوكلاء الذكي',
+      basePrice:     12000,
+      successUrl:    'https://checkout.malearnsa.com/customoffer/success.html',
+      methods:       ['moyasar', 'tamara']
+    });
+  </script>
+  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
+  <script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+</body>
+</html>
