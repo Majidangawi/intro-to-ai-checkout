@@ -329,6 +329,10 @@
             <input id="phone" class="co-input" type="tel" dir="ltr" autocomplete="tel">
           </div>
 
+          <!-- Module-required coupon DOM (hidden — no coupon on this bespoke offer,
+               but payments.js references these IDs; canonical pattern from 1-on-1). -->
+          <div style="display:none"><input id="coupon-input" type="text"><button id="coupon-btn"></button><p id="coupon-msg"></p></div>
+
           <!-- Module fills this with the configured methods (Moyasar + Tamara) -->
           <div id="ma-payment-methods" style="margin-top:22px;"></div>
         </div>
@@ -350,6 +354,11 @@
           </div>
           <div id="moyasar-form" class="mysr-form"></div>
         </div>
+
+        <!-- Module-required price/summary DOM (hidden — canonical pattern from 1-on-1).
+             payments.js references these IDs; keeping the DOM in exact parity with the
+             proven canonical checkout so nothing diverges from the module contract. -->
+        <div style="display:none"><span id="total-price"></span><span id="toggle-total"></span><span id="original-price"></span><span id="discount-row"><span id="discount-amount"></span></span><span id="summary-coupon"></span></div>
       </div>
     </section>
   </div>
