@@ -30,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إتمام الشراء - ورشة صناعة الإلهام | MA Learn</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Moyasar SDK (still needed; PayPal SDK is loaded by the module on demand) -->
   <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
@@ -40,67 +40,85 @@
   <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
 
   <style>
-    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; }
-    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; }
-    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight: 300; }
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 
-    /* ── HEADER (matches malearnsa.com) ── */
-    header {
-      position: fixed; top: 0; width: 100%; z-index: 200;
-      padding: 20px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-      transition: background 0.4s, padding 0.4s;
-    }
-    header.scrolled {
-      background: rgba(8,8,8,0.96); backdrop-filter: blur(12px);
-      padding: 14px 48px; border-bottom: 1px solid rgba(201,168,76,0.1);
-    }
-    .logo-img { height: 36px; max-height: 36px; width: auto; max-width: 160px; object-fit: contain; display: block; }
-    .logo-wrapper { height: 36px; display: flex; align-items: center; overflow: hidden; }
-    .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 4px; color: #C9A84C; text-transform: uppercase; display: none; }
-    .logo-text span { color: #F5F0E8; opacity: 0.4; font-weight: 300; }
-    nav { display: flex; align-items: center; }
-    nav a { color: rgba(245,240,232,0.75); text-decoration: none; font-size: 16px; margin-right: 32px; transition: color 0.3s; white-space: nowrap; }
-    nav a:hover { color: #C9A84C; }
-    @media (max-width: 640px) {
-      header { padding: 14px 20px; }
-      nav a { font-size: 13px; margin-right: 16px; }
-    }
-
+    /* ══ معادلة صناعة الإلهام 2.0 design tokens ══ */
     :root {
-      --bg: #080808; --card-bg: #0E0E0E; --gold: #C9A84C;
-      --gold-lum: #E8D08A; --ivory: #F5F0E8; --silver: #BBBBBB; --grey: #888888;
+      --bg:#151009; --bg-2:#1d1610; --card:#231a12; --card-2:#2a2016;
+      --ink:#f8f0e6; --muted:#cbbba9; --faint:#96897a;
+      --accent:#ff6a3c; --accent-hot:#ff8a5c; --accent-deep:#c8390f;
+      --on-accent:#2a1105;
+      --line:rgba(248,240,230,.11); --line-strong:rgba(248,240,230,.2);
+      --r-lg:28px; --r-md:22px; --r-sm:14px; --r-pill:999px;
+      --disp:'Gumela','Cairo',sans-serif; --body:'Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+      --ok:#4caf82;
+      /* legacy aliases — inline markup + older snippets keep working */
+      --gold:var(--accent); --gold-lum:var(--accent-hot);
+      --ivory:var(--ink); --silver:var(--muted); --grey:var(--faint);
+      --card-bg:var(--card);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Gumela', 'Cairo', sans-serif;
-      background: var(--bg); color: var(--ivory);
-      min-height: 100vh; direction: rtl;
+      font-family: var(--body);
+      background: var(--bg); color: var(--ink);
+      min-height: 100vh; direction: rtl; line-height: 1.75;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
     }
-    body::after {
-      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    ::selection { background: var(--accent); color: var(--on-accent); }
+
+    /* warm poster glow field (matches landing) */
+    .glow-field {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(58% 44% at 50% -6%, rgba(255,96,44,.26), transparent 68%),
+        radial-gradient(34% 26% at 88% 30%, rgba(255,132,72,.08), transparent 70%),
+        radial-gradient(30% 24% at 6% 78%, rgba(255,106,60,.06), transparent 72%);
     }
-    .orb {
-      position: fixed; border-radius: 50%; filter: blur(120px);
-      pointer-events: none; z-index: 0;
-      animation: orb-pulse 7s ease-in-out infinite;
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; width: 100%; z-index: 200;
+      padding: 14px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(21,16,9,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
     }
-    @keyframes orb-pulse { 0%,100%{opacity:.18;transform:scale(1)} 50%{opacity:.3;transform:scale(1.08)} }
+    .logo-img { height: 34px; max-height: 34px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+    .logo-wrapper { height: 34px; display: flex; align-items: center; overflow: hidden; }
+    .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 4px; color: var(--accent); text-transform: uppercase; display: none; font-family: var(--body); }
+    .logo-text span { color: var(--ink); opacity: 0.4; font-weight: 300; }
+    nav { display: flex; align-items: center; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 600; margin-right: 30px; transition: color 0.3s; white-space: nowrap; }
+    nav a:hover { color: var(--accent-hot); }
+    @media (max-width: 640px) {
+      header { padding: 12px 18px; }
+      nav a { font-size: 12px; margin-right: 14px; }
+    }
+
+    /* ── Cards ── */
     .card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(201,168,76,0.18);
-      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-lg);
     }
-    .divider { height: 1px; background: linear-gradient(to left, transparent, rgba(201,168,76,0.2), transparent); }
+    .divider { height: 1px; background: linear-gradient(to left, transparent, rgba(255,106,60,0.25), transparent); }
 
     /* ─── Page layout ─── */
-    .co-outer { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 100px 16px 72px; }
-    .co-header { text-align: center; margin-bottom: 24px; }
-    .co-header .eyebrow { color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
-    .co-header h1 { font-size: clamp(1.35rem, 5vw, 2rem); font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
-    .co-header .sub { color: var(--silver); font-size: 0.85rem; font-weight: 300; }
+    .co-outer { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 108px 16px 72px; }
+    .co-header { text-align: center; margin-bottom: 26px; }
+    .co-header .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1.5px solid var(--line-strong); border-radius: var(--r-pill);
+      padding: 7px 18px; background: rgba(248,240,230,.04);
+      color: var(--muted); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+    .co-header .eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .co-header h1 { font-family: var(--disp); font-size: clamp(1.35rem, 5vw, 2rem); font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+    .co-header .sub { color: var(--muted); font-size: 0.88rem; font-weight: 600; }
 
     .co-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
     .co-form-col { display: flex; flex-direction: column; gap: 16px; order: 2; }
@@ -109,48 +127,111 @@
     /* ─── Mobile summary accordion ─── */
     .co-summary-toggle {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 15px 18px;
-      background: rgba(201,168,76,0.05);
-      border: 1px solid rgba(201,168,76,0.2);
-      border-radius: 12px;
+      padding: 16px 20px;
+      background: rgba(255,106,60,0.07);
+      border: 1.5px solid rgba(255,106,60,0.3);
+      border-radius: var(--r-md);
       cursor: pointer; user-select: none; gap: 12px;
       transition: background 0.2s;
     }
-    .co-summary-toggle:hover { background: rgba(201,168,76,0.09); }
+    .co-summary-toggle:hover { background: rgba(255,106,60,0.11); }
     .co-summary-toggle-info { display: flex; flex-direction: column; gap: 2px; }
-    .co-summary-toggle-label { font-size: 0.8rem; color: var(--silver); }
-    .co-summary-toggle-course { font-size: 0.88rem; font-weight: 700; color: var(--ivory); }
+    .co-summary-toggle-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+    .co-summary-toggle-course { font-size: 0.9rem; font-weight: 800; color: var(--ink); }
     .co-summary-toggle-right { display: flex; align-items: center; gap: 10px; }
-    .co-summary-toggle-price { color: var(--gold); font-weight: 700; font-size: 1.05rem; }
-    .co-summary-chevron { color: var(--gold); font-size: 0.65rem; transition: transform 0.25s; line-height: 1; }
+    .co-summary-toggle-price { color: var(--accent-hot); font-weight: 800; font-size: 1.05rem; }
+    .co-summary-chevron { color: var(--accent); font-size: 0.65rem; transition: transform 0.25s; line-height: 1; }
     .co-summary-chevron.open { transform: rotate(180deg); }
     .co-summary-body { overflow: hidden; max-height: 0; transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1); }
     .co-summary-body.open { max-height: 600px; }
     .co-summary-inner {
-      padding: 20px;
-      border: 1px solid rgba(201,168,76,0.15);
+      padding: 22px 20px;
+      border: 1px solid var(--line);
       border-top: none;
-      border-radius: 0 0 12px 12px;
-      background: rgba(255,255,255,0.02);
+      border-radius: 0 0 var(--r-md) var(--r-md);
+      background: var(--card);
     }
 
     /* ─── DESKTOP: two-column ─── */
     @media (min-width: 640px) {
-      .co-outer { padding: 44px 24px 80px; }
+      .co-outer { padding: 118px 24px 80px; }
       .co-header { margin-bottom: 36px; }
       .co-grid { grid-template-columns: 1fr 300px; gap: 24px; }
       .co-form-col { order: 1; }
-      .co-summary-col { order: 2; position: sticky; top: 24px; }
+      .co-summary-col { order: 2; position: sticky; top: 92px; }
       .co-summary-toggle { display: none; }
       .co-summary-body { max-height: none !important; overflow: visible; transition: none; }
-      .co-summary-inner { border: 1px solid rgba(201,168,76,0.18); border-radius: 16px; padding: 24px; background: rgba(255,255,255,0.03); }
+      .co-summary-inner { border: 1px solid var(--line); border-radius: var(--r-lg); padding: 26px 24px; background: var(--card); }
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       Module re-skin — page-level overrides of payments.css defaults
+       (module files untouched; this block only recolors/rounds them)
+       ══════════════════════════════════════════════════════════════ */
+    .co-input {
+      background: var(--bg-2);
+      border: 1.5px solid var(--line-strong);
+      color: var(--ink);
+      border-radius: var(--r-sm);
+      font-family: var(--body);
+    }
+    .co-input:focus { border-color: var(--accent); }
+    .co-input::placeholder { color: rgba(150,137,122,.65); }
+    .co-label { color: var(--faint); font-weight: 700; }
+    .co-coupon-btn {
+      background: rgba(248,240,230,.05);
+      border: 1.5px solid var(--line-strong);
+      color: var(--ink);
+      border-radius: var(--r-sm);
+      font-family: var(--body); font-weight: 800;
+    }
+    .co-coupon-btn:hover  { background: rgba(255,106,60,0.1); border-color: rgba(255,106,60,0.55); color: var(--accent-hot); }
+    .co-coupon-btn:active { background: rgba(255,106,60,0.16); border-color: var(--accent); }
+    .co-step-badge { background: var(--accent); color: var(--on-accent); font-weight: 900; }
+    .co-section-title { color: var(--ink); font-family: var(--disp); font-size: 1.02rem; }
+    .co-proceed-btn {
+      background: linear-gradient(180deg, var(--accent-hot), var(--accent) 55%, #f0501f);
+      color: var(--on-accent);
+      border-radius: var(--r-pill);
+      font-family: var(--body); font-weight: 800;
+      box-shadow: 0 10px 34px -10px rgba(255,106,60,.55), inset 0 1px 0 rgba(255,255,255,.28);
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .co-proceed-btn:hover  { background: linear-gradient(180deg, var(--accent-hot), var(--accent) 55%, #f0501f); transform: translateY(-2px); box-shadow: 0 16px 44px -12px rgba(255,106,60,.7), inset 0 1px 0 rgba(255,255,255,.28); }
+    .co-secure-note { color: var(--ok); }
+    .co-bank-btn {
+      background: rgba(248,240,230,.05);
+      color: var(--ink);
+      border: 1.5px solid var(--line-strong);
+      border-radius: var(--r-sm);
+      font-family: var(--body); font-weight: 800;
+    }
+    .co-bank-btn:hover { background: rgba(248,240,230,.09); border-color: rgba(248,240,230,.4); }
+    .co-bank-badge { background: rgba(248,240,230,.1); color: var(--muted); font-family: var(--body); }
+    .co-tamara-btn { border-radius: var(--r-sm); font-family: var(--body); }
+    .co-tamara-country-btn { border-radius: var(--r-sm); font-family: var(--body); }
+    .co-paypal-wrap { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-sm); }
+    .co-paypal-label { color: var(--muted); }
+    .co-paypal-label .usd { color: var(--accent-hot); }
+    .co-or-divider { color: var(--faint); }
+    .co-or-divider::before, .co-or-divider::after { background: var(--line); }
+    /* Moyasar iframe form — module uses !important, so overrides must too */
+    .mysr-form input { background: var(--bg-2) !important; color: var(--ink) !important; border: 1.5px solid var(--line-strong) !important; border-radius: 12px !important; }
+    .mysr-form input:focus { border-color: var(--accent) !important; }
+    .mysr-form label { color: var(--faint) !important; }
+    .mysr-form .mysr-pay-button { background: linear-gradient(180deg, #ff8a5c, #ff6a3c 55%, #f0501f) !important; color: #2a1105 !important; font-weight: 800 !important; border-radius: 999px !important; }
+    .mysr-form .mysr-pay-button:hover { background: linear-gradient(180deg, #ff9a70, #ff7a4e 55%, #f0501f) !important; }
+    .mysr-form .mysr-apple-pay-button { border-radius: 12px !important; }
+
+    /* date gate — every payment method stays locked until a cohort date is chosen */
+    #ma-payment-methods.date-locked{ position:relative; opacity:.45; }
+    #ma-payment-methods.date-locked::after{ content:''; position:absolute; inset:0; z-index:5; cursor:not-allowed; }
+
   </style>
 </head>
 <body>
 
-<div class="orb" style="width:500px;height:500px;background:#C9A84C;top:-100px;right:-100px;opacity:0.12;"></div>
-<div class="orb" style="width:400px;height:400px;background:#C9A84C;bottom:-80px;left:-80px;opacity:0.08;animation-delay:3.5s;"></div>
+<div class="glow-field"></div>
 
 <header id="site-header">
   <a href="https://malearnsa.com/creative-ai-workshop/" class="logo-wrapper" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;" title="العودة إلى صفحة الورشة">
@@ -169,8 +250,8 @@
 
   <div class="co-header">
     <p class="eyebrow">إتمام الشراء</p>
-    <h1>ورشة صناعة الإلهام — الدفعة الثالثة</h1>
-    <p class="sub">٣ أيام مباشرة مع ماجد · ٥ — ٧ يوليو · ٣٠ مقعد فقط</p>
+    <h1>معادلة صناعة الإلهام 2.0</h1>
+    <p class="sub">٣ أيام مباشرة أونلاين | ٣٠ مقعد لكل دفعة</p>
   </div>
 
   <div class="co-grid">
@@ -179,7 +260,7 @@
     <div class="co-form-col">
 
       <!-- STEP 1: Contact + Coupon + Payment buttons -->
-      <div class="card" style="padding:22px 20px;" id="step-contact">
+      <div class="card" style="padding:26px 22px;" id="step-contact">
         <div class="co-section-title"><span class="co-step-badge">١</span>بياناتك</div>
 
         <div class="co-field">
@@ -195,7 +276,7 @@
           <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
         </div>
 
-        <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.05);">
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(248,240,230,0.08);">
           <label class="co-label">كود خصم (اختياري)</label>
           <div class="co-coupon-row">
             <input id="coupon-input" class="co-input" type="text" placeholder="MABL20" dir="ltr"
@@ -205,26 +286,44 @@
           <p id="coupon-msg" style="display:none;font-size:0.8rem;margin-top:8px;"></p>
         </div>
 
-        <!-- Module fills this with the configured methods -->
-        <div id="ma-payment-methods" style="margin-top:20px;"></div>
+        <!-- STEP: choose cohort date (معادلة 2.0 date-select) -->
+        <style>
+          .cohort-card{display:flex;align-items:center;gap:10px;padding:13px 15px;border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s;font-size:0.9rem;}
+          .cohort-card:has(input:checked){border-color:var(--accent-hot);background:var(--bg-2);}
+          .cohort-card input{accent-color:var(--accent-hot);width:18px;height:18px;}
+          .cohort-card small{color:var(--faint);font-weight:600;}
+          .cohort-card.is-full{opacity:.5;cursor:not-allowed;}
+        </style>
+        <div class="co-field" id="cohort-select" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(248,240,230,0.08);">
+          <label class="co-label">اختر موعد الدفعة</label>
+          <div id="cohort-options" style="display:flex;flex-direction:column;gap:10px;">
+            <label class="cohort-card"><input type="radio" name="cohort_date" value="2026-08-25"><span>٢٥–٢٧ أغسطس <small>(الدفعة الأولى)</small></span></label>
+            <label class="cohort-card"><input type="radio" name="cohort_date" value="2026-09-08"><span>٨–١٠ سبتمبر <small>(الدفعة الثانية)</small></span></label>
+            <label class="cohort-card"><input type="radio" name="cohort_date" value="2026-09-15"><span>١٥–١٧ سبتمبر <small>(الدفعة الثالثة)</small></span></label>
+          </div>
+          <p id="cohort-msg" style="display:none;color:#e0564f;font-size:0.8rem;margin-top:8px;">اختر موعد الدفعة قبل المتابعة.</p>
+        </div>
+
+        <!-- Module fills this with the configured methods (locked until a date is chosen) -->
+        <div id="ma-payment-methods" class="date-locked" style="margin-top:20px;"></div>
       </div>
 
       <!-- STEP 2: Card payment (hidden by default; shown after Continue) -->
-      <div class="card" style="padding:22px 20px;display:none;" id="step-payment">
+      <div class="card" style="padding:26px 22px;display:none;" id="step-payment">
         <div class="co-section-title" style="display:flex;justify-content:space-between;align-items:center;">
           <span style="display:flex;align-items:center;gap:10px;">
             <span class="co-step-badge">٢</span>الدفع بالبطاقة
           </span>
-          <button id="edit-contact-btn" type="button" style="background:none;border:none;color:var(--gold);font-size:0.78rem;cursor:pointer;font-family:'Gumela','Cairo',sans-serif;display:flex;align-items:center;gap:4px;">
+          <button id="edit-contact-btn" type="button" style="background:none;border:none;color:var(--accent-hot);font-size:0.78rem;cursor:pointer;font-family:var(--body);font-weight:700;display:flex;align-items:center;gap:4px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             تعديل
           </button>
         </div>
-        <div style="margin-bottom:18px;padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
-          <div style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;color:var(--silver);">
-            <div><span style="color:var(--grey);">الاسم:</span> <span id="sum-name"></span></div>
-            <div style="direction:ltr;text-align:right;"><span style="color:var(--grey);">البريد:</span> <span id="sum-email"></span></div>
-            <div style="direction:ltr;text-align:right;"><span style="color:var(--grey);">الجوال:</span> <span id="sum-phone"></span></div>
+        <div style="margin-bottom:18px;padding:15px 17px;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;">
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;color:var(--muted);">
+            <div><span style="color:var(--faint);">الاسم:</span> <span id="sum-name"></span></div>
+            <div style="direction:ltr;text-align:right;"><span style="color:var(--faint);">البريد:</span> <span id="sum-email"></span></div>
+            <div style="direction:ltr;text-align:right;"><span style="color:var(--faint);">الجوال:</span> <span id="sum-phone"></span></div>
             <div id="sum-coupon-row" style="display:none;color:#4caf82;"><span id="sum-coupon"></span></div>
           </div>
         </div>
@@ -239,10 +338,10 @@
       <div class="co-summary-toggle" onclick="toggleSummary()" id="summary-toggle">
         <div class="co-summary-toggle-info">
           <span class="co-summary-toggle-label">ملخص الطلب</span>
-          <span class="co-summary-toggle-course">ورشة صناعة الإلهام</span>
+          <span class="co-summary-toggle-course">معادلة صناعة الإلهام 2.0</span>
         </div>
         <div class="co-summary-toggle-right">
-          <span class="co-summary-toggle-price" id="toggle-total">1299 ر.س</span>
+          <span class="co-summary-toggle-price" id="toggle-total">1399 ر.س</span>
           <span class="co-summary-chevron" id="summary-chevron">▼</span>
         </div>
       </div>
@@ -251,12 +350,12 @@
         <div class="co-summary-inner">
 
           <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
-            <div style="width:52px;height:52px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <div style="width:52px;height:52px;background:rgba(255,106,60,0.12);border:1px solid rgba(255,106,60,0.3);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </div>
             <div>
-              <p style="font-size:0.88rem;font-weight:700;margin-bottom:3px;">ورشة صناعة الإلهام</p>
-              <p style="font-size:0.76rem;color:var(--grey);font-weight:300;">ورشة مباشرة + دورة المدخل + جلسة نقد جماعية + مجتمع Skool حتى مايو ٢٠٢٧ + موارد</p>
+              <p style="font-size:0.88rem;font-weight:800;margin-bottom:3px;">معادلة صناعة الإلهام 2.0</p>
+              <p style="font-size:0.76rem;color:var(--faint);font-weight:600;">الورشة المباشرة + دورة المدخل + جلسة نقد جماعية + مجتمع Skool لمدة سنة + موارد جاهزة</p>
             </div>
           </div>
 
@@ -264,35 +363,35 @@
 
           <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;">
             <div style="display:flex;justify-content:space-between;">
-              <span style="color:var(--grey);">السعر</span>
-              <span id="original-price">1299 ر.س</span>
+              <span style="color:var(--faint);">السعر</span>
+              <span id="original-price">1399 ر.س</span>
             </div>
             <div id="discount-row" style="display:none;justify-content:space-between;">
-              <span style="color:var(--grey);">الخصم</span>
+              <span style="color:var(--faint);">الخصم</span>
               <span style="color:#4caf82;" id="discount-amount">-0 ر.س</span>
             </div>
           </div>
 
           <div class="divider" style="margin:14px 0;"></div>
-          <div style="display:flex;justify-content:space-between;font-weight:700;">
+          <div style="display:flex;justify-content:space-between;font-weight:800;">
             <span>الإجمالي</span>
-            <span id="total-price" style="color:var(--gold);font-size:1.05rem;">1299 ر.س</span>
+            <span id="total-price" style="color:var(--accent-hot);font-size:1.1rem;">1399 ر.س</span>
           </div>
 
           <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
 
-          <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);">
-            <div style="display:flex;flex-direction:column;gap:8px;font-size:0.78rem;color:var(--grey);">
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(248,240,230,0.08);">
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:0.78rem;color:var(--faint);">
               <div style="display:flex;align-items:center;gap:8px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 وصول فوري بعد الدفع
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 رابط الدورة يصلك على الإيميل
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 وصول مدى الحياة من أي جهاز
               </div>
             </div>
@@ -326,15 +425,50 @@
   window.MaCheckoutConfig = {
     productId:     'creative-ai-workshop-t3',
     productNameAr: 'ورشة صناعة الإلهام',
-    basePrice:     1299,
-    cohort:        'C3',
+    basePrice:     1399,
+    cohort:        '',
+    cohortDate:    '',
     successUrl:    'https://checkout.malearnsa.com/creative-ai-workshop/success.html',
     methods:       ['moyasar', 'bank', 'tamara', 'paypal']
   };
 </script>
 <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
 <script>
+  // --- ref capture: 30-day last-touch, set on config BEFORE init ---
+  try {
+    var _u = new URLSearchParams(location.search);
+    var _r = _u.get('ref');
+    if (_r) { localStorage.setItem('ma_ref', JSON.stringify({ v: _r, exp: Date.now() + 30*864e5 })); }
+    var _st = JSON.parse(localStorage.getItem('ma_ref') || 'null');
+    if (_st && _st.exp > Date.now()) { window.MaCheckoutConfig.ref = _st.v; }
+  } catch (e) {}
+
   MaCheckout.init(window.MaCheckoutConfig);
+
+  // --- date-select wiring + required guard (gates ALL payment methods) ---
+  (function () {
+    var methods = document.getElementById('ma-payment-methods');
+    var proceed = document.getElementById('proceed-btn');
+    var msg     = document.getElementById('cohort-msg');
+    var picker  = document.getElementById('cohort-select');
+    if (proceed) { proceed.disabled = true; proceed.style.opacity = '0.5'; }
+    if (methods) {
+      methods.addEventListener('click', function (e) {
+        if (!methods.classList.contains('date-locked')) return;
+        e.preventDefault(); e.stopPropagation();
+        if (msg) msg.style.display = 'block';
+        if (picker) picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, true);
+    }
+    document.querySelectorAll('input[name="cohort_date"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        MaCheckout.setCohortDate(this.value);
+        if (methods) methods.classList.remove('date-locked');
+        if (msg) msg.style.display = 'none';
+        if (proceed) { proceed.disabled = false; proceed.style.opacity = '1'; }
+      });
+    });
+  })();
 </script>
 
 <!-- Auto-discount intentionally disabled 2026-05-04. Snippet archived at
