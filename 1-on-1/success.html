@@ -222,9 +222,18 @@
 <!-- Initialize the shared success-page module -->
 <script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
 <script>
+  // Resolve which package was actually bought — the checkout stores the
+  // purchase blob under `${productId}_purchase`, so a hardcoded '1-on-1'
+  // here made smart-package buyers invisible to the success fallback
+  // (empty purchaseData + complete_purchase sent with the WRONG product).
+  // Fixed 2026-08-18 (Shaza incident).
+  var _pid = '1-on-1';
+  try { if (localStorage.getItem('1-on-1-smart_purchase')) _pid = '1-on-1-smart'; } catch (_) {}
   MaSuccess.init({
-    productId:     '1-on-1',
-    productNameAr: 'التدريب الفردي مع ماجد عنقاوي'
+    productId:     _pid,
+    productNameAr: _pid === '1-on-1-smart'
+      ? 'التدريب الشخصي — الباقة الذكية'
+      : 'التدريب الفردي مع ماجد عنقاوي'
   });
 </script>
 
