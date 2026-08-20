@@ -293,6 +293,8 @@
           .cohort-card input{accent-color:var(--accent-hot);width:18px;height:18px;}
           .cohort-card small{color:var(--faint);font-weight:600;}
           .cohort-card.is-full{opacity:.5;cursor:not-allowed;}
+          .cohort-card.is-full input{pointer-events:none;}
+          .cohort-card .full-badge{color:#e0564f;font-weight:800;font-size:0.78rem;margin-inline-start:auto;white-space:nowrap;}
         </style>
         <div class="co-field" id="cohort-select" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(248,240,230,0.08);">
           <label class="co-label">اختر موعد الدفعة</label>
@@ -467,6 +469,40 @@
         if (msg) msg.style.display = 'none';
         if (proceed) { proceed.disabled = false; proceed.style.opacity = '1'; }
       });
+    });
+  })();
+
+  // --- per-date sold-out guard: grey out a full cohort date + "نفدت المقاعد" badge.
+  //     Polls get_seats_left per cohort (sold_out = seats gone OR doors closed).
+  //     Fails open on network error — the backend seat cap is the hard stop. ---
+  (function () {
+    var SEATS_URL  = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+    var COHORT_MAP = { '2026-08-25': 'C4', '2026-09-08': 'C5', '2026-09-15': 'C6' };
+    document.querySelectorAll('input[name="cohort_date"]').forEach(function (radio) {
+      var key = COHORT_MAP[radio.value];
+      if (!key) return;
+      fetch(SEATS_URL + '?action=get_seats_left&cohort=' + key)
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d || d.sold_out !== true) return;
+          var card = radio.closest('.cohort-card');
+          if (!card || card.classList.contains('is-full')) return;
+          radio.disabled = true;
+          if (radio.checked) {
+            // buyer had already picked this date before the poll returned — re-lock
+            radio.checked = false;
+            var methods = document.getElementById('ma-payment-methods');
+            var proceed = document.getElementById('proceed-btn');
+            if (methods) methods.classList.add('date-locked');
+            if (proceed) { proceed.disabled = true; proceed.style.opacity = '0.5'; }
+          }
+          card.classList.add('is-full');
+          var badge = document.createElement('small');
+          badge.className = 'full-badge';
+          badge.textContent = 'نفدت المقاعد';
+          card.appendChild(badge);
+        })
+        .catch(function () {});
     });
   })();
 </script>
