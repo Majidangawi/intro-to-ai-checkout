@@ -70,7 +70,7 @@
     <h1>Schedule the Sessions</h1>
     <p>Pick date, start time and duration for every session. One submit creates the calendar events, Meet links, client invites and the itinerary email.</p>
     <div class="client-strip" id="clientStrip" style="display:none"></div>
-    <p class="note-line">Fridays blocked · 10:00–22:30 KSA · 30-min steps · max 3h per session · all sessions within 30 days of purchase (soft limit)</p>
+    <p class="note-line">10:00–22:30 KSA · 30-min steps · max 3h per session · all sessions within 30 days of purchase (soft limit)</p>
   </div>
 
   <div class="loading" id="loading">Loading client schedule…</div>
@@ -123,8 +123,7 @@
       var v = ymd(d);
       var label = DAYS_EN[d.getDay()]+' '+MONTHS_EN[d.getMonth()]+' '+d.getDate();
       var dis = '', suffix = '';
-      if (d.getDay() === 5){ dis = ' disabled'; suffix = ' — Friday (off)'; }
-      else if (windowEnd && v > windowEnd){ suffix = ' ⚠ outside 30-day window'; }
+      if (windowEnd && v > windowEnd){ suffix = ' ⚠ outside 30-day window'; }
       out += '<option value="'+v+'"'+dis+(selected===v?' selected':'')+'>'+label+suffix+'</option>';
     }
     return out;
