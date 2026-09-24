@@ -252,6 +252,8 @@
     <p class="eyebrow">إتمام الشراء</p>
     <h1>معادلة صناعة الإلهام 2.0</h1>
     <p class="sub">٣ أيام مباشرة أونلاين | ٣٠ مقعد لكل دفعة</p>
+    <!-- ?preview=1 : Majid's preview before Gate 1. Cards become selectable, purchase stays locked (page + server). -->
+    <p id="preview-banner" style="display:none;margin-top:14px;border:1.5px dashed var(--accent);border-radius:var(--r-pill);padding:7px 16px;color:var(--accent-hot);font-size:0.8rem;font-weight:800;">معاينة فقط: الشراء مقفل حتى يفتح التسجيل</p>
   </div>
 
   <div class="co-grid">
@@ -295,14 +297,17 @@
           .cohort-card.is-full{opacity:.5;cursor:not-allowed;}
           .cohort-card.is-full input{pointer-events:none;}
           .cohort-card .full-badge{color:#e0564f;font-weight:800;font-size:0.78rem;margin-inline-start:auto;white-space:nowrap;}
+          .cohort-card .soon-badge{color:var(--accent-hot);font-weight:800;font-size:0.78rem;margin-inline-start:auto;white-space:nowrap;}
+          .cohort-card .wait-badge{color:var(--faint);font-weight:700;font-size:0.74rem;margin-inline-start:auto;white-space:nowrap;}
         </style>
         <div class="co-field" id="cohort-select" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(248,240,230,0.08);">
           <label class="co-label">اختر موعد الدفعة</label>
           <div id="cohort-options" style="display:flex;flex-direction:column;gap:10px;">
-            <label class="cohort-card"><input type="radio" name="cohort_date" value="2026-09-08"><span>٨–١٠ سبتمبر <small>(الدفعة الخامسة)</small></span></label>
-            <label class="cohort-card"><input type="radio" name="cohort_date" value="2026-09-15"><span>١٥–١٧ سبتمبر <small>(الدفعة السادسة)</small></span></label>
+            <label class="cohort-card is-full"><input type="radio" name="cohort_date" value="2026-10-27" disabled><span>٢٧–٢٩ أكتوبر <small>(الدفعة السابعة)</small></span><small class="state-badge wait-badge">جارٍ التحقق</small></label>
+            <label class="cohort-card is-full"><input type="radio" name="cohort_date" value="2026-11-03" disabled><span>٣–٥ نوفمبر <small>(الدفعة الثامنة)</small></span><small class="state-badge wait-badge">جارٍ التحقق</small></label>
           </div>
           <p id="cohort-msg" style="display:none;color:#e0564f;font-size:0.8rem;margin-top:8px;">اختر موعد الدفعة قبل المتابعة.</p>
+          <p id="doors-msg" style="display:none;color:var(--accent-hot);font-size:0.8rem;font-weight:700;margin-top:8px;"></p>
         </div>
 
         <!-- Module fills this with the configured methods (locked until a date is chosen) -->
@@ -342,7 +347,7 @@
           <span class="co-summary-toggle-course">معادلة صناعة الإلهام 2.0</span>
         </div>
         <div class="co-summary-toggle-right">
-          <span class="co-summary-toggle-price" id="toggle-total">1399 ر.س</span>
+          <span class="co-summary-toggle-price" id="toggle-total">1599 ر.س</span>
           <span class="co-summary-chevron" id="summary-chevron">▼</span>
         </div>
       </div>
@@ -365,7 +370,7 @@
           <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;">
             <div style="display:flex;justify-content:space-between;">
               <span style="color:var(--faint);">السعر</span>
-              <span id="original-price">1399 ر.س</span>
+              <span id="original-price">1599 ر.س</span>
             </div>
             <div id="discount-row" style="display:none;justify-content:space-between;">
               <span style="color:var(--faint);">الخصم</span>
@@ -376,7 +381,7 @@
           <div class="divider" style="margin:14px 0;"></div>
           <div style="display:flex;justify-content:space-between;font-weight:800;">
             <span>الإجمالي</span>
-            <span id="total-price" style="color:var(--accent-hot);font-size:1.1rem;">1399 ر.س</span>
+            <span id="total-price" style="color:var(--accent-hot);font-size:1.1rem;">1599 ر.س</span>
           </div>
 
           <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
@@ -389,11 +394,11 @@
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                رابط الدورة يصلك على الإيميل
+                تفاصيل الوصول تصلك على الإيميل
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                وصول مدى الحياة من أي جهاز
+                وصول لمدة سنة كاملة من أي جهاز
               </div>
             </div>
           </div>
@@ -426,7 +431,7 @@
   window.MaCheckoutConfig = {
     productId:     'creative-ai-workshop-t3',
     productNameAr: 'ورشة صناعة الإلهام',
-    basePrice:     1399,
+    basePrice:     1599,
     cohort:        '',
     cohortDate:    '',
     successUrl:    'https://checkout.malearnsa.com/creative-ai-workshop/success.html',
@@ -471,38 +476,109 @@
     });
   })();
 
-  // --- per-date sold-out guard: grey out a full cohort date + "نفدت المقاعد" badge.
-  //     Polls get_seats_left per cohort (sold_out = seats gone OR doors closed).
-  //     Fails open on network error — the backend seat cap is the hard stop. ---
+  // --- per-date state from the backend (MAL-298). Cards start locked; get_seats_left
+  //     decides each one: doors_open -> selectable · coming_soon -> «قريباً» ·
+  //     sold out / started -> «نفدت المقاعد». Fails CLOSED: no answer, no purchase,
+  //     but never a dead end: it keeps re-checking (every 90s while the tab is
+  //     visible, every 5-15s after a failure), so Gate 1 and sell-outs reach open tabs.
+  //     Gate 1 = one Config cell (T3_DOORS = OPEN) on the backend; nothing to push here.
+  //     ?preview=1 makes «قريباً» cards selectable for review; every payment method
+  //     stays blocked (card/bank/Tamara here, PayPal + bank + Tamara on the server). ---
   (function () {
     var SEATS_URL  = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
-    var COHORT_MAP = { '2026-08-25': 'C4', '2026-09-08': 'C5', '2026-09-15': 'C6' };
-    document.querySelectorAll('input[name="cohort_date"]').forEach(function (radio) {
-      var key = COHORT_MAP[radio.value];
-      if (!key) return;
-      fetch(SEATS_URL + '?action=get_seats_left&cohort=' + key)
+    var COHORT_MAP = { '2026-10-27': 'C7', '2026-11-03': 'C8' };
+    var PREVIEW    = /[?&]preview=1(&|$)/.test(location.search);
+    var cardState  = {};   // cohort_date -> 'open' | 'soon' | 'full' (only from a real answer)
+    var methods = document.getElementById('ma-payment-methods');
+    var msg     = document.getElementById('doors-msg');
+    var radios  = [].slice.call(document.querySelectorAll('input[name="cohort_date"]')).filter(function (r) { return COHORT_MAP[r.value]; });
+    if (PREVIEW) { var pb = document.getElementById('preview-banner'); if (pb) pb.style.display = 'inline-block'; }
+
+    function say(text) { if (!msg) return; msg.textContent = text || ''; msg.style.display = text ? 'block' : 'none'; }
+    function relock(radio) {
+      if (!radio.checked) return;
+      radio.checked = false;
+      var proceed = document.getElementById('proceed-btn');
+      if (methods) methods.classList.add('date-locked');
+      if (proceed) { proceed.disabled = true; proceed.style.opacity = '0.5'; }
+      var sp = document.getElementById('step-payment'), sc = document.getElementById('step-contact');
+      if (sp && sp.style.display !== 'none') { sp.style.display = 'none'; if (sc) sc.style.display = 'block'; }
+    }
+    function setCard(radio, state) {           // 'open' | 'soon' | 'full'
+      var card  = radio.closest('.cohort-card');
+      var badge = card && card.querySelector('.state-badge');
+      if (!card || !badge) return;
+      var was = cardState[radio.value];
+      cardState[radio.value] = state;
+      var selectable = state === 'open' || (PREVIEW && state === 'soon');
+      radio.disabled = !selectable;
+      card.classList.toggle('is-full', !selectable);
+      if (!selectable && radio.checked) { relock(radio); say(state === 'full' ? 'المقاعد في هذي الدفعة اكتملت، اختر موعد ثاني.' : ''); }
+      badge.className   = 'state-badge ' + (state === 'full' ? 'full-badge' : state === 'soon' ? 'soon-badge' : 'wait-badge');
+      badge.textContent = state === 'soon' ? 'قريباً' : state === 'full' ? 'نفدت المقاعد' : '';
+      badge.style.display = badge.textContent ? '' : 'none';
+      return was !== state;
+    }
+    function stateOf(d) {
+      if (d && d.doors_open === true) return 'open';
+      if (d && d.sold_out === true && !d.coming_soon) return 'full';
+      return 'soon';
+    }
+    function check(radio) {
+      return fetch(SEATS_URL + '?action=get_seats_left&cohort=' + COHORT_MAP[radio.value], { cache: 'no-store' })
         .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (!d || d.sold_out !== true) return;
-          var card = radio.closest('.cohort-card');
-          if (!card || card.classList.contains('is-full')) return;
-          radio.disabled = true;
-          if (radio.checked) {
-            // buyer had already picked this date before the poll returned — re-lock
-            radio.checked = false;
-            var methods = document.getElementById('ma-payment-methods');
-            var proceed = document.getElementById('proceed-btn');
-            if (methods) methods.classList.add('date-locked');
-            if (proceed) { proceed.disabled = true; proceed.style.opacity = '0.5'; }
-          }
-          card.classList.add('is-full');
-          var badge = document.createElement('small');
-          badge.className = 'full-badge';
-          badge.textContent = 'نفدت المقاعد';
-          card.appendChild(badge);
-        })
-        .catch(function () {});
+        .then(function (d) { if (!d || d.seats_total === undefined) throw new Error('bad'); setCard(radio, stateOf(d)); });
+    }
+
+    var fails = 0, timer = null;
+    function pollAll() {
+      clearTimeout(timer);
+      if (document.hidden) { timer = setTimeout(pollAll, 5000); return; }
+      Promise.all(radios.map(check)).then(function () {
+        if (fails) say('');
+        fails = 0;
+        var done = radios.every(function (r) { return cardState[r.value] === 'full'; });
+        if (!done) timer = setTimeout(pollAll, 90000);
+      }).catch(function () {
+        fails++;
+        if (fails >= 2) say('تعذّر تحميل المواعيد، نحاول مرة ثانية تلقائياً…');
+        timer = setTimeout(pollAll, fails < 3 ? 5000 : 15000);
+      });
+    }
+    pollAll();
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && fails) pollAll(); });
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', function () { if (cardState[radio.value] === 'open') say(''); });
     });
+
+    // Every click in the payment block goes through here. Not open -> stop
+    // (only reachable in preview). Open -> the card / Apple Pay / 0 SAR button
+    // (#proceed-btn) re-checks seats first, because that charge is created in the
+    // browser; bank, Tamara and PayPal are re-checked by the server anyway.
+    var confirmed = false;
+    if (methods) {
+      methods.addEventListener('click', function (e) {
+        if (methods.classList.contains('date-locked')) return;
+        var picked = document.querySelector('input[name="cohort_date"]:checked');
+        if (!picked || cardState[picked.value] !== 'open') {
+          e.preventDefault(); e.stopPropagation();
+          say('التسجيل في هذي الدفعة يفتح قريباً.');
+          return;
+        }
+        var btn = e.target && e.target.closest && e.target.closest('#proceed-btn');
+        if (!btn) return;
+        if (confirmed) { confirmed = false; return; }
+        e.preventDefault(); e.stopPropagation();
+        btn.disabled = true;
+        check(picked).then(function () {
+          btn.disabled = false;
+          if (cardState[picked.value] === 'open') { confirmed = true; btn.click(); }
+        }).catch(function () {
+          btn.disabled = false;
+          say('تعذّر التحقق من المقاعد، حاول مرة ثانية.');
+        });
+      }, true);
+    }
   })();
 </script>
 
