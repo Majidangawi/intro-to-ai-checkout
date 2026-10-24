@@ -107,7 +107,7 @@
     });
   }
   // The booking page's hold is done with; the next visit starts fresh.
-  try { ['consult_slot', 'consult_topic', 'consult_hold_token'].forEach(function (k) { sessionStorage.removeItem(k); }); } catch (_) {}
+  try { ['consult_slot', 'consult_answers', 'consult_topic', 'consult_hold_token'].forEach(function (k) { sessionStorage.removeItem(k); }); } catch (_) {}
 
   // Card / Apple Pay: confirm against the backend (the slot can be lost in a rare race).
   var q = new URLSearchParams(location.search);

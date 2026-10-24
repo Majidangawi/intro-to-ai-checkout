@@ -127,6 +127,16 @@
           <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
         </div>
         <div class="co-field">
+          <label class="co-label" for="business">وش مشروعك أو علامتك أو نشاطك؟ <span class="req">*</span></label>
+          <textarea id="business" class="co-input" maxlength="600" style="min-height:72px;" placeholder="مثال: استوديو تصوير منتجات في جدة، أو علامة عطور ناشئة، أو مشروع محتوى شخصي."></textarea>
+          <div class="msg err" id="business-msg" role="alert"></div>
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="objective">وش الهدف الرئيسي أو النتيجة اللي تتوقعها من الاستشارة؟ <span class="req">*</span></label>
+          <textarea id="objective" class="co-input" maxlength="1500" style="min-height:72px;" placeholder="مثال: أطلع بخطة واضحة أبدأ فيها استخدام الذكاء الاصطناعي في شغلي."></textarea>
+          <div class="msg err" id="objective-msg" role="alert"></div>
+        </div>
+        <div class="co-field">
           <label class="co-label" for="topic">وش حاب نركز عليه في الاستشارة؟ <span class="req">*</span></label>
           <textarea id="topic" class="co-input" maxlength="1500" placeholder="مثال: أبغى أدخل الذكاء الاصطناعي في شغلي كمصمم، ومحتار من وين أبدأ وأي الأدوات تناسبني."></textarea>
           <div class="msg err" id="topic-msg" role="alert"></div>
@@ -200,7 +210,7 @@
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>كيف توظّف الذكاء الاصطناعي في شغلك الإبداعي</li>
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>اختيار الأدوات المناسبة لهدفك وميزانيتك</li>
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>مراجعة فكرة أو مشروع تشتغل عليه</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>الاستراتيجية والتوجيه الإبداعي لمحتواك أو علامتك</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>الاستراتيجية والتوجيه الإبداعي لمشروعك أو علامتك</li>
             </ul>
           </div>
         </div>
@@ -257,7 +267,14 @@
   $('summary-toggle').onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSummary(); } };
 
   // --- hold token (one per tab), held slot, topic survive the module's edit-reload ---
-  var TOKEN_KEY = 'consult_hold_token', SLOT_KEY = 'consult_slot', TOPIC_KEY = 'consult_topic';
+  var TOKEN_KEY = 'consult_hold_token', SLOT_KEY = 'consult_slot', TOPIC_KEY = 'consult_answers';
+  // The three required intake answers (first missing one is the one we point to).
+  var QUESTIONS = [
+    { id: 'business',  msg: 'عرّفنا باختصار على مشروعك أو علامتك أو نشاطك.' },
+    { id: 'objective', msg: 'اكتب الهدف أو النتيجة اللي تتوقعها من الاستشارة.' },
+    { id: 'topic',     msg: 'اكتب باختصار وش حاب نركز عليه، عشان أجهز للاستشارة.' }
+  ];
+  function missingAnswer() { for (var i = 0; i < QUESTIONS.length; i++) if (!val(QUESTIONS[i].id)) return QUESTIONS[i]; return null; }
   function token() {
     var t = sessionStorage.getItem(TOKEN_KEY);
     if (!t) {
@@ -272,12 +289,12 @@
   var methods = $('ma-payment-methods');
   var cal = ConsultCal.mount($('cc-root'), { onPick: pick });
 
-  function details() { return { name: val('name'), email: val('email'), phone: val('phone'), topic: val('topic') }; }
+  function details() { return { name: val('name'), email: val('email'), phone: val('phone'), topic: val('topic'), business: val('business'), objective: val('objective') }; }
   function hold(slot) {
     return ConsultCal.post(Object.assign({ action: 'consult_hold', slot: slot, token: token() }, details()));
   }
   function updateLock() {
-    var locked = !picked || !val('topic');
+    var locked = !picked || !!missingAnswer();
     methods.classList.toggle('slot-locked', locked);
   }
 
@@ -307,7 +324,7 @@
     hideMsg('pay-msg');
     updateLock();
     if (!silent) {
-      var target = val('name') ? $('topic') : $('name');
+      var target = val('name') ? $((missingAnswer() || { id: 'topic' }).id) : $('name');
       $('step-picked').scrollIntoView({ behavior: 'smooth', block: 'start' });
       setTimeout(function () { try { target.focus({ preventScroll: true }); } catch (_) {} }, 450);
     }
@@ -340,13 +357,15 @@
   }
   setInterval(function () { if (picked && !document.hidden) refresh(); }, 10 * 60 * 1000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden && picked) refresh(); });
-  ['name', 'email', 'phone', 'topic'].forEach(function (id) {
+  ['name', 'email', 'phone', 'business', 'objective', 'topic'].forEach(function (id) {
     $(id).addEventListener('change', function () { if (picked) refresh(); });
   });
-  $('topic').addEventListener('input', function () {
-    try { sessionStorage.setItem(TOPIC_KEY, $('topic').value); } catch (_) {}
-    if (val('topic')) hideMsg('topic-msg');
-    updateLock();
+  QUESTIONS.forEach(function (q) {
+    $(q.id).addEventListener('input', function () {
+      try { sessionStorage.setItem(TOPIC_KEY, JSON.stringify({ business: $('business').value, objective: $('objective').value, topic: $('topic').value })); } catch (_) {}
+      if (val(q.id)) hideMsg(q.id + '-msg');
+      updateLock();
+    });
   });
 
   $('change-slot').onclick = function () {
@@ -368,10 +387,11 @@
       $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
-    if (!val('topic')) {
+    var miss = missingAnswer();
+    if (miss) {
       stop(e);
-      showMsg('topic-msg', 'اكتب باختصار وش حاب نركز عليه، عشان أجهز للاستشارة.');
-      $('topic').focus();
+      showMsg(miss.id + '-msg', miss.msg);
+      $(miss.id).focus();
       return;
     }
     var btn = e.target && e.target.closest ? e.target.closest('button') : null;
@@ -390,8 +410,8 @@
 
   // Restore after the module's «تعديل» reload (or a refresh in the same tab).
   try {
-    var savedTopic = sessionStorage.getItem(TOPIC_KEY);
-    if (savedTopic && !$('topic').value) $('topic').value = savedTopic;
+    var saved = JSON.parse(sessionStorage.getItem(TOPIC_KEY) || '{}');
+    QUESTIONS.forEach(function (q) { if (saved[q.id] && !$(q.id).value) $(q.id).value = saved[q.id]; });
     var savedSlot = sessionStorage.getItem(SLOT_KEY);
     if (savedSlot) {
       hold(savedSlot).then(function (j) {
