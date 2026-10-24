@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>تغيير موعد الاستشارة | MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="consult.css">
+</head>
+<body>
+
+<div class="glow-field"></div>
+
+<header class="site">
+  <a href="https://malearnsa.com/" class="logo-wrapper" title="MA Learn">
+    <img class="logo-img" src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA LEARN">
+  </a>
+  <nav><a href="https://malearnsa.com/">الرئيسية</a></nav>
+</header>
+
+<div class="co-outer" style="max-width:640px;">
+
+  <div class="co-header">
+    <p class="eyebrow">استشارة الذكاء الاصطناعي والإبداع</p>
+    <h1 id="title">تغيير <em>الموعد</em></h1>
+  </div>
+
+  <div class="card state-card" id="loading"><div class="cc-loading">جاري تحميل حجزك…</div></div>
+
+  <div class="card state-card" id="blocked" style="display:none;">
+    <div class="state-icon warn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <h2 id="blocked-title"></h2>
+    <p id="blocked-text"></p>
+    <p class="faint" style="font-size:.88rem;">لأي ظرف، رد على إيميل تأكيد الموعد أو راسلنا على support@malearnsa.com.</p>
+  </div>
+
+  <div id="picker" style="display:none;">
+    <div class="card" style="margin-bottom:16px;">
+      <p class="muted" id="hello" style="font-weight:700;margin-bottom:8px;"></p>
+      <div class="picked" id="current-box"><div class="when"><small>موعدك الحالي</small><span id="current"></span></div></div>
+      <p class="note" id="rule" style="margin-top:10px;"></p>
+    </div>
+    <div class="card">
+      <div class="step-title"><span>اختر الموعد الجديد</span></div>
+      <div id="cc-root"></div>
+      <div class="msg err" id="msg" role="alert"></div>
+    </div>
+  </div>
+
+  <div class="card state-card" id="confirm" style="display:none;">
+    <h2>تأكيد الموعد الجديد</h2>
+    <div class="when-box" id="confirm-when"></div>
+    <p id="confirm-note"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+      <button type="button" class="btn" id="confirm-btn">تأكيد الموعد</button>
+      <button type="button" class="btn ghost" id="back-btn">رجوع</button>
+    </div>
+    <div class="msg err" id="confirm-msg" role="alert"></div>
+  </div>
+
+  <div class="card state-card" id="done" style="display:none;">
+    <div class="state-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4caf82" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2 id="done-title">تم تحديث موعدك</h2>
+    <div class="when-box" id="done-when"></div>
+    <p>وصلك إيميل بالتفاصيل، وتحدّثت دعوة تقويم Google ورابط الاجتماع.</p>
+  </div>
+
+</div>
+
+<link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script src="consult.js"></script>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function show(id) { ['loading', 'blocked', 'picker', 'confirm', 'done'].forEach(function (x) { $(x).style.display = x === id ? 'block' : 'none'; }); }
+  var q = new URLSearchParams(location.search);
+  var K = q.get('k') || '', SIG = q.get('sig') || '';
+  var data = null, chosen = '', cal = null;
+
+  var BLOCKED = {
+    invalid_signature: ['الرابط غير صالح', 'استخدم زر «تغيير الموعد» من إيميل تأكيد الموعد.'],
+    not_found: ['ما لقينا الحجز', 'استخدم زر «تغيير الموعد» من إيميل تأكيد الموعد.'],
+    reschedule_used: ['استخدمت التغيير المتاح', 'تغيير الموعد متاح مرة وحدة لكل استشارة.'],
+    too_late: ['باقي أقل من ٢٤ ساعة على موعدك', 'تغيير الموعد متاح لين قبل الموعد بـ٢٤ ساعة.'],
+    not_reschedulable: ['هذا الحجز ما يقبل التغيير', 'الحجز منتهي أو ملغي.']
+  };
+  function blocked(code) {
+    var b = BLOCKED[code] || ['ما قدرنا نفتح الحجز', 'حاول مرة ثانية بعد شوي.'];
+    $('blocked-title').textContent = b[0]; $('blocked-text').textContent = b[1];
+    show('blocked');
+  }
+
+  function onPick(slot) {
+    chosen = slot;
+    $('confirm-when').textContent = ConsultCal.labelAr(slot);
+    $('confirm-note').textContent = data.mode === 'pick'
+      ? 'أول ما تأكد، يوصلك تأكيد الموعد ودعوة تقويم Google فيها رابط الاجتماع.'
+      : 'هذا هو التغيير المتاح لموعدك، وبعده ما يمكن تغييره مرة ثانية.';
+    $('confirm-msg').classList.remove('show');
+    show('confirm');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return Promise.resolve();
+  }
+
+  $('back-btn').onclick = function () { show('picker'); };
+  $('confirm-btn').onclick = function () {
+    var btn = $('confirm-btn');
+    btn.disabled = true; btn.textContent = 'جاري التأكيد…';
+    ConsultCal.post({ action: 'consult_reschedule', k: K, sig: SIG, slot: chosen }).then(function (j) {
+      btn.disabled = false; btn.textContent = 'تأكيد الموعد';
+      if (j && j.ok) {
+        $('done-title').textContent = data.mode === 'pick' ? 'تم تأكيد موعدك' : 'تم تحديث موعدك';
+        $('done-when').textContent = j.label_ar || ConsultCal.labelAr(chosen);
+        show('done');
+        return;
+      }
+      if (j && (j.error === 'slot_taken' || j.error === 'slot_unavailable')) {
+        show('picker');
+        var m = $('msg'); m.textContent = 'هذا الموعد انحجز للتو، اختر موعد ثاني.'; m.classList.add('show');
+        cal.reload();
+        return;
+      }
+      if (j && BLOCKED[j.error]) { blocked(j.error); return; }
+      var cm = $('confirm-msg'); cm.textContent = 'تعذّر تأكيد الموعد، حاول مرة ثانية.'; cm.classList.add('show');
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = 'تأكيد الموعد';
+      var cm = $('confirm-msg'); cm.textContent = 'تعذّر الاتصال، حاول مرة ثانية.'; cm.classList.add('show');
+    });
+  };
+
+  if (!K || !SIG) { blocked('invalid_signature'); return; }
+  ConsultCal.getJSON({ action: 'consult_booking_data', k: K, sig: SIG }).then(function (j) {
+    if (!j || !j.ok) { blocked(j && j.error); return; }
+    data = j;
+    if (!j.can_reschedule) { blocked(j.reason); return; }
+    $('hello').textContent = 'هلا ' + (j.first_name || '') + '،';
+    if (j.mode === 'pick') {
+      $('title').innerHTML = 'اختر <em>موعدك</em>';
+      $('current-box').style.display = 'none';
+      $('hello').textContent = 'هلا ' + (j.first_name || '') + '، وصلتنا دفعتك. اختر الموعد اللي يناسبك:';
+      $('rule').textContent = 'الأوقات بتوقيت السعودية · مدة الاستشارة ساعة';
+    } else {
+      $('current').textContent = j.label_ar;
+      $('rule').textContent = 'تقدر تغيّر الموعد مرة وحدة، لين قبل الموعد بـ٢٤ ساعة.';
+    }
+    show('picker');
+    cal = ConsultCal.mount($('cc-root'), { onPick: onPick, excludeSlot: j.slot });
+  }).catch(function () { blocked(''); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استشارة الذكاء الاصطناعي والإبداع | MA Learn</title>
+  <meta name="description" content="ساعة فردية مع ماجد عنقاوي عبر Google Meet عن الذكاء الاصطناعي والإبداع. اختر الموعد اللي يناسبك وادفع بالطريقة اللي تناسبك.">
+  <meta property="og:title" content="استشارة الذكاء الاصطناعي والإبداع | MA Learn">
+  <meta property="og:description" content="ساعة فردية عبر Google Meet. اختر موعدك من التقويم مباشرة.">
+  <meta property="og:url" content="https://checkout.malearnsa.com/consultation/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- DO NOT ADD: X-Frame-Options / X-Content-Type-Options / referrer-policy meta tags (they break Apple Pay) -->
+  <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
+  <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <link rel="stylesheet" href="consult.css">
+  <style>
+    /* mobile order-summary accordion (CIF checkout pattern) */
+    .co-summary-toggle { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px 18px; cursor: pointer; user-select: none;
+      background: rgba(255,106,60,0.07); border: 1.5px solid rgba(255,106,60,0.3); border-radius: var(--r-md); }
+    .co-summary-toggle .t1 { font-size: .76rem; color: var(--muted); font-weight: 600; display: block; }
+    .co-summary-toggle .t2 { font-size: .9rem; font-weight: 800; }
+    .co-summary-toggle .price { color: var(--accent-hot); font-weight: 800; }
+    .co-summary-chevron { color: var(--accent); font-size: .65rem; transition: transform .25s; margin-inline-start: 8px; }
+    .co-summary-chevron.open { transform: rotate(180deg); }
+    .co-summary-body { overflow: hidden; max-height: 0; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+    .co-summary-body.open { max-height: 1200px; }
+    .co-summary-inner { padding: 20px 18px; border: 1px solid var(--line); border-top: none; border-radius: 0 0 var(--r-md) var(--r-md); background: var(--card); }
+    @media (min-width: 760px) {
+      .co-summary-toggle { display: none; }
+      .co-summary-body { max-height: none !important; overflow: visible; transition: none; }
+      .co-summary-inner { border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px 22px; }
+    }
+    .co-field { margin-bottom: 14px; }
+    .req { color: var(--accent-hot); }
+  </style>
+</head>
+<body>
+
+<div class="glow-field"></div>
+
+<header class="site">
+  <a href="https://malearnsa.com/" class="logo-wrapper" title="MA Learn">
+    <img class="logo-img" src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA LEARN">
+  </a>
+  <nav>
+    <a href="https://malearnsa.com/">الرئيسية</a>
+    <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+  </nav>
+</header>
+
+<div class="co-outer">
+
+  <div class="co-header">
+    <p class="eyebrow">استشارة فردية · Google Meet</p>
+    <h1>استشارة <em>الذكاء الاصطناعي</em> والإبداع</h1>
+    <p class="sub">ساعة فردية مع ماجد عنقاوي عبر Google Meet، نركز فيها على شغلك وأسئلتك أنت.</p>
+    <div class="chips">
+      <span class="chip">ساعة كاملة</span>
+      <span class="chip">Google Meet</span>
+      <span class="chip"><b>399</b> ر.س</span>
+    </div>
+  </div>
+
+  <div class="co-grid">
+
+    <!-- ── FORM COLUMN ─────────────────────────── -->
+    <div class="co-form-col">
+
+      <!-- STEP 1: pick a time -->
+      <div class="card" id="step-slot">
+        <div class="step-title"><span><span class="co-step-badge">١</span>اختر الموعد</span></div>
+        <div id="cc-root"></div>
+        <div class="msg err" id="slot-msg" role="alert"></div>
+      </div>
+
+      <!-- STEP 1 (done): the held time -->
+      <div class="card" id="step-picked" style="display:none;">
+        <div class="step-title"><span><span class="co-step-badge">١</span>موعدك</span></div>
+        <div class="picked">
+          <div class="when" id="picked-when"></div>
+          <button type="button" class="link-btn" id="change-slot">تغيير</button>
+        </div>
+        <p class="note" style="margin-top:10px;">الموعد محجوز لك وأنت تكمل الطلب.</p>
+      </div>
+
+      <!-- STEP 2: details + payment methods -->
+      <div class="card" id="step-contact">
+        <div class="co-section-title"><span class="co-step-badge">٢</span>بياناتك</div>
+
+        <div class="co-field">
+          <label class="co-label" for="name">الاسم الكامل</label>
+          <input id="name" class="co-input" type="text" placeholder="الاسم كامل" autocomplete="name">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="email">البريد الإلكتروني</label>
+          <input id="email" class="co-input" type="email" placeholder="you@example.com" dir="ltr" style="text-align:right;" autocomplete="email">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="phone">رقم الجوال</label>
+          <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="topic">وش حاب نركز عليه في الاستشارة؟ <span class="req">*</span></label>
+          <textarea id="topic" class="co-input" maxlength="1500" placeholder="مثال: أبغى أدخل الذكاء الاصطناعي في شغلي كمصمم، ومحتار من وين أبدأ وأي الأدوات تناسبني."></textarea>
+          <div class="msg err" id="topic-msg" role="alert"></div>
+        </div>
+
+        <div style="margin-top:6px;padding-top:16px;border-top:1px solid rgba(248,240,230,0.08);">
+          <label class="co-label">كود خصم (اختياري)</label>
+          <div class="co-coupon-row">
+            <input id="coupon-input" class="co-input" type="text" placeholder="CODE" dir="ltr" style="font-family:monospace;font-size:0.95rem;text-transform:uppercase;flex:1;">
+            <button id="coupon-btn" class="co-coupon-btn">تطبيق</button>
+          </div>
+          <p id="coupon-msg" style="display:none;font-size:0.8rem;margin-top:8px;"></p>
+        </div>
+
+        <!-- Module fills this; locked until a time is held and the topic is filled -->
+        <div id="ma-payment-methods" class="slot-locked" style="margin-top:20px;"></div>
+        <div class="msg err" id="pay-msg" role="alert"></div>
+      </div>
+
+      <!-- STEP 3: card payment (module toggles this) -->
+      <div class="card" id="step-payment" style="display:none;">
+        <div class="co-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="display:flex;align-items:center;gap:10px;"><span class="co-step-badge">٣</span>الدفع بالبطاقة</span>
+          <button id="edit-contact-btn" type="button" class="link-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            تعديل
+          </button>
+        </div>
+        <div style="margin-bottom:18px;padding:15px 17px;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;">
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;color:var(--muted);">
+            <div><span class="faint">الموعد:</span> <span id="sum-slot-pay"></span></div>
+            <div><span class="faint">الاسم:</span> <span id="sum-name"></span></div>
+            <div style="direction:ltr;text-align:right;"><span class="faint">البريد:</span> <span id="sum-email"></span></div>
+            <div style="direction:ltr;text-align:right;"><span class="faint">الجوال:</span> <span id="sum-phone"></span></div>
+            <div id="sum-coupon-row" style="display:none;color:#4caf82;"><span id="sum-coupon"></span></div>
+          </div>
+        </div>
+        <div id="moyasar-form" class="mysr-form"></div>
+      </div>
+
+    </div>
+
+    <!-- ── SUMMARY COLUMN ──────────────────────── -->
+    <div class="co-summary-col">
+      <div class="co-summary-toggle" id="summary-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="summary-body">
+        <div><span class="t1">ملخص الطلب</span><span class="t2">استشارة الذكاء الاصطناعي والإبداع</span></div>
+        <div><span class="price" id="toggle-total">399 ر.س</span><span class="co-summary-chevron" id="summary-chevron">▼</span></div>
+      </div>
+      <div class="co-summary-body" id="summary-body">
+        <div class="co-summary-inner">
+          <p style="font-family:var(--disp);font-size:1rem;font-weight:700;margin-bottom:4px;">استشارة الذكاء الاصطناعي والإبداع</p>
+          <p class="note" style="margin-bottom:14px;">ساعة فردية عبر Google Meet</p>
+
+          <div class="sum-row"><span>الموعد</span><span id="sum-slot">اختر من التقويم</span></div>
+          <div class="sum-row"><span>المدة</span><span>ساعة</span></div>
+          <div class="sum-row"><span>السعر</span><span id="original-price">399 ر.س</span></div>
+          <div class="sum-row" id="discount-row" style="display:none;"><span>الخصم</span><span style="color:#4caf82;" id="discount-amount">-0 ر.س</span></div>
+          <div class="divider" style="margin:12px 0;"></div>
+          <div class="sum-total"><span>الإجمالي</span><span id="total-price">399 ر.س</span></div>
+          <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
+
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(248,240,230,0.08);" class="ticks">
+            <div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>تأكيد فوري ودعوة تقويم Google فيها رابط الاجتماع</div>
+            <div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>تذكير على الإيميل قبل الموعد بيوم</div>
+            <div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>تقدر تغيّر الموعد مرة وحدة، قبل الموعد بـ٢٤ ساعة على الأقل</div>
+          </div>
+
+          <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(248,240,230,0.08);">
+            <p style="font-weight:800;font-size:.86rem;margin-bottom:10px;">وش نقدر نغطي في الساعة؟</p>
+            <ul class="topics" style="grid-template-columns:1fr;">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>كيف توظّف الذكاء الاصطناعي في شغلك الإبداعي</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>اختيار الأدوات المناسبة لهدفك وميزانيتك</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>مراجعة فكرة أو مشروع تشتغل عليه</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>الاستراتيجية والتوجيه الإبداعي لمحتواك أو علامتك</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MA Learn shared footer module v1 -->
+<link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script>
+  window.MaCheckoutConfig = {
+    productId:     'consultation',
+    productNameAr: 'استشارة الذكاء الاصطناعي والإبداع',
+    basePrice:     399,
+    cohort:        '',
+    cohortDate:    '',          // the held slot (YYYY-MM-DDTHH:MM, KSA) is set via MaCheckout.setCohortDate
+    successUrl:    'https://checkout.malearnsa.com/consultation/success.html',
+    methods:       ['moyasar', 'bank', 'tamara', 'paypal']
+  };
+</script>
+<script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
+<script src="consult.js"></script>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function val(id) { var e = $(id); return e ? e.value.trim() : ''; }
+  function showMsg(id, text) { var e = $(id); if (!e) return; e.textContent = text; e.classList.add('show'); }
+  function hideMsg(id) { var e = $(id); if (e) e.classList.remove('show'); }
+  function stop(e) { e.preventDefault(); e.stopPropagation(); }
+
+  // --- ref capture: 30-day last-touch, set on config BEFORE init (same as CIF checkout) ---
+  try {
+    var _u = new URLSearchParams(location.search), _r = _u.get('ref');
+    if (_r) localStorage.setItem('ma_ref', JSON.stringify({ v: _r, exp: Date.now() + 30 * 864e5 }));
+    var _st = JSON.parse(localStorage.getItem('ma_ref') || 'null');
+    if (_st && _st.exp > Date.now()) window.MaCheckoutConfig.ref = _st.v;
+  } catch (e) {}
+
+  MaCheckout.init(window.MaCheckoutConfig);
+
+  // --- mobile summary accordion ---
+  function toggleSummary() {
+    var open = $('summary-body').classList.toggle('open');
+    $('summary-chevron').classList.toggle('open', open);
+    $('summary-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  $('summary-toggle').onclick = toggleSummary;
+  $('summary-toggle').onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSummary(); } };
+
+  // --- hold token (one per tab), held slot, topic survive the module's edit-reload ---
+  var TOKEN_KEY = 'consult_hold_token', SLOT_KEY = 'consult_slot', TOPIC_KEY = 'consult_topic';
+  function token() {
+    var t = sessionStorage.getItem(TOKEN_KEY);
+    if (!t) {
+      var a = new Uint8Array(12); (window.crypto || window.msCrypto).getRandomValues(a);
+      t = 'h' + Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      sessionStorage.setItem(TOKEN_KEY, t);
+    }
+    return t;
+  }
+
+  var picked = '';
+  var methods = $('ma-payment-methods');
+  var cal = ConsultCal.mount($('cc-root'), { onPick: pick });
+
+  function details() { return { name: val('name'), email: val('email'), phone: val('phone'), topic: val('topic') }; }
+  function hold(slot) {
+    return ConsultCal.post(Object.assign({ action: 'consult_hold', slot: slot, token: token() }, details()));
+  }
+  function updateLock() {
+    var locked = !picked || !val('topic');
+    methods.classList.toggle('slot-locked', locked);
+  }
+
+  function pick(slot) {
+    hideMsg('slot-msg');
+    return hold(slot).then(function (j) {
+      if (!j || !j.ok) { lost(j && j.error); throw new Error('hold'); }
+      setPicked(slot, false);
+      if (window.fbq) { try { fbq('track', 'Schedule'); } catch (_) {} }
+    }, function (err) {
+      showMsg('slot-msg', 'تعذّر حجز الموعد. تأكد من الاتصال وحاول مرة ثانية.');
+      throw err;
+    });
+  }
+
+  function setPicked(slot, silent) {
+    picked = slot;
+    sessionStorage.setItem(SLOT_KEY, slot);
+    MaCheckout.setCohortDate(slot);
+    var loc = ConsultCal.localLabel(slot);
+    $('picked-when').innerHTML = ConsultCal.labelAr(slot) +
+      '<small>بتوقيت السعودية · ساعة عبر Google Meet' + (loc ? ' · ' + loc : '') + '</small>';
+    $('sum-slot').textContent = ConsultCal.dateAr(slot) + ' · ' + ConsultCal.timeAr(slot);
+    $('sum-slot-pay').textContent = ConsultCal.labelAr(slot);
+    $('step-slot').style.display = 'none';
+    $('step-picked').style.display = 'block';
+    hideMsg('pay-msg');
+    updateLock();
+    if (!silent) {
+      var target = val('name') ? $('topic') : $('name');
+      $('step-picked').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { try { target.focus({ preventScroll: true }); } catch (_) {} }, 450);
+    }
+  }
+
+  function lost(err) {
+    picked = '';
+    sessionStorage.removeItem(SLOT_KEY);
+    MaCheckout.setCohortDate('');
+    updateLock();
+    $('step-picked').style.display = 'none';
+    $('step-slot').style.display = 'block';
+    if ($('step-payment').style.display !== 'none') { $('step-payment').style.display = 'none'; $('step-contact').style.display = 'block'; }
+    $('sum-slot').textContent = 'اختر من التقويم';
+    showMsg('slot-msg', (err === 'slot_taken' || err === 'slot_unavailable')
+      ? 'هذا الموعد انحجز للتو، اختر موعد ثاني.'
+      : 'تعذّر حجز الموعد، اختر موعد ثاني أو حاول مرة ثانية.');
+    cal.reload();
+    $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Keep the hold alive while the buyer is on the page; attach their details as they type.
+  function refresh() {
+    if (!picked) return Promise.resolve(null);
+    var slot = picked;
+    return hold(slot).then(function (j) {
+      if ((!j || !j.ok) && picked === slot) lost(j && j.error);
+      return j;
+    });
+  }
+  setInterval(function () { if (picked && !document.hidden) refresh(); }, 10 * 60 * 1000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && picked) refresh(); });
+  ['name', 'email', 'phone', 'topic'].forEach(function (id) {
+    $(id).addEventListener('change', function () { if (picked) refresh(); });
+  });
+  $('topic').addEventListener('input', function () {
+    try { sessionStorage.setItem(TOPIC_KEY, $('topic').value); } catch (_) {}
+    if (val('topic')) hideMsg('topic-msg');
+    updateLock();
+  });
+
+  $('change-slot').onclick = function () {
+    $('step-picked').style.display = 'none';
+    $('step-slot').style.display = 'block';
+    cal.reload();
+    $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Every click in the payment block passes here first: no held time / no topic → explain;
+  // otherwise re-confirm the hold with the buyer's details, then let the module run.
+  var passThrough = false;
+  methods.addEventListener('click', function (e) {
+    if (passThrough) { passThrough = false; return; }
+    if (!picked) {
+      stop(e);
+      showMsg('pay-msg', 'اختر موعد الاستشارة أول.');
+      $('step-slot').style.display = 'block';
+      $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (!val('topic')) {
+      stop(e);
+      showMsg('topic-msg', 'اكتب باختصار وش حاب نركز عليه، عشان أجهز للاستشارة.');
+      $('topic').focus();
+      return;
+    }
+    var btn = e.target && e.target.closest ? e.target.closest('button') : null;
+    if (!btn || btn.disabled) return;
+    stop(e);
+    hideMsg('pay-msg');
+    btn.disabled = true;
+    refresh().then(function (j) {
+      btn.disabled = false;
+      if (j && j.ok) { passThrough = true; btn.click(); }
+    }, function () {
+      btn.disabled = false;
+      showMsg('pay-msg', 'تعذّر التأكد من الموعد، حاول مرة ثانية.');
+    });
+  }, true);
+
+  // Restore after the module's «تعديل» reload (or a refresh in the same tab).
+  try {
+    var savedTopic = sessionStorage.getItem(TOPIC_KEY);
+    if (savedTopic && !$('topic').value) $('topic').value = savedTopic;
+    var savedSlot = sessionStorage.getItem(SLOT_KEY);
+    if (savedSlot) {
+      hold(savedSlot).then(function (j) {
+        if (j && j.ok) setPicked(savedSlot, true); else sessionStorage.removeItem(SLOT_KEY);
+      }, function () {});
+    }
+  } catch (e) {}
+  updateLock();
+})();
+</script>
+</body>
+</html>

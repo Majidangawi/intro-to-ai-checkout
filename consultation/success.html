@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel Code -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-TZ9839RVDJ');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>تم الحجز - استشارة الذكاء الاصطناعي والإبداع | MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <link rel="stylesheet" href="consult.css">
+</head>
+<body>
+
+<div class="glow-field"></div>
+
+<header class="site">
+  <a href="https://malearnsa.com/" class="logo-wrapper" title="MA Learn">
+    <img class="logo-img" src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA LEARN">
+  </a>
+  <nav>
+    <a href="https://malearnsa.com/">الرئيسية</a>
+  </nav>
+</header>
+
+<div class="co-outer" style="max-width:640px;">
+
+  <div class="card state-card" id="processing">
+    <div class="cc-loading">جاري تأكيد حجزك…</div>
+  </div>
+
+  <!-- Paid (Moyasar / Apple Pay / Tamara / PayPal) -->
+  <div class="card state-card" id="success-view" style="display:none;">
+    <div class="state-icon" id="ok-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4caf82" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2 id="ok-title">تم تأكيد موعدك</h2>
+    <div class="when-box" id="ok-when" style="display:none;"></div>
+    <p id="ok-line1">وصلتك رسالة تأكيد على إيميلك، ودعوة تقويم Google فيها رابط الاجتماع على Google Meet.</p>
+    <p id="ok-line2" class="faint" style="font-size:.86rem;">إذا ما لقيت الرسالة خلال دقايق، شيك على مجلد الرسائل غير المرغوب فيها (Spam).</p>
+    <div style="margin-top:22px;"><a class="btn ghost" href="https://malearnsa.com/">الرجوع للرئيسية</a></div>
+  </div>
+
+  <!-- Bank transfer pending -->
+  <div class="card" id="bank-view" style="display:none;">
+    <div class="state-card" style="padding:10px 4px 0;">
+      <div class="state-icon warn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
+      <h2>طلبك مستلم، باقي التحويل</h2>
+      <div class="when-box" id="bank-when" style="display:none;"></div>
+      <p>الموعد محجوز لك إلى أن نتأكد من التحويل. حوّل المبلغ على الحساب التالي، وأول ما نتأكد منه يوصلك تأكيد الموعد ورابط الاجتماع.</p>
+    </div>
+    <table class="bank-table">
+      <tr><td>المبلغ</td><td><b id="bank-amount"></b> ر.س</td></tr>
+      <tr><td>اسم الحساب</td><td id="bank-account-name"></td></tr>
+      <tr><td>البنك</td><td id="bank-name-val"></td></tr>
+      <tr><td>IBAN</td><td dir="ltr" style="text-align:right;"><span id="bank-iban" style="font-family:monospace;font-weight:700;"></span><button class="copy-btn" onclick="MaSuccess.copyVal('bank-iban')">نسخ</button></td></tr>
+      <tr><td>SWIFT</td><td dir="ltr" style="text-align:right;font-family:monospace;" id="bank-swift"></td></tr>
+      <tr><td>رقم الحساب</td><td dir="ltr" style="text-align:right;font-family:monospace;" id="bank-account-number"></td></tr>
+      <tr><td>العنوان</td><td id="bank-address"></td></tr>
+      <tr><td>المرجع</td><td dir="ltr" style="text-align:right;font-family:monospace;font-weight:700;" id="bank-ref"></td></tr>
+    </table>
+    <p class="note" style="margin-top:14px;">أرسلنا لك نفس التفاصيل على الإيميل. أرفق صورة الإيصال بالرد عليه عشان نأكد التحويل أسرع.</p>
+  </div>
+
+  <!-- Failed / cancelled -->
+  <div class="card state-card" id="failed-view" style="display:none;">
+    <div class="state-icon warn"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff8a5c" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    <h2>ما اكتملت عملية الدفع</h2>
+    <p>ارجع لصفحة الحجز وجرّب مرة ثانية، أو اختر طريقة دفع ثانية. إذا انخصم منك مبلغ، راسلنا على support@malearnsa.com.</p>
+    <div style="margin-top:20px;"><a class="btn" href="https://checkout.malearnsa.com/consultation/">الرجوع لصفحة الحجز</a></div>
+  </div>
+
+</div>
+
+<link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script src="consult.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Read the picked slot BEFORE MaSuccess clears the purchase blob.
+  var blob = {};
+  try { blob = JSON.parse(localStorage.getItem('consultation_purchase') || '{}'); } catch (_) {}
+  var slot = String(blob.cohort_date || '').trim();
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(slot)) {
+    ['ok-when', 'bank-when'].forEach(function (id) {
+      var el = document.getElementById(id);
+      el.textContent = ConsultCal.labelAr(slot);
+      el.style.display = 'inline-block';
+    });
+  }
+  // The booking page's hold is done with; the next visit starts fresh.
+  try { ['consult_slot', 'consult_topic', 'consult_hold_token'].forEach(function (k) { sessionStorage.removeItem(k); }); } catch (_) {}
+
+  // Card / Apple Pay: confirm against the backend (the slot can be lost in a rare race).
+  var q = new URLSearchParams(location.search);
+  var pid = q.get('id') || q.get('payment_id') || '';
+  var method = q.get('payment_method') || 'moyasar';
+  if (pid && method === 'moyasar' && q.get('status') !== 'failed') {
+    var tries = 0;
+    (function poll() {
+      tries++;
+      ConsultCal.getJSON({ action: 'consult_status', payment_id: pid }).then(function (j) {
+        if (j && j.status === 'confirmed' && j.label_ar) {
+          var el = document.getElementById('ok-when'); el.textContent = j.label_ar; el.style.display = 'inline-block';
+        } else if (j && j.status === 'needs_slot') {
+          document.getElementById('ok-title').textContent = 'وصلتنا دفعتك، باقي تختار الموعد';
+          document.getElementById('ok-when').style.display = 'none';
+          document.getElementById('ok-line1').textContent = 'الموعد اللي اخترته انحجز قبل ما تكتمل عملية الدفع. أرسلنا لك إيميل فيه رابط تختار منه موعد ثاني يناسبك.';
+        } else if (tries < 8) {
+          setTimeout(poll, 2500);
+        }
+      }).catch(function () { if (tries < 8) setTimeout(poll, 2500); });
+    })();
+  }
+})();
+</script>
+<script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
+<script>
+  MaSuccess.init({ productId: 'consultation', productNameAr: 'استشارة الذكاء الاصطناعي والإبداع' });
+</script>
+</body>
+</html>
