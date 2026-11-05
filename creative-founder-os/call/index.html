@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>احجز مكالمة التعارف · نظام المؤسس المبدع | MA Learn</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <link rel="stylesheet" href="/consultation/consult.css">
+  <style>
+    .co-outer.narrow { max-width: 720px; }
+    .stack { display: flex; flex-direction: column; gap: 16px; }
+    .co-field { margin-bottom: 18px; }
+    fieldset.co-field { border: 0; padding: 0; min-width: 0; }
+    fieldset.co-field legend { padding: 0; }
+    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choice { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1.5px solid var(--line-strong); border-radius: var(--r-sm);
+      background: var(--bg-2); cursor: pointer; font-weight: 700; font-size: .92rem; line-height: 1.6; transition: border-color .2s, background .2s; }
+    .choice:hover { border-color: rgba(255,106,60,.55); }
+    .choice:has(input:checked) { border-color: var(--accent-hot); background: rgba(255,106,60,.08); }
+    .choice input { accent-color: var(--accent); width: 18px; height: 18px; flex: none; margin: 0; }
+    .soft { display: none; margin-top: 10px; font-size: .86rem; color: var(--muted); background: rgba(248,240,230,.04); border: 1px solid var(--line);
+      border-radius: var(--r-sm); padding: 11px 14px; line-height: 1.85; font-weight: 600; }
+    .soft.show { display: block; }
+    .helper { font-size: .86rem; color: var(--muted); font-weight: 600; margin: -6px 0 18px; line-height: 1.8; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .submit-row { text-align: center; margin-top: 8px; }
+    .submit-row .btn { width: 100%; max-width: 360px; }
+    .free-note { margin-top: 10px; text-align: center; }
+    input.co-input:focus-visible, textarea.co-input:focus-visible, .choice:focus-within { outline: 2px solid var(--accent-hot); outline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="glow-field"></div>
+
+<header class="site">
+  <a href="https://malearnsa.com/" class="logo-wrapper" title="MA Learn">
+    <img class="logo-img" src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA LEARN">
+  </a>
+  <nav><a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a></nav>
+</header>
+
+<div class="co-outer narrow">
+
+  <div class="co-header" id="page-head">
+    <p class="eyebrow">نظام المؤسس المبدع · Creative Founder OS</p>
+    <h1>احجز مكالمة التعارف</h1>
+    <p class="sub">عشرون دقيقة مع ماجد، نتأكد فيها من أن النظام يناسب عملك، قبل أي دفع.</p>
+  </div>
+
+  <div class="stack" id="flow">
+
+    <!-- STEP 1: pick a time -->
+    <div class="card" id="step-slot">
+      <div class="step-title"><span><span class="co-step-badge">١</span>اختر الموعد المناسب لك</span></div>
+      <div id="cc-root"></div>
+      <div class="msg err" id="slot-msg" role="alert"></div>
+    </div>
+
+    <!-- STEP 1 (done): the held time -->
+    <div class="card" id="step-picked" style="display:none;">
+      <div class="step-title"><span><span class="co-step-badge">١</span>اختر الموعد المناسب لك</span></div>
+      <div class="picked">
+        <div class="when" id="picked-when"></div>
+        <button type="button" class="link-btn" id="change-slot">تغيير</button>
+      </div>
+      <p class="note" style="margin-top:10px;">جميع المواعيد بتوقيت السعودية.</p>
+    </div>
+
+    <!-- STEP 2: about the business -->
+    <form class="card" id="step-form" novalidate>
+      <div class="co-section-title"><span class="co-step-badge">٢</span>عرّفنا بعملك</div>
+      <p class="helper">نقرأ إجاباتك قبل المكالمة، حتى نستثمر الوقت في ما يهمك.</p>
+
+      <div class="co-field">
+        <label class="co-label" for="name">الاسم الكامل</label>
+        <input id="name" class="co-input" type="text" placeholder="الاسم كما تحب أن نناديك" autocomplete="name" maxlength="100">
+        <div class="msg err" id="name-msg" role="alert"></div>
+      </div>
+      <div class="co-field">
+        <label class="co-label" for="email">البريد الإلكتروني</label>
+        <input id="email" class="co-input" type="email" placeholder="you@example.com" dir="ltr" style="text-align:right;" autocomplete="email" maxlength="120">
+        <div class="msg err" id="email-msg" role="alert"></div>
+      </div>
+      <div class="co-field">
+        <label class="co-label" for="phone">رقم الجوال (واتساب)</label>
+        <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel" maxlength="30">
+        <div class="msg err" id="phone-msg" role="alert"></div>
+      </div>
+
+      <div class="co-field">
+        <label class="co-label" for="q4">ما نشاطك التجاري؟</label>
+        <input id="q4" class="co-input" type="text" maxlength="400" placeholder="مثال: استوديو تصميم داخلي في الرياض، أو علامة أزياء، أو مصوّر مستقل.">
+        <div class="msg err" id="q4-msg" role="alert"></div>
+      </div>
+
+      <fieldset class="co-field" id="q5">
+        <legend class="co-label">هل لديك عملاء يدفعون لك حالياً؟</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q5" value="نعم، وعملي مستمر">نعم، وعملي مستمر</label>
+          <label class="choice"><input type="radio" name="q5" value="نعم، لكن العمل متقطع">نعم، لكن العمل متقطع</label>
+          <label class="choice"><input type="radio" name="q5" value="لا، ما زلت أبحث عن عملائي الأوائل">لا، ما زلت أبحث عن عملائي الأوائل</label>
+        </div>
+        <p class="soft" data-q="q5" data-when="لا، ما زلت أبحث عن عملائي الأوائل">النظام مبني لعمل قائم له عملاء. إن كنت في البداية، فقد تناسبك معادلة صناعة الإلهام أو مجتمع صُنّاع الإلهام أكثر، ويسعدنا أن نتحدث على أي حال.</p>
+        <div class="msg err" id="q5-msg" role="alert"></div>
+      </fieldset>
+
+      <fieldset class="co-field" id="q6">
+        <legend class="co-label">ما الذي يمرّ عليك أنت كل أسبوع؟</legend>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="q6" value="عروض الأسعار">عروض الأسعار</label>
+          <label class="choice"><input type="checkbox" name="q6" value="المتابعات">المتابعات</label>
+          <label class="choice"><input type="checkbox" name="q6" value="الفواتير والتحصيل">الفواتير والتحصيل</label>
+          <label class="choice"><input type="checkbox" name="q6" value="البريد الإلكتروني">البريد الإلكتروني</label>
+          <label class="choice"><input type="checkbox" name="q6" value="المحتوى">المحتوى</label>
+          <label class="choice"><input type="checkbox" name="q6" value="أمور أخرى">أمور أخرى</label>
+        </div>
+        <div class="msg err" id="q6-msg" role="alert"></div>
+      </fieldset>
+
+      <fieldset class="co-field" id="q7">
+        <legend class="co-label">هل القرار في عملك بيدك؟</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q7" value="نعم، القرار لي">نعم، القرار لي</label>
+          <label class="choice"><input type="radio" name="q7" value="أشارك شريكاً في القرار">أشارك شريكاً في القرار</label>
+          <label class="choice"><input type="radio" name="q7" value="القرار عند شخص آخر">القرار عند شخص آخر</label>
+        </div>
+        <div class="msg err" id="q7-msg" role="alert"></div>
+      </fieldset>
+
+      <fieldset class="co-field" id="q8">
+        <legend class="co-label">هل توافق على أن تكون اشتراكات الأدوات باسمك وعلى حسابك، مثل Claude وGoogle؟</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q8" value="نعم">نعم</label>
+          <label class="choice"><input type="radio" name="q8" value="أريد أن أعرف التكلفة الشهرية أولاً">أريد أن أعرف التكلفة الشهرية أولاً</label>
+          <label class="choice"><input type="radio" name="q8" value="لا">لا</label>
+        </div>
+        <p class="soft" data-q="q8" data-when="أريد أن أعرف التكلفة الشهرية أولاً">نعطيك تقديراً واضحاً للتكلفة الشهرية في المكالمة.</p>
+        <div class="msg err" id="q8-msg" role="alert"></div>
+      </fieldset>
+
+      <fieldset class="co-field" id="q9">
+        <legend class="co-label">ما الجهاز الذي تعمل عليه؟</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="q9" value="Mac">Mac</label>
+          <label class="choice"><input type="radio" name="q9" value="Windows">Windows</label>
+          <label class="choice"><input type="radio" name="q9" value="iPad أو الجوال فقط">iPad أو الجوال فقط</label>
+        </div>
+        <p class="soft" data-q="q9" data-when="iPad أو الجوال فقط">يعمل النظام على تطبيق Claude لأجهزة Mac وWindows، فستحتاج إلى أحدهما.</p>
+        <div class="msg err" id="q9-msg" role="alert"></div>
+      </fieldset>
+
+      <div class="co-field">
+        <label class="co-label" for="q10">ما أكثر ثلاث مهام تستهلك وقتك؟</label>
+        <textarea id="q10" class="co-input" maxlength="1500" placeholder="مثال: كتابة عروض الأسعار، ومتابعة الدفعات المتأخرة، والرد على استفسارات العملاء."></textarea>
+        <div class="msg err" id="q10-msg" role="alert"></div>
+      </div>
+
+      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" type="text" tabindex="-1" autocomplete="off"></div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn" id="submit-btn">تأكيد الحجز</button>
+        <p class="note free-note">المكالمة مجانية، ولا يُطلب منك أي دفع.</p>
+      </div>
+      <div class="msg err" id="submit-msg" role="alert"></div>
+    </form>
+
+    <!-- Booked -->
+    <div class="card state-card" id="done" style="display:none;">
+      <div class="state-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4caf82" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2>تم الحجز</h2>
+      <p>أرسلنا إلى بريدك دعوة التقويم ورابط المكالمة. نراك في الموعد.</p>
+      <div class="when-box" id="done-when"></div>
+    </div>
+
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script src="call.js"></script>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function val(id) { var e = $(id); return e ? e.value.trim() : ''; }
+  function showMsg(id, text) { var e = $(id); if (!e) return; e.textContent = text; e.classList.add('show'); }
+  function hideMsg(id) { var e = $(id); if (e) e.classList.remove('show'); }
+  function radio(name) { var c = document.querySelector('input[name="' + name + '"]:checked'); return c ? c.value : ''; }
+  function checks(name) { return [].slice.call(document.querySelectorAll('input[name="' + name + '"]:checked')).map(function (c) { return c.value; }); }
+
+  var TOKEN_KEY = 'cfos_call_token', SLOT_KEY = 'cfos_call_slot';
+  function token() {
+    var t = sessionStorage.getItem(TOKEN_KEY);
+    if (!t) {
+      var a = new Uint8Array(12); (window.crypto || window.msCrypto).getRandomValues(a);
+      t = 'f' + Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      sessionStorage.setItem(TOKEN_KEY, t);
+    }
+    return t;
+  }
+
+  var picked = '', booked = false;
+  var cal = CfosCallCal.mount($('cc-root'), { onPick: pick });
+
+  function hold(slot) { return CfosCallCal.post({ action: 'cfos_call_hold', slot: slot, token: token() }); }
+
+  function pick(slot) {
+    hideMsg('slot-msg');
+    return hold(slot).then(function (j) {
+      if (!j || !j.ok) { lost(j && j.error); throw new Error('hold'); }
+      setPicked(slot, false);
+    }, function (err) {
+      showMsg('slot-msg', 'تعذّر حجز الموعد. تأكد من الاتصال وحاول مرة أخرى.');
+      throw err;
+    });
+  }
+
+  function setPicked(slot, silent) {
+    picked = slot;
+    sessionStorage.setItem(SLOT_KEY, slot);
+    var loc = CfosCallCal.localLabel(slot);
+    $('picked-when').innerHTML = CfosCallCal.labelAr(slot) + '<small>بتوقيت السعودية' + (loc ? ' · ' + loc : '') + '</small>';
+    $('step-slot').style.display = 'none';
+    $('step-picked').style.display = 'block';
+    hideMsg('submit-msg');
+    if (!silent) {
+      $('step-picked').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { try { $('name').focus({ preventScroll: true }); } catch (_) {} }, 450);
+    }
+  }
+
+  function lost(err) {
+    picked = '';
+    sessionStorage.removeItem(SLOT_KEY);
+    $('step-picked').style.display = 'none';
+    $('step-slot').style.display = 'block';
+    showMsg('slot-msg', (err === 'slot_taken' || err === 'slot_unavailable')
+      ? 'هذا الموعد حُجز للتو، اختر موعداً آخر.'
+      : 'تعذّر حجز الموعد، اختر موعداً آخر أو حاول مرة أخرى.');
+    cal.reload();
+    $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Keep the hold alive while the person fills in the form.
+  function refresh() {
+    if (!picked || booked) return Promise.resolve(null);
+    var slot = picked;
+    return hold(slot).then(function (j) { if ((!j || !j.ok) && picked === slot && !booked) lost(j && j.error); return j; });
+  }
+  setInterval(function () { if (picked && !document.hidden) refresh(); }, 10 * 60 * 1000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && picked) refresh(); });
+
+  $('change-slot').onclick = function () {
+    $('step-picked').style.display = 'none';
+    $('step-slot').style.display = 'block';
+    cal.reload();
+    $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Soft notes: shown under the matching answer, never block booking.
+  document.querySelectorAll('.soft').forEach(function (note) {
+    var q = note.getAttribute('data-q'), when = note.getAttribute('data-when');
+    document.querySelectorAll('input[name="' + q + '"]').forEach(function (inp) {
+      inp.addEventListener('change', function () { note.classList.toggle('show', radio(q) === when); });
+    });
+  });
+  // Clear an error as soon as the field is answered.
+  ['name', 'email', 'phone', 'q4', 'q10'].forEach(function (id) { $(id).addEventListener('input', function () { if (val(id)) hideMsg(id + '-msg'); }); });
+  ['q5', 'q6', 'q7', 'q8', 'q9'].forEach(function (q) {
+    document.querySelectorAll('input[name="' + q + '"]').forEach(function (inp) { inp.addEventListener('change', function () { hideMsg(q + '-msg'); }); });
+  });
+
+  var RULES = [
+    ['name',  function () { return val('name'); }, 'هذا الحقل مطلوب.'],
+    ['email', function () { return /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/.test(val('email')); }, 'أدخل بريداً إلكترونياً صحيحاً.'],
+    ['phone', function () { return val('phone').replace(/\D/g, '').length >= 8; }, 'أدخل رقم جوال صحيحاً.'],
+    ['q4',    function () { return val('q4'); }, 'هذا الحقل مطلوب.'],
+    ['q5',    function () { return radio('q5'); }, 'اختر إجابة.'],
+    ['q6',    function () { return checks('q6').length; }, 'اختر إجابة واحدة على الأقل.'],
+    ['q7',    function () { return radio('q7'); }, 'اختر إجابة.'],
+    ['q8',    function () { return radio('q8'); }, 'اختر إجابة.'],
+    ['q9',    function () { return radio('q9'); }, 'اختر إجابة.'],
+    ['q10',   function () { return val('q10'); }, 'هذا الحقل مطلوب.']
+  ];
+
+  $('step-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    hideMsg('submit-msg');
+    if (!picked) {
+      showMsg('slot-msg', 'اختر الموعد أولاً.');
+      $('step-slot').style.display = 'block';
+      $('step-slot').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    var first = null;
+    RULES.forEach(function (r) { if (!r[1]()) { showMsg(r[0] + '-msg', r[2]); if (!first) first = r[0]; } else hideMsg(r[0] + '-msg'); });
+    if (first) {
+      var el = $(first); el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      var f = el.matches('input,textarea') ? el : el.querySelector('input'); if (f) setTimeout(function () { try { f.focus({ preventScroll: true }); } catch (_) {} }, 300);
+      return;
+    }
+    var btn = $('submit-btn');
+    btn.disabled = true; btn.textContent = 'جارٍ التأكيد…';
+    CfosCallCal.post({
+      action: 'cfos_call_book', slot: picked, token: token(), website: val('website'),
+      name: val('name'), email: val('email'), phone: val('phone'),
+      q4: val('q4'), q5: radio('q5'), q6: checks('q6'), q7: radio('q7'), q8: radio('q8'), q9: radio('q9'), q10: val('q10')
+    }).then(function (j) {
+      btn.disabled = false; btn.textContent = 'تأكيد الحجز';
+      if (j && j.ok) {
+        booked = true;
+        sessionStorage.removeItem(SLOT_KEY);
+        $('done-when').textContent = j.date_ar + ' · الساعة ' + j.time_ar + ' بتوقيت السعودية';
+        ['step-slot', 'step-picked', 'step-form'].forEach(function (id) { $(id).style.display = 'none'; });
+        $('done').style.display = 'block';
+        $('page-head').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      var err = j && j.error;
+      if (err === 'slot_taken' || err === 'slot_unavailable') { lost(err); return; }
+      if (err === 'already_booked') { showMsg('submit-msg', 'لديك مكالمة محجوزة بالفعل. لتغيير موعدها، استخدم رابط التغيير في رسالة التأكيد.'); return; }
+      showMsg('submit-msg', 'تعذّر إتمام الحجز، حاول مرة أخرى.');
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = 'تأكيد الحجز';
+      showMsg('submit-msg', 'تعذّر الاتصال، حاول مرة أخرى.');
+    });
+  });
+
+  // Same tab refresh: re-hold the picked time if it is still free.
+  try {
+    var savedSlot = sessionStorage.getItem(SLOT_KEY);
+    if (savedSlot) hold(savedSlot).then(function (j) { if (j && j.ok) setPicked(savedSlot, true); else sessionStorage.removeItem(SLOT_KEY); }, function () {});
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
