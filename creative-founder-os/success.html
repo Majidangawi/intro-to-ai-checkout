@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>تأكيد الطلب · نظام المؤسس المبدع | MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Design System V4 tokens (linked, never pasted) -->
+  <link rel="stylesheet" href="https://malearnsa.com/brand/tokens.css">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; font-display:swap; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--body); background:var(--bg); color:var(--ink); min-height:100vh; direction:rtl; line-height:var(--lh-body); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    ::selection { background:var(--accent); color:var(--on-accent); }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; background:var(--glow-hero); }
+    a { color:inherit; }
+    .page { position:relative; z-index:1; max-width:640px; margin:0 auto; padding:72px 20px 88px; text-align:center; }
+    .spinner { width:20px; height:20px; border:2px solid var(--accent-soft); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 16px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .badge { width:84px; height:84px; background:var(--accent-soft); border:2px solid var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 28px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; border:1.5px solid var(--line-strong); border-radius:var(--r-pill); padding:6px 16px; background:var(--wash); color:var(--muted); font-size:var(--fs-label); font-weight:800; margin-bottom:16px; }
+    .h1 { font-family:var(--disp); font-weight:700; font-size:clamp(1.55rem,4.4vw,2.05rem); line-height:var(--lh-disp); margin-bottom:18px; }
+    .lead { color:var(--muted); font-size:.95rem; line-height:1.9; max-width:480px; margin:0 auto 28px; }
+    .box { background:var(--card); border:1.5px solid var(--line); border-radius:var(--r-lg); padding:22px; margin-bottom:16px; text-align:start; }
+    .btn-main { display:inline-flex; align-items:center; justify-content:center; background:var(--grad-accent); color:var(--on-accent); font-weight:800; font-size:1rem; padding:15px 38px; text-decoration:none; font-family:var(--body); border-radius:var(--r-pill); box-shadow:var(--shadow-accent); transition:transform .25s var(--ease), box-shadow .25s var(--ease); }
+    .btn-main:hover { transform:var(--lift); box-shadow:var(--shadow-accent-hover); }
+    .mail { color:var(--accent-hot); direction:ltr; display:inline-block; }
+    .copy-btn { background:var(--wash); border:1.5px solid var(--accent-line); color:var(--accent-hot); border-radius:var(--r-xs); cursor:pointer; font-family:inherit; }
+    .row td { padding:6px 0; vertical-align:top; }
+    .row .k { color:var(--faint); width:38%; }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation-duration:0s; } .btn-main { transition:none; } }
+  </style>
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+</head>
+<body>
+
+<nav style="padding:14px 32px;border-bottom:1px solid var(--line);position:relative;z-index:10;background:var(--scrim-bar);backdrop-filter:blur(10px);">
+  <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+    <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:28px;width:auto;" onerror="this.style.display='none'">
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- Processing -->
+  <div id="processing">
+    <div class="spinner"></div>
+    <p style="color:var(--faint);font-size:.9rem;">جارٍ تأكيد طلبك...</p>
+  </div>
+
+  <!-- Paid (Moyasar / Tamara / PayPal) -->
+  <div id="success-view" style="display:none;">
+    <div class="badge">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-hot)" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p class="eyebrow">تم الدفع بنجاح</p>
+    <h1 class="h1">أهلًا بك في نظام المؤسس المبدع</h1>
+    <p class="lead">وصلك تأكيد الطلب على بريدك الإلكتروني. وخلال ٢٤ ساعة سيتواصل معك ماجد عبر واتساب لتحديد موعد الجلسة الأولى.</p>
+    <p style="color:var(--faint);font-size:.82rem;margin-bottom:28px;">أي سؤال؟ راسلنا على <a class="mail" href="mailto:support@malearnsa.com">support@malearnsa.com</a></p>
+    <a href="https://malearnsa.com" class="btn-main">العودة إلى MA Learn</a>
+  </div>
+
+  <!-- Bank-pending -->
+  <div id="bank-view" style="display:none;">
+    <p class="eyebrow">طلبك مسجّل، بانتظار التحويل</p>
+    <h1 class="h1" style="font-size:clamp(1.5rem,4vw,1.9rem);">حوّل المبلغ إلى الحساب التالي</h1>
+    <p class="lead" style="margin-bottom:22px;">بعد أن نستلم التحويل ونتحقق منه خلال يومين عمل، يصلك تأكيد الطلب على بريدك الإلكتروني، ثم يتواصل معك ماجد عبر واتساب.</p>
+
+    <div class="box">
+      <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px;">
+        <tr><td align="right" style="color:var(--faint);font-size:.82rem;">المبلغ</td>
+            <td align="left" dir="ltr" style="color:var(--accent-hot);font-size:1.4rem;font-weight:700;font-family:Arial,sans-serif;"><span id="bank-amount">-</span> SAR</td></tr>
+      </table>
+      <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;font-size:.85rem;">
+        <tr class="row"><td class="k" align="right">اسم الحساب</td><td align="right" style="font-weight:600;"><span id="bank-account-name">-</span></td></tr>
+        <tr class="row"><td class="k" align="right">البنك</td><td align="right"><span id="bank-name-val">-</span></td></tr>
+        <tr class="row"><td class="k" align="right">IBAN</td>
+          <td align="left" dir="ltr" style="font-family:monospace;font-weight:700;letter-spacing:.4px;">
+            <button onclick="MaSuccess.copyVal('bank-iban')" type="button" class="copy-btn" style="padding:3px 8px;font-size:.65rem;margin-left:6px;">نسخ</button>
+            <span id="bank-iban">-</span></td></tr>
+        <tr class="row"><td class="k" align="right">SWIFT</td><td align="left" dir="ltr" style="font-family:monospace;font-weight:700;"><span id="bank-swift">-</span></td></tr>
+        <tr class="row"><td class="k" align="right">رقم الحساب</td><td align="left" dir="ltr" style="font-family:monospace;"><span id="bank-account-number">-</span></td></tr>
+        <tr class="row"><td class="k" align="right">العنوان</td><td align="right" style="font-size:.78rem;line-height:1.5;color:var(--muted);"><span id="bank-address">-</span></td></tr>
+      </table>
+    </div>
+
+    <div class="box" style="border-style:dashed;border-color:var(--accent-line);text-align:center;">
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:6px;">رقم المرجع، اكتبه في وصف التحويل</p>
+      <div style="display:inline-flex;align-items:center;gap:10px;direction:ltr;">
+        <span id="bank-ref" style="font-family:monospace;font-size:1.15rem;font-weight:700;color:var(--ink);letter-spacing:.6px;">-</span>
+        <button onclick="MaSuccess.copyVal('bank-ref')" type="button" class="copy-btn" style="padding:4px 10px;font-size:.7rem;">نسخ</button>
+      </div>
+    </div>
+
+    <p style="color:var(--muted);font-size:.85rem;line-height:1.8;margin:6px 0 22px;">وصلتك رسالة على بريدك الإلكتروني بهذه التفاصيل. بعد التحويل، ردّ عليها بصورة الإيصال لنؤكد طلبك أسرع.</p>
+    <a href="https://malearnsa.com" class="btn-main">العودة إلى MA Learn</a>
+  </div>
+
+  <!-- Failed -->
+  <div id="failed-view" style="display:none;">
+    <div style="width:64px;height:64px;background:var(--danger-bg);border:2px solid var(--danger);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+    <h1 class="h1" style="font-size:1.5rem;">لم يكتمل الدفع</h1>
+    <p class="lead">أُلغيت العملية أو حدثت مشكلة في الدفع. يمكنك المحاولة مرة أخرى.</p>
+    <a href="https://checkout.malearnsa.com/creative-founder-os/checkout.html" class="btn-main">المحاولة مرة أخرى</a>
+  </div>
+
+</main>
+
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
+<script>
+  MaSuccess.init({
+    productId:     'creative-founder-os',
+    productNameAr: 'نظام المؤسس المبدع'
+  });
+</script>
+
+</body>
+</html>
