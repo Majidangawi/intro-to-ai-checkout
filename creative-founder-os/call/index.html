@@ -25,7 +25,7 @@
       border-radius: var(--r-sm); padding: 11px 14px; line-height: 1.85; font-weight: 600; }
     .soft.show { display: block; }
     .helper { font-size: .86rem; color: var(--muted); font-weight: 600; margin: -6px 0 18px; line-height: 1.8; }
-    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }   /* honeypot: no negative offset (RTL scroll width) */
     .submit-row { text-align: center; margin-top: 8px; }
     .submit-row .btn { width: 100%; max-width: 360px; }
     .free-note { margin-top: 10px; text-align: center; }
@@ -132,7 +132,7 @@
       </fieldset>
 
       <fieldset class="co-field" id="q8">
-        <legend class="co-label">هل توافق على أن تكون اشتراكات الأدوات باسمك وعلى حسابك، مثل Claude وGoogle؟</legend>
+        <legend class="co-label">هل توافق على أن تكون اشتراكات الأدوات باسمك وعلى حسابك، مثل Claude و Google؟</legend>
         <div class="choices">
           <label class="choice"><input type="radio" name="q8" value="نعم">نعم</label>
           <label class="choice"><input type="radio" name="q8" value="أريد أن أعرف التكلفة الشهرية أولاً">أريد أن أعرف التكلفة الشهرية أولاً</label>
@@ -149,7 +149,7 @@
           <label class="choice"><input type="radio" name="q9" value="Windows">Windows</label>
           <label class="choice"><input type="radio" name="q9" value="iPad أو الجوال فقط">iPad أو الجوال فقط</label>
         </div>
-        <p class="soft" data-q="q9" data-when="iPad أو الجوال فقط">يعمل النظام على تطبيق Claude لأجهزة Mac وWindows، فستحتاج إلى أحدهما.</p>
+        <p class="soft" data-q="q9" data-when="iPad أو الجوال فقط">يعمل النظام على تطبيق Claude لأجهزة Mac و Windows، فستحتاج إلى أحدهما.</p>
         <div class="msg err" id="q9-msg" role="alert"></div>
       </fieldset>
 
