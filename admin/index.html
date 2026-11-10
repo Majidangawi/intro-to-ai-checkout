@@ -154,13 +154,13 @@
          style="height:32px;margin:0 auto 32px;display:block;" onerror="this.style.display='none'">
     <p style="font-size:0.65rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px;">لوحة التحكم</p>
     <div style="margin-bottom:16px;">
-      <input id="password-input" type="password" placeholder="كلمة المرور"
+      <input id="password-input" type="password" placeholder="مفتاح الإدارة"
         class="input-field" style="text-align:center;"
         onkeydown="if(event.key==='Enter')login()">
     </div>
     <button onclick="login()"
       class="btn-save" style="width:100%;">دخول</button>
-    <p id="login-error" style="display:none;font-size:0.78rem;color:var(--red);margin-top:12px;">كلمة مرور غير صحيحة</p>
+    <p id="login-error" style="display:none;font-size:0.78rem;color:var(--red);margin-top:12px;">أدخل مفتاح الإدارة</p>
   </div>
 </div>
 
@@ -229,9 +229,10 @@
 <script>
   // ── Config ──────────────────────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
-  const ADMIN_TOKEN     = 'MAL-ADMIN-2026';
-  // SHA-256 of "MALearn2026!" — change via Settings or update hash below
-  const PASSWORD_HASH   = 'fe6557033a8f59360d4797a1665fc3a288173b1768e745b57b4767884ca8f227';
+  // No admin key or password ships in this page (security audit 2026-11-10, gap 5).
+  // The key is typed once per tab, kept in sessionStorage, and checked by the server.
+  const KEY_STORE = 'ma.lessonAdminKey';
+  function adminKey() { return sessionStorage.getItem(KEY_STORE) || ''; }
 
   let activeCourse  = null;
   let activeLessons = [];
@@ -239,25 +240,25 @@
   let loadingCourse = false;
 
   // ── Auth ─────────────────────────────────────────────────────────
-  async function hashStr(str) {
-    const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  function showApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display          = 'grid';
+    selectCourse('intro-to-creative-ai');
   }
 
-  async function login() {
-    const pw   = document.getElementById('password-input').value;
-    const hash = await hashStr(pw);
-    if (hash === PASSWORD_HASH) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('app').style.display          = 'grid';
-      selectCourse('intro-to-creative-ai');
-    } else {
+  function login() {
+    const key = document.getElementById('password-input').value.trim();
+    document.getElementById('password-input').value = '';
+    if (!key) {
       document.getElementById('login-error').style.display = 'block';
-      document.getElementById('password-input').value      = '';
+      return;
     }
+    sessionStorage.setItem(KEY_STORE, key);
+    showApp();
   }
 
   function logout() {
+    sessionStorage.removeItem(KEY_STORE);
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app').style.display          = 'none';
     document.getElementById('password-input').value       = '';
@@ -491,7 +492,7 @@
       url.searchParams.set('video_id',    videoId);
       url.searchParams.set('pdf_url',     pdfUrl);
       url.searchParams.set('active',      active.toString());
-      url.searchParams.set('admin_token', ADMIN_TOKEN);
+      url.searchParams.set('admin_token', adminKey()); // this endpoint has no POST route for media saves
 
       const res  = await fetch(url.toString());
       const data = await res.json();
@@ -530,6 +531,9 @@
   document.getElementById('password-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') login();
   });
+
+  // Same tab, key already typed: skip the login screen.
+  if (adminKey()) showApp();
 </script>
 
 <!-- Freelance Work Document Badge -->
