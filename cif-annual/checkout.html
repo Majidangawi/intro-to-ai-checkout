@@ -317,10 +317,13 @@
 <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
 <script>
 (function () {
-  // TEST deployment of token-validator (staging sheet). GO-LIVE: the live /exec (AKfycbznjcsYu8g...) in this ONE line.
-  var API = 'https://script.google.com/macros/s/AKfycbx6Cc0d44lDlIiFa9nuaATnLdu0mc5yo01bA1c9ALUBNUbYBmsdrO6qDlxQbzkrytAYlg/exec';
+  // LIVE token-validator. Doors, test mode and the price are decided on the server (Config CIFA_DOORS / CIFA_SEND).
+  var API = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
   var q = new URLSearchParams(location.search);
   var LIVEPAY = q.get('livepay') === '1';
+  // Pre-launch live test: ?test_email=<Majid's address>&livepay=1. The server returns the test price ONLY for
+  // Majid's own addresses while Config CIFA_TEST_PRICE is set, and re-checks it on every payment.
+  var TEST_EMAIL = (q.get('test_email') || '').trim();
   var cfg = {
     productId:     'cif-annual',
     productNameAr: 'العضوية السنوية في مجتمع صُنّاع الإلهام',
@@ -348,7 +351,8 @@
 
   var fails = 0;
   function load() {
-    var url = API + '?action=cifa_price' + (q.get('renew') ? '&renew=' + encodeURIComponent(q.get('renew')) : '');
+    var url = API + '?action=cifa_price' + (q.get('renew') ? '&renew=' + encodeURIComponent(q.get('renew')) : '') +
+              (TEST_EMAIL ? '&email=' + encodeURIComponent(TEST_EMAIL) : '');
     fetch(url, { cache: 'no-store' }).then(function (res) { return res.json(); }).then(function (d) {
       if (!d || !d.ok || !(d.sar > 0) || !(d.usd > 0)) throw new Error('bad price');
       start(d);
@@ -372,8 +376,9 @@
         $('renew-chip').style.display = 'block';
       } else say('رابط التجديد غير صالح. يمكنك المتابعة بالسعر الحالي، أو مراسلتنا على support@malearnsa.com.');
     }
+    if (d.test_buyer) { $('email').value = TEST_EMAIL; $('email').readOnly = true; $('renew-chip').textContent = 'اختبار ما قبل الإطلاق: ' + fmt(d.sar) + ' ر.س'; $('renew-chip').style.display = 'block'; }
     if (d.test) $('preview-banner').style.display = 'block';
-    if (!d.doors_open && !d.test) { say('التسجيل في العضوية لم يُفتح بعد.'); return; }
+    if (!d.doors_open && !d.test && !d.test_buyer) { say('التسجيل في العضوية لم يُفتح بعد.'); return; }
 
     MaCheckout.init(cfg);
     document.body.classList.remove('is-loading');
