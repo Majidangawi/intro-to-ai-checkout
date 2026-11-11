@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أهلاً بك في مجتمع صُنّاع الإلهام | MA Learn</title>
+  <!-- CIF annual membership success page. PREVIEW PATH: noindex, linked from nowhere until Majid opens the doors.
+       Copy: annual-funnel/copy/success-page.md (Layan A, P1). Three states: paid / bank pending / failed. -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/brand/ma-v4.css">
+  <style>
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); line-height: var(--lh-body); }
+    .glow { position: fixed; inset: 0; pointer-events: none; background: var(--glow-hero); z-index: 0; }
+    .bar { position: relative; z-index: 2; padding: 14px var(--page-x); border-bottom: 1px solid var(--line); display: flex; justify-content: center; }
+    .bar img { height: 28px; width: auto; }
+    main { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; padding: 56px 18px 80px; text-align: center; }
+    .state { display: none; }
+    .h1 { font-family: var(--disp); font-weight: 700; font-size: var(--fs-h2); line-height: var(--lh-disp); margin: 0 0 22px; }
+    .lines { list-style: none; padding: 0; margin: 0 auto 28px; max-width: 480px; text-align: start; display: flex; flex-direction: column; gap: 12px; }
+    .lines li { display: flex; gap: 12px; align-items: flex-start; color: var(--muted); font-size: 1rem; }
+    .lines .n { flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--r-pill); background: var(--accent-soft); color: var(--accent-hot);
+      font-weight: 800; font-size: .85rem; display: inline-flex; align-items: center; justify-content: center; }
+    .lines b { color: var(--ink); }
+    .faint { color: var(--faint); font-size: var(--fs-sm); margin-top: 14px; }
+    .bank { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 20px 22px; margin: 0 auto 22px; max-width: 480px; text-align: start; }
+    .bank table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .bank td { padding: 7px 0; vertical-align: top; }
+    .bank td:first-child { color: var(--faint); width: 36%; }
+    .bank .ltr { direction: ltr; text-align: left; font-family: 'Courier New', monospace; font-weight: 700; letter-spacing: .4px; }
+    .copy { margin-inline-start: 8px; font-size: .7rem; padding: 3px 9px; border-radius: var(--r-pill); border: 1.5px solid var(--line-strong); background: var(--wash); color: var(--muted); cursor: pointer; font-family: var(--body); }
+    .spinner { width: 34px; height: 34px; border: 3px solid var(--line-strong); border-top-color: var(--accent); border-radius: 50%; margin: 0 auto 16px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    a.mail { color: var(--accent-hot); }
+    .video-slot { display: none; }   /* V2 thank-you video: shown only once it is filmed (filming day 16 Nov) */
+  </style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="bar"><img src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA Learn" onerror="this.style.display='none'"></div>
+
+<main>
+  <div id="processing">
+    <div class="spinner"></div>
+    <p style="color:var(--faint);font-size:.9rem;">جارٍ تأكيد طلبك...</p>
+  </div>
+
+  <!-- State 1: paid (card / Apple Pay / Tamara / PayPal) -->
+  <section id="success-view" class="state">
+    <h1 class="h1">أصبحت عضواً في مجتمع صُنّاع الإلهام</h1>
+    <ol class="lines">
+      <li><span class="n">١</span><span>اطلب الانضمام إلى المجتمع بالبريد نفسه الذي دفعت به.</span></li>
+      <li><span class="n">٢</span><span>نقبل طلبك ونفتح لك الفصول الدراسية خلال ٢٤ ساعة.</span></li>
+      <li><span class="n">٣</span><span>رسالة الترحيب في طريقها إلى بريدك.</span></li>
+    </ol>
+    <a class="btn btn-primary btn-big" href="https://www.skool.com/ma-learn-4669/about" target="_blank" rel="noopener">اطلب الانضمام إلى المجتمع</a>
+    <p class="faint">إن كنت عضواً في المجتمع من قبل، فلا حاجة إلى طلب جديد.</p>
+    <section class="video-slot" aria-label="رسالة قصيرة من ماجد">
+      <p class="faint">رسالة قصيرة من ماجد</p>
+      <!-- V2 thank-you video (Bunny embed) goes here after filming; until then the slot stays hidden. -->
+    </section>
+  </section>
+
+  <!-- State 2: bank transfer pending (no button: the bank details are the action) -->
+  <section id="bank-view" class="state">
+    <h1 class="h1">استلمنا طلبك</h1>
+    <ol class="lines">
+      <li><span class="n">١</span><span>حوّل <b id="amount-ar">…</b> إلى الحساب أدناه، واكتب رقم الطلب في وصف التحويل.</span></li>
+      <li><span class="n">٢</span><span>رقم الطلب: <b id="bank-ref" dir="ltr">—</b> <button class="copy" type="button" onclick="MaSuccess.copyVal('bank-ref')">نسخ</button></span></li>
+    </ol>
+    <div class="bank">
+      <table>
+        <tr><td>اسم الحساب</td><td id="bank-account-name">—</td></tr>
+        <tr><td>البنك</td><td id="bank-name-val">—</td></tr>
+        <tr><td>IBAN</td><td class="ltr"><span id="bank-iban">—</span><button class="copy" type="button" onclick="MaSuccess.copyVal('bank-iban')">نسخ</button></td></tr>
+        <tr><td>SWIFT</td><td class="ltr" id="bank-swift">—</td></tr>
+        <tr><td>رقم الحساب</td><td class="ltr" id="bank-account-number">—</td></tr>
+        <tr><td>العنوان</td><td id="bank-address" style="font-size:.8rem;color:var(--muted);">—</td></tr>
+      </table>
+      <span id="bank-amount" hidden></span>
+    </div>
+    <ol class="lines" start="3">
+      <li><span class="n">٣</span><span>بعد التحويل، أرسل صورة الإيصال بالرد على رسالة التفاصيل التي وصلتك.</span></li>
+      <li><span class="n">٤</span><span>تبدأ عضويتك حين نتأكد من وصول التحويل، ثم تصلك رسالة الترحيب.</span></li>
+    </ol>
+    <p class="faint">أرسلنا هذه التفاصيل إلى بريدك أيضاً.</p>
+  </section>
+
+  <!-- State 3: payment failed -->
+  <section id="failed-view" class="state">
+    <h1 class="h1">لم تكتمل عملية الدفع</h1>
+    <ol class="lines">
+      <li><span class="n">١</span><span>لم يتم الدفع هذه المرة، ويحدث هذا أحياناً لأسباب لدى البنك أو مزوّد الدفع.</span></li>
+      <li><span class="n">٢</span><span>تستطيع المحاولة مرة أخرى بالوسيلة نفسها أو بوسيلة أخرى.</span></li>
+    </ol>
+    <!-- The checkout restores ?ref from its own 30-day storage, so the ambassador link survives the retry. -->
+    <a class="btn btn-primary btn-big" href="https://checkout.malearnsa.com/cif-annual/checkout.html">حاول مرة أخرى</a>
+    <p class="faint">إن ظهر خصم في حسابك، راسلنا على <a class="mail" href="mailto:support@malearnsa.com">support@malearnsa.com</a> ونتحقق منه معك.</p>
+  </section>
+</main>
+
+<script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
+<script>
+  // TEST deployment of token-validator (staging sheet). GO-LIVE: the live /exec in this ONE line.
+  MaSuccess.init({
+    productId:     'cif-annual',
+    productNameAr: 'العضوية السنوية في مجتمع صُنّاع الإلهام',
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbx6Cc0d44lDlIiFa9nuaATnLdu0mc5yo01bA1c9ALUBNUbYBmsdrO6qDlxQbzkrytAYlg/exec'
+  });
+  // Bank state: the module fills #bank-amount with the raw SAR number; show it as «1,880 ريالاً» (BUILD section 5 format).
+  (function () {
+    var a = parseFloat((document.getElementById('bank-amount').textContent || '').replace(/,/g, ''));
+    document.getElementById('amount-ar').textContent = a > 0 ? a.toLocaleString('en-US') + ' ريالاً' : '';
+    if (document.getElementById('bank-view').style.display === 'block') document.title = 'استلمنا طلبك | MA Learn';
+    if (document.getElementById('failed-view').style.display === 'block') document.title = 'لم تكتمل عملية الدفع | MA Learn';
+  })();
+</script>
+</body>
+</html>
