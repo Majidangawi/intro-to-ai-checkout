@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إتمام الشراء · العضوية السنوية في مجتمع صُنّاع الإلهام | MA Learn</title>
   <!-- CIF annual membership (cif-annual). PREVIEW PATH: noindex, linked from nowhere until Majid opens the doors.
-       Price, tier note and test mode come from the server (action=cifa_price). Nothing price-related is typed here. -->
+       Price, price note and test mode come from the server (action=cifa_price). Nothing price-related is typed here. -->
   <meta name="robots" content="noindex, nofollow">
   <!-- DO NOT ADD: X-Frame-Options / X-Content-Type-Options / referrer-policy meta tags (they break the Apple Pay iframe). -->
 
@@ -213,7 +213,7 @@
         <!-- Module fills this with the configured methods -->
         <div id="ma-payment-methods" style="margin-top:20px;"></div>
 
-        <p class="consent">بإتمام الشراء، فإنك توافق على <a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>.<!-- GO-LIVE BLOCKER: add «شروط العضوية» (terms page, Ziyad + Majid) --></p>
+        <p class="consent">بإتمام الشراء، فإنك توافق على <a href="https://malearnsa.com/membership-terms.html">شروط العضوية</a> و<a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>.</p>
       </div>
 
       <!-- STEP 2: Card payment (hidden by default; shown after Continue) -->
@@ -343,17 +343,44 @@
     if (st && st.exp > Date.now()) cfg.ref = st.v;
   } catch (e) {}
 
-  var TIER_NOTE = {
-    1: 'هذا سعر العضوية حتى يبلغ عدد الأعضاء المشتركين ٢٠٠ عضو، ثم يصبح 2,250 ريالاً. وسعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع.',
-    2: 'هذا سعر العضوية للأعضاء من ٢٠١ إلى ٣٠٠، ثم يصبح 2,625 ريالاً. وسعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع.',
-    3: 'سعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع.'
-  };
+  // ONE price is shown: the current one (d.sar / d.usd). The note under it says what the price becomes, with the
+  // server's numbers only (d.launch = the launch price conditions, d.next = the next price). Never a "was" price,
+  // a struck-through price, a percentage or a saving: the launch price is the real first price, not a discount.
+  var AR = function (n) { return String(n).replace(/[0-9]/g, function (c) { return '٠١٢٣٤٥٦٧٨٩'[+c]; }); };
+  var KEEP = 'وسعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع.';
+  function priceNote(d) {
+    if ((d.renew && d.renew.ok) || d.test_buyer || !d.next) return KEEP.slice(1);
+    if (d.launch) {
+      // DRAFT WORDING: Layan + Ziyad confirm it before go-live (the seat count is a public, binding claim).
+      return 'هذا سعر الإطلاق لأول ' + AR(d.launch.seats_total) + ' عضواً أو حتى ' + d.launch.ends_date_ar + '، أيهما أسبق، ثم يصبح السعر ' +
+             fmt(d.next.sar) + ' ريالاً. المقاعد المتبقية الآن: ' + AR(d.launch.seats_left) + '. ' + KEEP;
+    }
+    if (d.next.from_member) return 'هذا سعر العضوية حتى يبلغ عدد الأعضاء المشتركين ' + AR(d.next.from_member - 1) + ' عضو، ثم يصبح ' + fmt(d.next.sar) + ' ريالاً. ' + KEEP;
+    return KEEP.slice(1);
+  }
 
   var fails = 0;
+  function priceUrl() {
+    return API + '?action=cifa_price' + (q.get('renew') ? '&renew=' + encodeURIComponent(q.get('renew')) : '') +
+           (TEST_EMAIL ? '&email=' + encodeURIComponent(TEST_EMAIL) : '');
+  }
+  // The price can change while the page is open (the launch price closes at its end time or with its last seat; a
+  // ladder step fills). It is read again when the tab comes back, at the launch end time and right before the card
+  // step. A different price reloads the page, so nobody pays a price that is no longer the price. The server
+  // checks every payment anyway.
+  var shown = null, lastCheck = 0;
+  function sig(d) { return [d.sar, d.usd, d.doors_open ? 1 : 0].join('|'); }
+  function recheck(then) {
+    lastCheck = Date.now();
+    fetch(priceUrl(), { cache: 'no-store' }).then(function (res) { return res.json(); }).then(function (d) {
+      if (d && d.ok && d.sar > 0 && shown && sig(d) !== shown) { location.reload(); return; }
+      if (then) then();
+    }).catch(function () { if (then) then(); });
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && shown && Date.now() - lastCheck > 60000) recheck(); });
+
   function load() {
-    var url = API + '?action=cifa_price' + (q.get('renew') ? '&renew=' + encodeURIComponent(q.get('renew')) : '') +
-              (TEST_EMAIL ? '&email=' + encodeURIComponent(TEST_EMAIL) : '');
-    fetch(url, { cache: 'no-store' }).then(function (res) { return res.json(); }).then(function (d) {
+    fetch(priceUrl(), { cache: 'no-store' }).then(function (res) { return res.json(); }).then(function (d) {
       if (!d || !d.ok || !(d.sar > 0) || !(d.usd > 0)) throw new Error('bad price');
       start(d);
     }).catch(function () {
@@ -368,7 +395,12 @@
     cfg.basePrice = d.sar;
     cfg.sarToUsd = d.sar / d.usd;                 // PayPal shows and charges the ladder's USD price exactly
     ['original-price', 'total-price', 'toggle-total'].forEach(function (id) { $(id).textContent = fmt(d.sar) + ' ر.س'; });
-    $('tier-note').textContent = TIER_NOTE[d.tier] || TIER_NOTE[3];
+    $('tier-note').textContent = priceNote(d);
+    shown = sig(d); lastCheck = Date.now();
+    if (d.launch && d.launch.ends_at) {
+      var left = new Date(d.launch.ends_at).getTime() - Date.now() + 61000;      // just after the last minute of the launch price
+      if (left > 0 && left < 2147483647) setTimeout(recheck, left);
+    }
     if (d.renew) {
       if (d.renew.ok) {
         $('email').value = d.renew.email; $('email').readOnly = true;
@@ -382,6 +414,16 @@
 
     MaCheckout.init(cfg);
     document.body.classList.remove('is-loading');
+
+    // Right before the card step (the only method where money moves in the browser): read the price once more.
+    var checked = false;
+    $('ma-payment-methods').addEventListener('click', function (e) {
+      var b = e.target.closest('#proceed-btn');
+      if (!b) return;
+      if (checked) { checked = false; return; }
+      e.preventDefault(); e.stopPropagation();
+      recheck(function () { checked = true; b.click(); });
+    }, true);
 
     var bank = $('bank-btn');
     if (bank) { var n = document.createElement('p'); n.className = 'bank-note'; n.textContent = 'تبدأ عضويتك حين نتأكد من وصول التحويل.'; bank.insertAdjacentElement('afterend', n); }
