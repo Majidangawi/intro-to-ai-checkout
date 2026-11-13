@@ -352,7 +352,7 @@
     if ((d.renew && d.renew.ok) || d.test_buyer || !d.next) return KEEP.slice(1);
     if (d.launch) {
       // DRAFT WORDING: Layan + Ziyad confirm it before go-live (the seat count is a public, binding claim).
-      return 'هذا سعر الإطلاق لأول ' + AR(d.launch.seats_total) + ' عضواً أو حتى ' + d.launch.ends_date_ar + '، أيهما أسبق، ثم يصبح السعر ' +
+      return 'هذا سعر الانطلاق لأول ' + AR(d.launch.seats_total) + ' عضواً أو حتى ' + d.launch.ends_date_ar + '، أيهما أسبق، ثم يصبح السعر ' +
              fmt(d.next.sar) + ' ريالاً. المقاعد المتبقية الآن: ' + AR(d.launch.seats_left) + '. ' + KEEP;
     }
     if (d.next.from_member) return 'هذا سعر العضوية حتى يبلغ عدد الأعضاء المشتركين ' + AR(d.next.from_member - 1) + ' عضو، ثم يصبح ' + fmt(d.next.sar) + ' ريالاً. ' + KEEP;
@@ -426,7 +426,9 @@
     }, true);
 
     var bank = $('bank-btn');
-    if (bank) { var n = document.createElement('p'); n.className = 'bank-note'; n.textContent = 'تبدأ عضويتك حين نتأكد من وصول التحويل.'; bank.insertAdjacentElement('afterend', n); }
+    if (bank) { var n = document.createElement('p'); n.className = 'bank-note'; n.textContent = 'تبدأ عضويتك حين نتأكد من وصول التحويل.' +
+      // DRAFT WORDING (Layan reviews): the bank buyer's deadline for the launch price, hours from the server (terms 4-4).
+      (d.launch && d.launch.bank_hours ? ' ويبقى لك سعر الانطلاق إن وصلنا تحويلك خلال ' + AR(d.launch.bank_hours) + ' ساعة من إنشاء الطلب.' : ''); bank.insertAdjacentElement('afterend', n); }
 
     // Test mode: card / Apple Pay and Tamara are stopped here; the server refuses Tamara + PayPal orders anyway.
     // Bank transfer works (no money moves; the email goes to Majid's test address only).
