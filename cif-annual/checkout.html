@@ -479,7 +479,7 @@
         $('renew-chip').style.display = 'block';
       } else say('رابط التجديد غير صالح. يمكنك المتابعة بالسعر الحالي، أو مراسلتنا على support@malearnsa.com.');
     }
-    if (d.test_buyer) { $('email').value = TEST_EMAIL; $('email').readOnly = true; $('renew-chip').textContent = 'اختبار ما قبل الإطلاق: ' + fmt(d.sar) + ' ر.س'; $('renew-chip').style.display = 'block'; }
+    if (d.test_buyer) { $('email').value = TEST_EMAIL; $('email').readOnly = true; $('renew-chip').textContent = 'اختبار ما قبل الانطلاق: ' + fmt(d.sar) + ' ر.س'; $('renew-chip').style.display = 'block'; }
     if (d.test) $('preview-banner').style.display = 'block';
     if (!d.doors_open && !d.test && !d.test_buyer) { say('التسجيل في العضوية لم يُفتح بعد.'); return; }
 
