@@ -152,8 +152,24 @@
     .renew-chip { display:none; margin-top: 10px; font-size:.8rem; color: var(--accent-hot); font-weight: 700; }
     .tier-note { font-size:.76rem; color: var(--faint); line-height:1.8; margin-top: 12px; }
     .bank-note { font-size:.76rem; color: var(--faint); margin-top: 8px; text-align: center; }
-    .consent { font-size:.74rem; color: var(--faint); margin-top: 16px; line-height: 1.8; text-align: center; }
-    .consent a { color: var(--muted); }
+    /* Required terms box (Majid 2026-11-14): no payment method proceeds until it is ticked */
+    .terms-box { display:flex; align-items:flex-start; gap:12px; margin-top:20px; padding:14px 16px; background: var(--wash);
+      border:1.5px solid var(--line-strong); border-radius: var(--r-md); transition: border-color .2s var(--ease), background .2s var(--ease); }
+    .terms-box.is-on { border-color: var(--ok-line); background: var(--ok-bg); }
+    .terms-box.is-err { border-color: var(--danger-line); background: var(--danger-bg); }
+    .terms-box input { flex-shrink:0; width:22px; height:22px; margin-top:4px; accent-color: var(--ok); cursor:pointer; }
+    .terms-box input:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+    .terms-box label { font-size:.86rem; color: var(--ink); font-weight:600; line-height:1.9; cursor:pointer; }
+    .terms-box a { color: var(--ink); font-weight:800; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+    .terms-box a:hover { color: var(--accent-hot); }
+    .terms-box a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+    .terms-err { display:none; margin-top:8px; font-size:.8rem; font-weight:700; color: var(--danger); text-align:center; line-height:1.8; }
+    .terms-err.show { display:block; }
+    .co-paypal-wrap { position: relative; }
+    .co-paypal-wrap.is-guarded #paypal-button-container { opacity:.5; filter: grayscale(.4); }
+    .pp-guard { position:absolute; inset:0; z-index:3; width:100%; background:transparent; border:0; cursor:pointer; }
+    .pp-guard:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-sm); }
+    .launch-left { font-size:.8rem; color: var(--muted); font-weight:800; margin-top: 10px; }
     .is-loading #ma-payment-methods { opacity: .4; pointer-events: none; }
   </style>
 </head>
@@ -210,10 +226,15 @@
           <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
         </div>
 
+        <!-- Required terms box (replaces the passive consent line). Its version + tick time ride with the order (cohort_date). -->
+        <div class="terms-box" id="terms-box">
+          <input type="checkbox" id="terms-ok" autocomplete="off" aria-describedby="terms-err">
+          <label for="terms-ok">قرأتُ <a href="https://malearnsa.com/membership-terms.html" target="_blank" rel="noopener">شروط العضوية</a> و<a href="https://malearnsa.com/refund-policy.html" target="_blank" rel="noopener">سياسة الاسترداد</a> و<a href="https://malearnsa.com/privacy-policy.html" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأوافق عليها.</label>
+        </div>
+        <p class="terms-err" id="terms-err" role="alert" aria-live="assertive"></p>
+
         <!-- Module fills this with the configured methods -->
         <div id="ma-payment-methods" style="margin-top:20px;"></div>
-
-        <p class="consent">بإتمام الشراء، فإنك توافق على <a href="https://malearnsa.com/membership-terms.html">شروط العضوية</a> و<a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>.</p>
       </div>
 
       <!-- STEP 2: Card payment (hidden by default; shown after Continue) -->
@@ -258,7 +279,7 @@
 
           <div style="margin-bottom:16px;">
             <p style="font-size:0.95rem;font-weight:800;margin-bottom:6px;font-family:var(--disp);">العضوية السنوية في مجتمع صُنّاع الإلهام</p>
-            <p style="font-size:0.78rem;color:var(--faint);font-weight:600;line-height:1.8;">سنة كاملة من يوم انضمامك: الفصول الدراسية (الدورات والماستركلاسات ومكتبة البريفات، وتسجيلات «معادلة صناعة الإلهام» وكتابها)، وجلسة بث مباشر كل شهر.</p>
+            <p style="font-size:0.78rem;color:var(--faint);font-weight:600;line-height:1.8;">سنة كاملة من يوم انضمامك: الفصول الدراسية (الدورات والماستركلاسات ومكتبة البريفات، وتسجيل جلسة كاملة من «معادلة صناعة الإلهام»، وكتابها)، وجلسة بث مباشر كل شهر.</p>
           </div>
 
           <div class="divider" style="margin-bottom:14px;"></div>
@@ -277,6 +298,7 @@
           </div>
 
           <p class="tier-note" id="tier-note"></p>
+          <p class="launch-left" id="launch-left" hidden></p>
           <p class="tier-note">قبل نهاية عضويتك نرسل لك رابط التجديد بسعر انضمامك.</p>
 
           <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">
@@ -348,15 +370,58 @@
   // a struck-through price, a percentage or a saving: the launch price is the real first price, not a discount.
   var AR = function (n) { return String(n).replace(/[0-9]/g, function (c) { return '٠١٢٣٤٥٦٧٨٩'[+c]; }); };
   var KEEP = 'وسعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع.';
+  // Approved strings: launch-pack-v3 §6 (Layan, 13 Nov). Every number, the date and the time come from the server.
+  var riyal = function (n) { return Number(n) % 100 === 0 ? 'ريال' : 'ريالاً'; };
+  var dollar = function (n) { return Number(n) % 100 === 0 ? 'دولار' : 'دولاراً'; };
+  var members = function (n) { var r = n % 100; return (r >= 11 && r <= 99) ? 'عضواً' : (n >= 3 && n <= 10 ? 'أعضاء' : 'عضو'); };
+  function launchWhen(L) {   // «الاثنين ٣٠ نوفمبر ٢٠٢٦ الساعة ١١:٥٩ مساءً بتوقيت السعودية»
+    var x = new Date(new Date(L.ends_at).getTime() + 3 * 3600000);
+    var wd = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'][x.getUTCDay()];
+    var hm = String(L.ends_time || '').split(':'), h = +hm[0], m = hm[1] || '00';
+    return wd + ' ' + L.ends_date_ar + ' الساعة ' + AR((h % 12 || 12) + ':' + m) + (h < 12 ? ' صباحاً' : ' مساءً') + ' بتوقيت السعودية';
+  }
+  function launchNote(d, usd) {
+    var L = d.launch, n = usd ? d.next.usd : d.next.sar;
+    return 'هذا سعر الانطلاق، لأول ' + AR(L.seats_total) + ' ' + members(L.seats_total) + ' ينضمون أو حتى ' + launchWhen(L) + '، أيهما أسبق، ثم يصبح السعر ' +
+           fmt(n) + ' ' + (usd ? dollar(n) : riyal(n)) + '. ' + KEEP;
+  }
   function priceNote(d) {
     if ((d.renew && d.renew.ok) || d.test_buyer || !d.next) return KEEP.slice(1);
-    if (d.launch) {
-      // DRAFT WORDING: Layan + Ziyad confirm it before go-live (the seat count is a public, binding claim).
-      return 'هذا سعر الانطلاق لأول ' + AR(d.launch.seats_total) + ' عضواً أو حتى ' + d.launch.ends_date_ar + '، أيهما أسبق، ثم يصبح السعر ' +
-             fmt(d.next.sar) + ' ريالاً. المقاعد المتبقية الآن: ' + AR(d.launch.seats_left) + '. ' + KEEP;
-    }
-    if (d.next.from_member) return 'هذا سعر العضوية حتى يبلغ عدد الأعضاء المشتركين ' + AR(d.next.from_member - 1) + ' عضو، ثم يصبح ' + fmt(d.next.sar) + ' ريالاً. ' + KEEP;
+    if (d.launch) return launchNote(d, false);
+    if (d.next.from_member) return 'هذا سعر العضوية حتى يبلغ عدد الأعضاء المشتركين ' + AR(d.next.from_member - 1) + ' عضو، ثم يصبح ' + fmt(d.next.sar) + ' ' + riyal(d.next.sar) + '. ' + KEEP;
     return KEEP.slice(1);
+  }
+
+  // ── Required terms box. Its version + the moment it was ticked ride with the order in cohort_date (the module carries
+  // cohort_date on every path: Moyasar metadata, bank, Tamara, PayPal), and the server records them on the Customers row.
+  var TERMS_VERSION = 'membership-terms-2026-11-15';
+  var tickedAt = '';
+  function termsToken() { return $('terms-ok').checked && tickedAt ? 'terms:' + TERMS_VERSION + '@' + tickedAt : ''; }
+  function termsErr(on) {
+    var e = $('terms-err');
+    e.textContent = on ? 'ضع علامة الموافقة على شروط العضوية أولاً، ثم اختر طريقة الدفع.' : '';
+    e.classList.toggle('show', !!on);
+    $('terms-box').classList.toggle('is-err', !!on);
+    $('terms-ok').setAttribute('aria-invalid', on ? 'true' : 'false');
+  }
+  function syncTerms() {
+    var on = $('terms-ok').checked;
+    $('terms-box').classList.toggle('is-on', on);
+    if (on) termsErr(false);
+    if (window.MaCheckout && MaCheckout.setCohortDate) MaCheckout.setCohortDate(termsToken());
+    var w = document.querySelector('.co-paypal-wrap'), c = $('paypal-button-container');
+    if (w && c) {
+      w.classList.toggle('is-guarded', !on);
+      if (on) c.removeAttribute('inert'); else c.setAttribute('inert', '');
+      var g = w.querySelector('.pp-guard'); if (g) g.hidden = on;
+    }
+  }
+  $('terms-ok').checked = false;
+  $('terms-ok').addEventListener('change', function () { tickedAt = this.checked ? new Date().toISOString() : ''; syncTerms(); });
+  function needTerms() {
+    termsErr(true);
+    $('terms-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('terms-ok').focus({ preventScroll: true });
   }
 
   var fails = 0;
@@ -368,12 +433,15 @@
   // ladder step fills). It is read again when the tab comes back, at the launch end time and right before the card
   // step. A different price reloads the page, so nobody pays a price that is no longer the price. The server
   // checks every payment anyway.
-  var shown = null, lastCheck = 0;
+  var shown = null, lastCheck = 0, shownLaunch = false;
   function sig(d) { return [d.sar, d.usd, d.doors_open ? 1 : 0].join('|'); }
   function recheck(then) {
     lastCheck = Date.now();
     fetch(priceUrl(), { cache: 'no-store' }).then(function (res) { return res.json(); }).then(function (d) {
-      if (d && d.ok && d.sar > 0 && shown && sig(d) !== shown) { location.reload(); return; }
+      if (d && d.ok && d.sar > 0 && shown && sig(d) !== shown) {
+        if (shownLaunch && !d.launch) { try { sessionStorage.setItem('cifa_price_msg', 'أُغلق سعر الانطلاق قبل إتمام طلبك، وسعر العضوية الآن ' + fmt(d.sar) + ' ' + riyal(d.sar) + '.'); } catch (e) {} }
+        location.reload(); return;
+      }
       if (then) then();
     }).catch(function () { if (then) then(); });
   }
@@ -396,7 +464,10 @@
     cfg.sarToUsd = d.sar / d.usd;                 // PayPal shows and charges the ladder's USD price exactly
     ['original-price', 'total-price', 'toggle-total'].forEach(function (id) { $(id).textContent = fmt(d.sar) + ' ر.س'; });
     $('tier-note').textContent = priceNote(d);
-    shown = sig(d); lastCheck = Date.now();
+    var openLaunch = !!(d.launch && !(d.renew && d.renew.ok) && !d.test_buyer && d.next);
+    if (openLaunch) { $('launch-left').textContent = 'المتبقّي بسعر الانطلاق: ' + AR(d.launch.seats_left) + ' من ' + AR(d.launch.seats_total); $('launch-left').hidden = false; }
+    try { var pm = sessionStorage.getItem('cifa_price_msg'); if (pm) { sessionStorage.removeItem('cifa_price_msg'); setTimeout(function () { say(pm); }, 0); } } catch (e) {}
+    shown = sig(d); shownLaunch = !!d.launch; lastCheck = Date.now();
     if (d.launch && d.launch.ends_at) {
       var left = new Date(d.launch.ends_at).getTime() - Date.now() + 61000;      // just after the last minute of the launch price
       if (left > 0 && left < 2147483647) setTimeout(recheck, left);
@@ -412,8 +483,27 @@
     if (d.test) $('preview-banner').style.display = 'block';
     if (!d.doors_open && !d.test && !d.test_buyer) { say('التسجيل في العضوية لم يُفتح بعد.'); return; }
 
+    cfg.cohortDate = termsToken();          // init resets the module's cohort_date to this
     MaCheckout.init(cfg);
     document.body.classList.remove('is-loading');
+
+    // The terms box gates EVERY method. Registered first and stops the click outright (stopImmediatePropagation), so
+    // the price re-check below and the module's own handlers never see an unticked click.
+    $('ma-payment-methods').addEventListener('click', function (e) {
+      if ($('terms-ok').checked) return;
+      if (e.target.closest('#proceed-btn, #bank-btn, #tamara-btn, .co-tamara-country-btn, .pp-guard')) {
+        e.preventDefault(); e.stopImmediatePropagation(); needTerms();
+      }
+    }, true);
+    // PayPal renders in its own iframe (clicks never reach this page): the container is inert and covered until ticked.
+    var ppw = document.querySelector('.co-paypal-wrap');
+    if (ppw) {
+      var g = document.createElement('button'); g.type = 'button'; g.className = 'pp-guard';
+      g.setAttribute('aria-label', 'الدفع عبر PayPal: ضع علامة الموافقة على شروط العضوية أولاً');
+      ppw.appendChild(g);
+      if (openLaunch && d.next) { var un = document.createElement('p'); un.className = 'co-help'; un.style.textAlign = 'center'; un.textContent = launchNote(d, true); ppw.insertAdjacentElement('afterend', un); }
+    }
+    syncTerms();
 
     // Right before the card step (the only method where money moves in the browser): read the price once more.
     var checked = false;
