@@ -170,6 +170,21 @@
     .pp-guard { position:absolute; inset:0; z-index:3; width:100%; background:transparent; border:0; cursor:pointer; }
     .pp-guard:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-sm); }
     .launch-left { font-size:.8rem; color: var(--muted); font-weight:800; margin-top: 10px; }
+    /* Private code (Majid 2026-11-14): closed by default, neutral (orange stays on the pay button). One amount due only. */
+    .code-box { margin-top: 4px; }
+    .code-toggle { background:none; border:0; padding:6px 0; color: var(--muted); font-family: var(--body); font-size:.84rem; font-weight:700;
+      cursor:pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; text-decoration-color: var(--line-strong); }
+    .code-toggle:hover { color: var(--ink); }
+    .code-toggle:focus-visible, .code-row .co-coupon-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--r-sm); }
+    .code-panel { margin-top: 8px; }
+    .code-row { display:flex; gap:8px; }
+    .code-row .co-input { flex:1; min-width:0; text-transform: uppercase; letter-spacing: .5px; }
+    .code-row .co-coupon-btn { min-height:48px; padding: 0 18px; white-space: nowrap; }
+    .code-row .co-coupon-btn:hover { background: var(--wash-2); border-color: var(--line-strong); color: var(--ink); }
+    .code-row .co-coupon-btn:disabled { opacity: .6; cursor: default; }
+    .code-msg { display:none; margin-top:8px; font-size:.84rem; font-weight:800; line-height:1.8; }
+    .code-msg.is-ok { color: var(--ok); }
+    .code-msg.is-err { color: var(--danger); }
     .is-loading #ma-payment-methods { opacity: .4; pointer-events: none; }
   </style>
 </head>
@@ -208,7 +223,7 @@
     <!-- ── FORM COLUMN ─────────────────────────── -->
     <div class="co-form-col">
 
-      <!-- STEP 1: details + payment buttons (no discount field: one price for everyone) -->
+      <!-- STEP 1: details + payment buttons. The private-code field is closed by default (a private, one-to-one code; never announced). -->
       <div class="card" style="padding:26px 22px;" id="step-contact">
         <div class="co-section-title"><span class="co-step-badge">١</span>بياناتك</div>
 
@@ -224,6 +239,19 @@
         <div class="co-field">
           <label class="co-label" for="phone">رقم الجوال</label>
           <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
+        </div>
+
+        <!-- Private code: the server answers ONE amount (what this buyer owes now). Never an earlier price, a saving or a percentage. -->
+        <div class="code-box" id="code-box" hidden>
+          <button type="button" class="code-toggle" id="code-toggle" aria-expanded="false" aria-controls="code-panel">لديك رمز خاص؟</button>
+          <div class="code-panel" id="code-panel" hidden>
+            <label class="co-label" for="coupon-input">الرمز الخاص</label>
+            <div class="code-row">
+              <input id="coupon-input" class="co-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" dir="ltr" maxlength="40" placeholder="اكتب الرمز">
+              <button id="coupon-btn" type="button" class="co-coupon-btn">تطبيق</button>
+            </div>
+            <p id="coupon-msg" class="code-msg" role="status" aria-live="polite"></p>
+          </div>
         </div>
 
         <!-- Required terms box (replaces the passive consent line). Its version + tick time ride with the order (cohort_date). -->
@@ -355,6 +383,21 @@
   };
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return Number(n).toLocaleString('en-US'); };
+
+  // Private code: the shared module's «تطبيق» call (validate_coupon) gets the buyer's email added (a code can belong to one
+  // buyer), and the server's answer is kept here (amount due in SAR + USD). The module itself is untouched.
+  var codeAnswer = null;
+  var _fetch = window.fetch.bind(window);
+  window.fetch = function (u, o) {
+    if (typeof u !== 'string' || u.indexOf('action=validate_coupon') === -1 || u.indexOf('product=cif-annual') === -1) return _fetch(u, o);
+    u += '&email=' + encodeURIComponent(($('email').value || '').trim());
+    return _fetch(u, o).then(function (res) {
+      return res.text().then(function (t) {
+        try { codeAnswer = JSON.parse(t); } catch (e) { codeAnswer = null; }
+        return new Response(t, { status: res.status, headers: { 'Content-Type': 'application/json' } });
+      });
+    });
+  };
   function say(t) { var m = $('state-msg'); m.textContent = t || ''; m.style.display = t ? 'block' : 'none'; }
 
   // Ambassador ref: 30-day last-touch, carried silently (attribution only, never shown, never a discount).
@@ -501,24 +544,63 @@
       var g = document.createElement('button'); g.type = 'button'; g.className = 'pp-guard';
       g.setAttribute('aria-label', 'الدفع عبر PayPal: ضع علامة الموافقة على شروط العضوية أولاً');
       ppw.appendChild(g);
-      if (openLaunch && d.next) { var un = document.createElement('p'); un.className = 'co-help'; un.style.textAlign = 'center'; un.textContent = launchNote(d, true); ppw.insertAdjacentElement('afterend', un); }
+      if (openLaunch && d.next) { var un = document.createElement('p'); un.id = 'pp-launch-note'; un.className = 'co-help'; un.style.textAlign = 'center'; un.textContent = launchNote(d, true); ppw.insertAdjacentElement('afterend', un); }
     }
     syncTerms();
 
-    // Right before the card step (the only method where money moves in the browser): read the price once more.
+    // Right before the card step (the only method where money moves in the browser): read the price once more, and the
+    // private code with the email as it is now (a code can belong to one buyer). Tamara, PayPal and bank are checked on the server.
     var checked = false;
     $('ma-payment-methods').addEventListener('click', function (e) {
       var b = e.target.closest('#proceed-btn');
       if (!b) return;
       if (checked) { checked = false; return; }
       e.preventDefault(); e.stopPropagation();
-      recheck(function () { checked = true; b.click(); });
+      recheck(function () { codeRecheck(function () { checked = true; b.click(); }); });
     }, true);
 
-    var bank = $('bank-btn');
-    if (bank) { var n = document.createElement('p'); n.className = 'bank-note'; n.textContent = 'تبدأ عضويتك حين نتأكد من وصول التحويل.' +
+    var bank = $('bank-btn'), BANK_BASE = 'تبدأ عضويتك حين نتأكد من وصول التحويل.';
+    if (bank) { var n = document.createElement('p'); n.id = 'bank-note'; n.className = 'bank-note'; n.textContent = BANK_BASE +
       // DRAFT WORDING (Layan reviews): the bank buyer's deadline for the launch price, hours from the server (terms 4-4).
       (d.launch && d.launch.bank_hours ? ' ويبقى لك سعر الانطلاق إن وصلنا تحويلك خلال ' + AR(d.launch.bank_hours) + ' ساعة من إنشاء الطلب.' : ''); bank.insertAdjacentElement('afterend', n); }
+
+    // ── Private code. Not on a renewal link or the CIFA_TEST_PRICE preview. The module validates and carries the code on all
+    // four methods (Moyasar metadata, Tamara, PayPal, bank); this page only shows ONE amount: the amount due.
+    if (!(d.renew && d.renew.ok) && !d.test_buyer) {
+      $('code-box').hidden = false;
+      $('code-toggle').addEventListener('click', function () {
+        var open = $('code-panel').hidden;
+        $('code-panel').hidden = !open; this.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) $('coupon-input').focus();
+      });
+      $('coupon-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); $('coupon-btn').click(); } });
+      new MutationObserver(codeShown).observe($('coupon-msg'), { childList: true, characterData: true, subtree: true });
+    }
+    function codeShown() {
+      var m = $('coupon-msg'), st = MaCheckout._state(), a = st.appliedCoupon, c = codeAnswer;
+      m.style.color = '';
+      var good = !!(a && c && c.valid && Math.round(c.finalSAR * 100) === a.finalAmount);
+      m.classList.toggle('is-ok', good); m.classList.toggle('is-err', !good);
+      if (!good) return;
+      $('code-panel').hidden = false; $('code-toggle').setAttribute('aria-expanded', 'true');
+      ['original-price', 'total-price', 'toggle-total'].forEach(function (id) { $(id).textContent = fmt(c.finalSAR) + ' ر.س'; });
+      $('tier-note').textContent = KEEP.slice(1);          // the price they keep = the amount they pay now
+      $('launch-left').hidden = true;
+      st.cfg.sarToUsd = c.finalSAR / c.usd;                // PayPal: the server's USD for this code
+      var pl = $('paypal-usd-label'); if (pl) pl.textContent = '$' + Number(c.usd).toFixed(2);
+      var pn = $('pp-launch-note'); if (pn && !c.launch_bound) pn.hidden = true;
+      var bn = $('bank-note'); if (bn && !c.launch_bound) bn.textContent = BANK_BASE;
+    }
+    function codeRecheck(then) {
+      var a = MaCheckout._state().appliedCoupon;
+      if (!a) { then(); return; }
+      fetch(API + '?action=validate_coupon&product=cif-annual&amount=0&code=' + encodeURIComponent(a.code), { cache: 'no-store' })
+        .then(function (res) { return res.json(); }).then(function (c) {
+          if (c && c.valid && Math.round(c.finalSAR * 100) === a.finalAmount) { then(); return; }
+          try { sessionStorage.setItem('cifa_price_msg', (c && c.message) || 'تغيّر المبلغ المستحق مع هذا الرمز. حدّث الصفحة وحاول مرة أخرى.'); } catch (e) {}
+          location.reload();
+        }).catch(function () { then(); });            // the server checks every payment anyway
+    }
 
     // Test mode: card / Apple Pay and Tamara are stopped here; the server refuses Tamara + PayPal orders anyway.
     // Bank transfer works (no money moves; the email goes to Majid's test address only).
