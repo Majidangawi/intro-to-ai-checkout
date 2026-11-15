@@ -123,6 +123,7 @@
       box-shadow: var(--shadow-accent);
       transition: transform .25s var(--ease), box-shadow .25s var(--ease);
     }
+    .co-proceed-btn.is-busy { opacity: .75; cursor: progress; }
     .co-proceed-btn:hover { background: var(--grad-accent); transform: var(--lift); box-shadow: var(--shadow-accent-hover); }
     .co-secure-note { color: var(--ok); }
     .co-bank-btn { background: var(--wash); color: var(--ink); border: 1.5px solid var(--line-strong); border-radius: var(--r-sm); font-family: var(--body); font-weight: 800; }
@@ -550,13 +551,35 @@
 
     // Right before the card step (the only method where money moves in the browser): read the price once more, and the
     // private code with the email as it is now (a code can belong to one buyer). Tamara, PayPal and bank are checked on the server.
-    var checked = false;
+    // Speed (Noor, 15 Nov): each server read takes 3-4.5 s, and run one after the other the button looked dead for 7-9 s.
+    // Now both run together, start in the background the moment the terms box is ticked (a fresh pass opens the card
+    // step at once), the button says «لحظة…» while they run, and the buyer never waits more than 4 s: the server checks
+    // every payment anyway (amount, code, launch grace).
+    var checked = false, warmKey = '', warmAt = 0, warming = null;
+    function checkKey() { var a = MaCheckout._state().appliedCoupon; return (a ? a.code + '|' + a.finalAmount : '-') + '|' + ($('email').value || '').trim().toLowerCase(); }
+    function isWarm() { return warmKey === checkKey() && Date.now() - warmAt < 90000; }
+    function runChecks() {
+      var key = checkKey();
+      if (isWarm()) return Promise.resolve();
+      if (warming && warming.key === key) return warming.p;
+      var p = Promise.all([new Promise(function (r) { recheck(r); }), new Promise(function (r) { codeRecheck(r); })])
+        .then(function () { warmKey = key; warmAt = Date.now(); if (warming && warming.p === p) warming = null; });
+      warming = { key: key, p: p };
+      return p;
+    }
+    $('terms-ok').addEventListener('change', function () { if (this.checked) runChecks(); });
     $('ma-payment-methods').addEventListener('click', function (e) {
       var b = e.target.closest('#proceed-btn');
       if (!b) return;
       if (checked) { checked = false; return; }
       e.preventDefault(); e.stopPropagation();
-      recheck(function () { codeRecheck(function () { checked = true; b.click(); }); });
+      if (isWarm()) { checked = true; b.click(); return; }
+      if (b.getAttribute('aria-busy') === 'true') return;
+      var html = b.innerHTML, done = false;
+      b.setAttribute('aria-busy', 'true'); b.classList.add('is-busy'); b.textContent = 'لحظة، نتحقق من المبلغ…';
+      var finish = function () { if (done) return; done = true; b.innerHTML = html; b.removeAttribute('aria-busy'); b.classList.remove('is-busy'); checked = true; b.click(); };
+      runChecks().then(finish);
+      setTimeout(finish, 4000);
     }, true);
 
     var bank = $('bank-btn'), BANK_BASE = 'تبدأ عضويتك حين نتأكد من وصول التحويل.';
@@ -588,6 +611,7 @@
       $('launch-left').hidden = true;
       st.cfg.sarToUsd = c.finalSAR / c.usd;                // PayPal: the server's USD for this code
       var pl = $('paypal-usd-label'); if (pl) pl.textContent = '$' + Number(c.usd).toFixed(2);
+      if ($('terms-ok').checked) runChecks();             // a new code: warm the card step again
       var pn = $('pp-launch-note'); if (pn && !c.launch_bound) pn.hidden = true;
       var bn = $('bank-note'); if (bn && !c.launch_bound) bn.textContent = BANK_BASE;
     }
