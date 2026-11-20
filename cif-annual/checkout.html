@@ -166,6 +166,12 @@
     .terms-box a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
     .terms-err { display:none; margin-top:8px; font-size:.8rem; font-weight:700; color: var(--danger); text-align:center; line-height:1.8; }
     .terms-err.show { display:block; }
+    /* Optional marketing box (Majid 2026-11-20, terms §10): unticked by default, never gates or changes payment. Neutral: no orange, no green. */
+    .mkt-box { display:flex; align-items:flex-start; gap:12px; margin-top:12px; padding:12px 16px; border:1.5px solid var(--line); border-radius: var(--r-md); }
+    .mkt-box input { flex-shrink:0; width:20px; height:20px; margin-top:4px; accent-color: var(--muted); cursor:pointer; }
+    .mkt-box input:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; }
+    .mkt-box label { font-size:.8rem; color: var(--muted); font-weight:600; line-height:1.9; cursor:pointer; }
+    .mkt-box .opt { color: var(--faint); }
     .co-paypal-wrap { position: relative; }
     .co-paypal-wrap.is-guarded #paypal-button-container { opacity:.5; filter: grayscale(.4); }
     .pp-guard { position:absolute; inset:0; z-index:3; width:100%; background:transparent; border:0; cursor:pointer; }
@@ -261,6 +267,13 @@
           <label for="terms-ok">قرأتُ <a href="https://malearnsa.com/membership-terms.html" target="_blank" rel="noopener">شروط العضوية</a> و<a href="https://malearnsa.com/refund-policy.html" target="_blank" rel="noopener">سياسة الاسترداد</a> و<a href="https://malearnsa.com/privacy-policy.html" target="_blank" rel="noopener">سياسة الخصوصية</a>، وأوافق عليها.</label>
         </div>
         <p class="terms-err" id="terms-err" role="alert" aria-live="assertive"></p>
+
+        <!-- Optional marketing consent (Majid 2026-11-20, membership terms §10). UNTICKED by default. It never gates, delays or
+             changes a payment: its answer only rides with the order, after the terms token. Wording approved word for word. -->
+        <div class="mkt-box" id="mkt-box">
+          <input type="checkbox" id="mkt-ok" autocomplete="off">
+          <label for="mkt-ok">أوافق على أن تُستخدم صورتي وصوتي واسمي في تسجيلات الجلسات خارج المجتمع، في التسويق مثلاً. <span class="opt">(اختياري، ولا يؤثر في عضويتك)</span></label>
+        </div>
 
         <!-- Module fills this with the configured methods -->
         <div id="ma-payment-methods" style="margin-top:20px;"></div>
@@ -438,9 +451,15 @@
 
   // ── Required terms box. Its version + the moment it was ticked ride with the order in cohort_date (the module carries
   // cohort_date on every path: Moyasar metadata, bank, Tamara, PayPal), and the server records them on the Customers row.
-  var TERMS_VERSION = 'membership-terms-2026-11-15';
-  var tickedAt = '';
-  function termsToken() { return $('terms-ok').checked && tickedAt ? 'terms:' + TERMS_VERSION + '@' + tickedAt : ''; }
+  // The optional marketing box follows it: |mkt:<wording id>:yes@<tick time> or |mkt:<wording id>:no. The server reads it
+  // only after the money is in (Customers 'CIF Marketing Consent' + tab Marketing Consent); it never refuses an order.
+  var TERMS_VERSION = 'membership-terms-2026-11-20';     // the terms page's «آخر تحديث» (§10 rewritten 2026-11-20)
+  var MKT_VERSION = 'mkt-consent-2026-11-20';            // = the box's wording above, word for word (MarketingConsent.js MKT_VERSIONS_)
+  var tickedAt = '', mktAt = '';
+  function termsToken() {
+    if (!($('terms-ok').checked && tickedAt)) return '';
+    return 'terms:' + TERMS_VERSION + '@' + tickedAt + '|mkt:' + MKT_VERSION + ':' + ($('mkt-ok').checked && mktAt ? 'yes@' + mktAt : 'no');
+  }
   function termsErr(on) {
     var e = $('terms-err');
     e.textContent = on ? 'ضع علامة الموافقة على شروط العضوية أولاً، ثم اختر طريقة الدفع.' : '';
@@ -462,6 +481,8 @@
   }
   $('terms-ok').checked = false;
   $('terms-ok').addEventListener('change', function () { tickedAt = this.checked ? new Date().toISOString() : ''; syncTerms(); });
+  $('mkt-ok').checked = false;
+  $('mkt-ok').addEventListener('change', function () { mktAt = this.checked ? new Date().toISOString() : ''; syncTerms(); });
   function needTerms() {
     termsErr(true);
     $('terms-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
